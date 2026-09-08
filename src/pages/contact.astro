@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site, contactLinks } from "../site";
+
+const links = contactLinks();
+---
+
+<BaseLayout title="Contact" description={`Contact ${site.name}.`}>
+  <div class="container">
+    <p class="eyebrow">Contact</p>
+    <h1>Let’s talk.</h1>
+    <p class="lede">
+      For collaboration, roles, or questions about a project, reach me here.
+    </p>
+    {links.length > 0 ? (
+      <div class="actions">
+        {links.map((link) => (
+          <a
+            class:list={["button", link.label === "Email" ? "button-primary" : "button-ghost"]}
+            href={link.href}
+            rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+    ) : (
+      <p class="empty-note">Add an email or profile links in <code>src/site.ts</code>.</p>
+    )}
+    {!site.email && (
+      <p class="muted" style="margin-top: 1.25rem;">
+        Set <code>email</code> in <code>src/site.ts</code> when you want a mailto button here.
+      </p>
+    )}
+  </div>
+</BaseLayout>

@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../site";
+---
+
+<BaseLayout title="About" description={`About ${site.name}, ${site.role}.`}>
+  <div class="container">
+    <p class="eyebrow">About</p>
+    <p class="profile-name">{site.name}</p>
+    <h1 class="profile-role">{site.role}</h1>
+    <div class="prose">
+      {site.intro.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+      <p>I have experience in:</p>
+      <ul class="experience">
+        {site.experience.map((item) => (
+          <li>
+            <span>{item.title}:</span> {item.detail}
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="actions" style="margin-top: 1.5rem;">
+      <a class="button button-primary" href="/#contact">Get in touch</a>
+      <a class="button button-ghost" href="/#software">See work</a>
+    </div>
+  </div>
+</BaseLayout>

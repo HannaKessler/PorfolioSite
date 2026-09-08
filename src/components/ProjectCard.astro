@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+const { project } = Astro.props;
+const { title, description, kind, tags, image } = project.data;
+---
+
+<a class="card" href={`/projects/${project.id}`}>
+  <div class="card-media">
+    {image && <img src={image.src} alt={image.alt} />}
+  </div>
+  <div class="card-body">
+    <div class="meta-row">
+      <span class:list={["badge", kind === "game" ? "badge-game" : "badge-software"]}>
+        {kind === "game" ? "Game" : "Software"}
+      </span>
+    </div>
+    <h3>{title}</h3>
+    <p>{description}</p>
+    {tags.length > 0 && (
+      <div class="meta-row">
+        {tags.map((tag) => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+    )}
+  </div>
+</a>

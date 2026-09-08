@@ -1,0 +1,25 @@
+---
+import { site } from "../site";
+
+const pathname = Astro.url.pathname;
+
+function current(href: string) {
+  if (href === "/") return pathname === "/" ? "page" : undefined;
+  return undefined;
+}
+---
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="/">{site.name}</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/#about" aria-current={current("/")}>About</a>
+      <a href="/#software">Software</a>
+      <a href="/#games">Games</a>
+      <a href="/#contact">Contact</a>
+      {site.resumeUrl && (
+        <a class="nav-resume" href={site.resumeUrl} rel="noreferrer">Resume</a>
+      )}
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,75 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Carousel from "../components/Carousel.astro";
+import { site, contactLinks } from "../site";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const software = projects.filter((project) => project.data.kind === "software");
+const games = projects.filter((project) => project.data.kind === "game");
+const links = contactLinks();
+---
+
+<BaseLayout>
+  <div class="container">
+    <section class="profile" id="about">
+      <div class="profile-copy">
+        <p class="profile-name">{site.name}</p>
+        <h1 class="profile-role">{site.role}</h1>
+        {site.intro.map((paragraph) => (
+          <p class="profile-bio">{paragraph}</p>
+        ))}
+        <p class="profile-bio">I have experience in:</p>
+        <ul class="experience">
+          {site.experience.map((item) => (
+            <li>
+              <span>{item.title}:</span> {item.detail}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="profile-media">
+        <img class="profile-photo" src={site.photo} alt={`Portrait of ${site.name}`} />
+        {site.resumeUrl && (
+          <a class="button button-primary" href={site.resumeUrl} rel="noreferrer">Resume</a>
+        )}
+      </div>
+    </section>
+
+    <Carousel
+      id="software"
+      title="Software"
+      projects={software}
+      emptyText="Add software projects in src/content/projects with kind: software."
+    />
+
+    <Carousel
+      id="games"
+      title="Games"
+      projects={games}
+      emptyText="Add games in src/content/projects with kind: game."
+    />
+
+    <section class="contact-band" id="contact">
+      <h2>Let’s work together</h2>
+      <p>For collaboration, roles, or questions about a project, reach me here.</p>
+      {links.length > 0 ? (
+        <div class="actions">
+          {links.map((link) => (
+            <a
+              class:list={["button", link.label === "Email" ? "button-primary" : "button-ghost"]}
+              href={link.href}
+              rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p class="empty-note">Add an email or profile links in <code>src/site.ts</code>.</p>
+      )}
+    </section>
+  </div>
+</BaseLayout>
