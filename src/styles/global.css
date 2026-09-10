@@ -138,6 +138,10 @@ main {
   padding-block: 2.5rem 4rem;
 }
 
+main:has(.demo-project) {
+  padding-top: 0.75rem;
+}
+
 .hero {
   padding-block: 1.25rem 2.75rem;
 }
@@ -404,6 +408,24 @@ h2 {
 
 .prose a {
   color: var(--accent);
+}
+
+.demo-project {
+  padding-top: 0;
+}
+
+.demo-writeup {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.demo-writeup h1 {
+  max-width: none;
+}
+
+.demo-writeup .section {
+  margin-top: 1.5rem;
 }
 
 .project-hero {

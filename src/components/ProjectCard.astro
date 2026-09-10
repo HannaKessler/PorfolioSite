@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const { title, description, kind, tags, image } = project.data;
+const { title, description, kind, tags, image, demoUrl } = project.data;
 ---
 
 <a class="card" href={`/projects/${project.id}`}>
@@ -18,6 +18,7 @@ const { title, description, kind, tags, image } = project.data;
       <span class:list={["badge", kind === "game" ? "badge-game" : "badge-software"]}>
         {kind === "game" ? "Game" : "Software"}
       </span>
+      {demoUrl && <span class="badge badge-software">Live demo</span>}
     </div>
     <h3>{title}</h3>
     <p>{description}</p>

@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import SecretNotesDemo from "../../components/SecretNotesDemo.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -14,43 +15,70 @@ const { project } = Astro.props;
 const { Content } = await render(project);
 const { title, description, kind, tags, itchUrl, githubUrl, liveUrl, demoUrl, image } =
   project.data;
+const isSecretNotes = project.id === "secret-notes";
 ---
 
 <BaseLayout title={title} description={description}>
-  <div class="container">
-    <p class="eyebrow">{kind === "game" ? "Game" : "Software"}</p>
-    <div class="project-hero">
-      <div>
-        <h1>{title}</h1>
-        <p class="lede">{description}</p>
-        <div class="meta-row" style="margin-bottom: 1.25rem;">
-          {tags.map((tag) => (
-            <span class="tag">{tag}</span>
-          ))}
+  <div class:list={["container", isSecretNotes && "demo-project"]}>
+    {isSecretNotes ? (
+      <>
+        <SecretNotesDemo />
+        <article class="demo-writeup">
+          <p class="eyebrow">Software demo</p>
+          <h1>{title}</h1>
+          <p class="lede">{description}</p>
+          <div class="meta-row" style="margin-bottom: 1.25rem;">
+            {tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+          <div class="actions">
+            {githubUrl && (
+              <a class="button button-ghost" href={githubUrl} rel="noreferrer">GitHub</a>
+            )}
+            <a class="button button-ghost" href="/#software">Software reel</a>
+          </div>
+          <div class="prose section">
+            <Content />
+          </div>
+        </article>
+      </>
+    ) : (
+      <>
+        <p class="eyebrow">{kind === "game" ? "Game" : "Software"}</p>
+        <div class="project-hero">
+          <div>
+            <h1>{title}</h1>
+            <p class="lede">{description}</p>
+            <div class="meta-row" style="margin-bottom: 1.25rem;">
+              {tags.map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+            <div class="actions">
+              {itchUrl && (
+                <a class="button button-primary" href={itchUrl} rel="noreferrer">Play on itch.io</a>
+              )}
+              {demoUrl && (
+                <a class="button button-ghost" href={demoUrl}>Play demo</a>
+              )}
+              {githubUrl && (
+                <a class="button button-ghost" href={githubUrl} rel="noreferrer">GitHub</a>
+              )}
+              {liveUrl && (
+                <a class="button button-ghost" href={liveUrl} rel="noreferrer">Live site</a>
+              )}
+              <a class="button button-ghost" href="/projects">All work</a>
+            </div>
+          </div>
+          <div class="project-cover">
+            {image && <img src={image.src} alt={image.alt} />}
+          </div>
         </div>
-        <div class="actions">
-          {itchUrl && (
-            <a class="button button-primary" href={itchUrl} rel="noreferrer">Play on itch.io</a>
-          )}
-          {demoUrl && (
-            <a class="button button-ghost" href={demoUrl}>Play demo</a>
-          )}
-          {githubUrl && (
-            <a class="button button-ghost" href={githubUrl} rel="noreferrer">GitHub</a>
-          )}
-          {liveUrl && (
-            <a class="button button-ghost" href={liveUrl} rel="noreferrer">Live site</a>
-          )}
-          <a class="button button-ghost" href="/projects">All work</a>
+        <div class="prose section">
+          <Content />
         </div>
-      </div>
-      <div class="project-cover">
-        {image && <img src={image.src} alt={image.alt} />}
-      </div>
-    </div>
-
-    <div class="prose section">
-      <Content />
-    </div>
+      </>
+    )}
   </div>
 </BaseLayout>

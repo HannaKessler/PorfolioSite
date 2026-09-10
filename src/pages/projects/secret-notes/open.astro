@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import SecretNotesOpen from "../../../components/SecretNotesOpen.astro";
+---
+
+<BaseLayout title="Open note" description="Unlock a Secret notes share.">
+  <div class="container demo-project">
+    <p class="eyebrow">Secret notes</p>
+    <h1>Open note</h1>
+    <p class="lede">Enter the password that was sent separately. This page only unlocks a note; create one from the demo.</p>
+    <SecretNotesOpen />
+    <div class="actions" style="margin-top: 1.25rem;">
+      <a class="button button-ghost" href="/projects/secret-notes">Back to the demo</a>
+    </div>
+  </div>
+</BaseLayout>
