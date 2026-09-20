@@ -19,9 +19,9 @@ export function apiUrl(path: string) {
 
 export const AUP_TEXT = `You must be 18 or older. You may send a short text note, .txt, .csv, or a text-only PDF.
 
-You may not upload malware, CSAM or any content involving minors, stolen credentials, images, or PDFs that contain images (logos and scans count). Do not use this as a warez/file drop or try to bypass scanning, rate limits, or expiry.
+You may not upload malware, CSAM or any content involving minors, stolen credentials, images, or PDFs that contain images (logos and scans count). Do not use this as a warez/file drop or try to bypass type checks, rate limits, or expiry.
 
-Uploads are scanned. The operator can read notes during scan. The service may be disabled without notice.`;
+Uploads are type-checked (not antivirus-scanned). Recipients should only open files from people they trust. The operator can read notes. The service may be disabled without notice.`;
 
 export function messageFor(category: string): string {
   const map: Record<string, string> = {

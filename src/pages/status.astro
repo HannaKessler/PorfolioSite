@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import StatusBoard from "../components/StatusBoard.astro";
+---
+
+<BaseLayout
+  title="Status"
+  description="Live health of the Secret notes demo: reachability, upload pause, and quota."
+>
+  <div class="container">
+    <p class="eyebrow">Operations</p>
+    <h1>Status</h1>
+    <p class="lede">
+      A public board for the Secret notes API. This page probes the live service
+      from your browser, then shows whether uploads are open and how much of
+      today’s demo quota is used.
+    </p>
+    <StatusBoard />
+    <div class="prose st-slo">
+      <h2>What this measures</h2>
+      <p>
+        Demo targets, not a production SLA: the status endpoint should answer,
+        a probe from this page should finish in under one second, and the
+        global upload quota should stay under 80%. Probe history is stored in
+        this tab only. It is not a multi-user metrics backend.
+      </p>
+      <p>
+        “Unreachable” means this browser could not talk to the API. Locally
+        that usually means the Secret notes process is not on port 8787. On
+        the live site it means the API host is down or
+        <code>PUBLIC_SECRET_NOTES_API</code> is unset.
+      </p>
+    </div>
+    <div class="actions" style="margin-top: 1.5rem;">
+      <a class="button button-primary" href="/projects/secret-notes">Open Secret notes</a>
+      <a class="button button-ghost" href="/#software">Software reel</a>
+    </div>
+  </div>
+</BaseLayout>

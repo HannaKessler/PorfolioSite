@@ -28,7 +28,7 @@ export async function mountSecretNotesDemo(root: HTMLElement) {
   loadTurnstile(cfg.turnstileSiteKey);
 
   root.innerHTML = `
-    <p class="sn-banner">Public demo. Notes are scanned (not end-to-end encrypted), expire quickly, and are deleted after the download limit. 18+ only. No images.</p>
+    <p class="sn-banner">Public demo. Only <code>.txt</code>, <code>.csv</code>, and text-only PDFs (no antivirus). Not end-to-end encrypted. Expire quickly. 18+ only. No images.</p>
     <form id="sn-send" class="sn-form">
       <div class="sn-split">
         <div class="sn-col sn-col-note">

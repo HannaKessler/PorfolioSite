@@ -450,6 +450,16 @@ h2 {
   font-size: 0.95rem;
 }
 
+.site-footer a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.site-footer a:hover {
+  color: var(--accent);
+}
+
 .footer-inner {
   display: flex;
   flex-wrap: wrap;

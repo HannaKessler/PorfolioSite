@@ -1,0 +1,14 @@
+---
+import "../styles/status.css";
+---
+
+<section class="st-board" id="status-board" aria-live="polite" aria-label="Secret notes status">
+  <p class="st-muted">Checking the Secret notes API…</p>
+</section>
+
+<script>
+  import { mountStatusPage } from "../scripts/status-page";
+
+  const root = document.getElementById("status-board");
+  if (root) void mountStatusPage(root);
+</script>

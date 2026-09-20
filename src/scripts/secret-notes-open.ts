@@ -25,7 +25,8 @@ export async function mountSecretNotesOpen(root: HTMLElement) {
   loadTurnstile(cfg.turnstileSiteKey);
 
   root.innerHTML = `
-    <p class="sn-banner">This demo scans files. It is not end-to-end encrypted. Enter the password to download the note.</p>
+    <p class="sn-warn">Only unlock this if you trust the person who sent the link. This demo allows <code>.txt</code>, <code>.csv</code>, and text-only PDFs. It does <strong>not</strong> run antivirus. Do not open a download from a stranger in Excel or a PDF reader.</p>
+    <p class="sn-banner">Not end-to-end encrypted. Enter the password to download the note.</p>
     <form id="sn-open" class="sn-form">
       <div class="sn-col-meta">
         <label for="sn-open-password">Password</label>

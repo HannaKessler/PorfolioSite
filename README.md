@@ -42,4 +42,6 @@ Live URL: `https://hannakesslerportfolio.hanna-kessler10-portfolio.workers.dev`
 
 Leave `PUBLIC_SECRET_NOTES_API` unset until the Secret notes API is on a public HTTPS URL. The demo will show an error until then; the rest of the site still works.
 
+`/status` probes that same API (`/v1/status`, falling back to `/v1/config`) and shows reachability, the upload kill switch, and demo quota.
+
 Local API proxy (`/v1` → `127.0.0.1:8787`) only applies to `npm run dev`.

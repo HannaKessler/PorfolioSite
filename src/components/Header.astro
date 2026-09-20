@@ -5,7 +5,7 @@ const pathname = Astro.url.pathname;
 
 function current(href: string) {
   if (href === "/") return pathname === "/" ? "page" : undefined;
-  return undefined;
+  return pathname === href || pathname.startsWith(`${href}/`) ? "page" : undefined;
 }
 ---
 
@@ -16,6 +16,7 @@ function current(href: string) {
       <a href="/#about" aria-current={current("/")}>About</a>
       <a href="/#software">Software</a>
       <a href="/#games">Games</a>
+      <a href="/status" aria-current={current("/status")}>Status</a>
       <a href="/#contact">Contact</a>
       {site.resumeUrl && (
         <a class="nav-resume" href={site.resumeUrl} rel="noreferrer">Resume</a>

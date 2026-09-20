@@ -1,0 +1,179 @@
+.st-board {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.st-banner {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+}
+
+.st-banner-ok {
+  border-color: color-mix(in srgb, var(--software) 45%, var(--line));
+}
+
+.st-banner-paused,
+.st-banner-degraded {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+}
+
+.st-banner-down {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.st-kicker {
+  margin: 0 0 0.25rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.st-state {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 720;
+  line-height: 1.1;
+}
+
+.st-banner-ok .st-state {
+  color: var(--software);
+}
+
+.st-banner-down .st-state,
+.st-banner-paused .st-state,
+.st-banner-degraded .st-state {
+  color: var(--accent);
+}
+
+.st-banner p:last-child {
+  margin: 0;
+  color: var(--muted);
+  max-width: 42rem;
+}
+
+.st-stats {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+.st-stat {
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+}
+
+.st-stat-label,
+.st-quota h3 {
+  margin: 0 0 0.25rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.st-stat-value {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 720;
+}
+
+.st-quota {
+  display: grid;
+  gap: 1rem;
+}
+
+.st-quota > div {
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-elevated);
+}
+
+.st-quota p {
+  margin: 0 0 0.55rem;
+}
+
+.st-meter {
+  height: 0.45rem;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.st-meter span {
+  display: block;
+  height: 100%;
+  background: var(--software);
+}
+
+.st-meter-label {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.st-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+
+.st-muted {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  max-width: 40rem;
+}
+
+.st-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.st-table caption {
+  caption-side: top;
+  text-align: left;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.st-table th,
+.st-table td {
+  text-align: left;
+  padding: 0.45rem 0.4rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.st-table th {
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.st-slo {
+  margin-top: 2.5rem;
+}
+
+@media (min-width: 720px) {
+  .st-stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .st-quota {
+    grid-template-columns: 1fr 1fr;
+  }
+}
