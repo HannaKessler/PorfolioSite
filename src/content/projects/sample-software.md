@@ -1,6 +1,5 @@
 ---
 title: Sample Software
-kind: software
 description: A placeholder card for an engineering project. Replace this file with something from GitHub.
 pubDate: 2026-08-15
 featured: true

@@ -1,0 +1,19 @@
+---
+import { getEntry, render } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const entry = await getEntry("journey", "professional-journey");
+if (!entry) {
+  throw new Error("Missing src/content/journey/professional-journey.md");
+}
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={entry.data.title}>
+  <div class="container journey">
+    <h1>{entry.data.title}</h1>
+    <div class="prose">
+      <Content />
+    </div>
+  </div>
+</BaseLayout>

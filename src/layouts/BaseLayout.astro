@@ -10,7 +10,11 @@ interface Props {
 }
 
 const { title, description = site.description } = Astro.props;
-const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.role}`;
+const pageTitle = title
+  ? `${title} · ${site.name}`
+  : site.role
+    ? `${site.name} · ${site.role}`
+    : site.name;
 ---
 
 <!doctype html>
@@ -24,7 +28,7 @@ const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.r
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,720&family=Source+Sans+3:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <title>{pageTitle}</title>

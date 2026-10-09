@@ -1,6 +1,5 @@
 ---
 title: Secret notes
-kind: software
 description: Password-protected notes with a time limit, download cap, and text-only files. Browser talks only to a REST API; files live in S3 and metadata in DynamoDB. API runs on Lambda (pay per request).
 pubDate: 2026-09-08
 featured: true

@@ -1,34 +1,73 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Carousel from "../components/Carousel.astro";
+import ProjectCard from "../components/ProjectCard.astro";
 import { site, contactLinks } from "../site";
 
 const projects = (await getCollection("projects")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
-const software = projects.filter((project) => project.data.kind === "software");
-const games = projects.filter((project) => project.data.kind === "game");
 const links = contactLinks();
 ---
 
 <BaseLayout>
+  <section class="hero">
+    <div class="hero-inner">
+      {site.role ? (
+        <>
+          <p class="hero-kicker">{site.name}</p>
+          <h1>{site.role}</h1>
+        </>
+      ) : (
+        <h1>{site.name}</h1>
+      )}
+      <nav class="hero-tabs" aria-label="Sections">
+        <div class="nav-menu">
+          <button
+            type="button"
+            class="nav-trigger"
+            aria-expanded="false"
+            aria-haspopup="true"
+            aria-controls="hero-demo-menu"
+          >
+            Demos
+          </button>
+          <ul class="nav-dropdown" id="hero-demo-menu">
+            {projects.map((project) => (
+              <li>
+                <a href={`/projects/${project.id}`}>{project.data.title}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <a href={site.links.linkedin} rel="noreferrer">LinkedIn</a>
+        <a href="/professional-journey">Professional Journey</a>
+        <a href={site.links.github} rel="noreferrer">Repo</a>
+      </nav>
+    </div>
+  </section>
+
   <div class="container">
     <section class="profile" id="about">
       <div class="profile-copy">
-        <p class="profile-name">{site.name}</p>
-        <h1 class="profile-role">{site.role}</h1>
+        <p class="profile-name">About</p>
+        <p class="profile-role">{site.name}</p>
         {site.intro.map((paragraph) => (
           <p class="profile-bio">{paragraph}</p>
         ))}
-        <p class="profile-bio">I have experience in:</p>
-        <ul class="experience">
-          {site.experience.map((item) => (
-            <li>
-              <span>{item.title}:</span> {item.detail}
-            </li>
-          ))}
-        </ul>
+        {site.experience.length > 0 && (
+          <>
+            <p class="profile-bio">I have experience in:</p>
+            <ul class="experience">
+              {site.experience.map((item) => (
+                <li>
+                  <span>{item.title}:</span> {item.detail}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+        <a class="button button-ghost button-small" href="/professional-journey">Professional Journey</a>
       </div>
       <div class="profile-media">
         <img class="profile-photo" src={site.photo} alt={`Portrait of ${site.name}`} />
@@ -38,19 +77,18 @@ const links = contactLinks();
       </div>
     </section>
 
-    <Carousel
-      id="software"
-      title="Software"
-      projects={software}
-      emptyText="Add software projects in src/content/projects with kind: software."
-    />
-
-    <Carousel
-      id="games"
-      title="Games"
-      projects={games}
-      emptyText="Add games in src/content/projects with kind: game."
-    />
+    <section class="listing-section" id="software" aria-labelledby="software-heading">
+      <h2 id="software-heading">Projects</h2>
+      {projects.length > 0 ? (
+        <div class="grid">
+          {projects.map((project) => (
+            <ProjectCard project={project} />
+          ))}
+        </div>
+      ) : (
+        <p class="empty-note">Add a Markdown file in <code>src/content/projects</code>.</p>
+      )}
+    </section>
 
     <section class="contact-band" id="contact">
       <h2>Let’s work together</h2>

@@ -1,6 +1,5 @@
 ---
 title: Sample Library
-kind: software
 description: Another placeholder so the software carousel has enough cards to scroll.
 pubDate: 2026-04-02
 featured: false

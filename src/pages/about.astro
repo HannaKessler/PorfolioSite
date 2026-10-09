@@ -12,14 +12,18 @@ import { site } from "../site";
       {site.intro.map((paragraph) => (
         <p>{paragraph}</p>
       ))}
-      <p>I have experience in:</p>
-      <ul class="experience">
-        {site.experience.map((item) => (
-          <li>
-            <span>{item.title}:</span> {item.detail}
-          </li>
-        ))}
-      </ul>
+      {site.experience.length > 0 && (
+        <>
+          <p>I have experience in:</p>
+          <ul class="experience">
+            {site.experience.map((item) => (
+              <li>
+                <span>{item.title}:</span> {item.detail}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </div>
     <div class="actions" style="margin-top: 1.5rem;">
       <a class="button button-primary" href="/#contact">Get in touch</a>

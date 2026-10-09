@@ -7,11 +7,9 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    kind: z.enum(["game", "software"]),
     pubDate: z.coerce.date(),
     featured: z.boolean().default(false),
     tags: z.array(z.string()).default([]),
-    itchUrl: z.string().url().optional(),
     githubUrl: z.string().url().optional(),
     liveUrl: z.string().url().optional(),
     demoUrl: z.string().optional(),
@@ -24,4 +22,11 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { projects };
+const journey = defineCollection({
+  loader: glob({ base: "./src/content/journey", pattern: "**/*.md" }),
+  schema: z.object({
+    title: z.string(),
+  }),
+});
+
+export const collections = { projects, journey };

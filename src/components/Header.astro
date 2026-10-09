@@ -1,26 +1,82 @@
 ---
+import { getCollection } from "astro:content";
 import { site } from "../site";
 
+const demos = (await getCollection("projects")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
 const pathname = Astro.url.pathname;
+const isHome = pathname === "/";
 
 function current(href: string) {
-  if (href === "/") return pathname === "/" ? "page" : undefined;
+  return pathname === href || pathname.startsWith(`${href}/`) ? "page" : undefined;
+}
+
+function demoCurrent(id: string) {
+  const href = `/projects/${id}`;
   return pathname === href || pathname.startsWith(`${href}/`) ? "page" : undefined;
 }
 ---
 
-<header class="site-header">
-  <div class="header-inner">
-    <a class="logo" href="/">{site.name}</a>
-    <nav class="nav" aria-label="Primary">
-      <a href="/#about" aria-current={current("/")}>About</a>
-      <a href="/#software">Software</a>
-      <a href="/#games">Games</a>
-      <a href="/status" aria-current={current("/status")}>Status</a>
-      <a href="/#contact">Contact</a>
-      {site.resumeUrl && (
-        <a class="nav-resume" href={site.resumeUrl} rel="noreferrer">Resume</a>
-      )}
-    </nav>
-  </div>
-</header>
+{
+  !isHome && (
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="logo" href="/">{site.name}</a>
+        <nav class="nav" aria-label="Primary">
+          <a href="/">Home</a>
+          <div class="nav-menu">
+            <button
+              type="button"
+              class="nav-trigger"
+              aria-expanded="false"
+              aria-haspopup="true"
+              aria-controls="demo-menu"
+              aria-current={pathname.startsWith("/projects/") ? "page" : undefined}
+            >
+              Demos
+            </button>
+            <ul class="nav-dropdown" id="demo-menu">
+              {demos.map((demo) => (
+                <li>
+                  <a href={`/projects/${demo.id}`} aria-current={demoCurrent(demo.id)}>
+                    {demo.data.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <a href="/professional-journey" aria-current={current("/professional-journey")}>
+            Professional Journey
+          </a>
+        </nav>
+      </div>
+    </header>
+  )
+}
+
+<script>
+  document.querySelectorAll(".nav-menu").forEach((menu) => {
+    const trigger = menu.querySelector(".nav-trigger");
+    if (!(trigger instanceof HTMLButtonElement)) return;
+
+    function setOpen(open: boolean) {
+      menu.classList.toggle("is-open", open);
+      trigger.setAttribute("aria-expanded", String(open));
+    }
+
+    menu.style.setProperty("--tab-w", `${trigger.offsetWidth}px`);
+
+    trigger.addEventListener("click", () => {
+      setOpen(!menu.classList.contains("is-open"));
+    });
+
+    document.addEventListener("click", (event) => {
+      if (event.target instanceof Node && !menu.contains(event.target)) setOpen(false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setOpen(false);
+    });
+  });
+</script>
