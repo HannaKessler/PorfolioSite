@@ -246,9 +246,11 @@ main:has(.demo-project) .container {
 .hero-tabs {
   --tab-h: 2.45rem;
   --tab-gap: 0.5rem;
-  --tab-drop: var(--tab-gap);
-  --bevel: calc(10px + var(--tab-gap));
+  --tab-r: 10px;
+  --tab-pad: 0.95rem;
   --folder-r: 8px;
+  /* Larger than the button corner so the clearance around LinkedIn stays even. */
+  --join: calc(var(--tab-r) + var(--tab-gap));
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -267,7 +269,7 @@ main:has(.demo-project) .container {
   align-items: center;
   justify-content: center;
   height: var(--tab-h);
-  padding: 0 0.95rem;
+  padding: 0 var(--tab-pad);
   color: #fff;
   text-decoration: none;
   font-family: inherit;
@@ -276,7 +278,7 @@ main:has(.demo-project) .container {
   line-height: 1;
   border: 0;
   outline: none;
-  border-radius: 10px;
+  border-radius: var(--tab-r);
   background: rgb(255 255 255 / 0.14);
   background-clip: padding-box;
   backdrop-filter: blur(10px);
@@ -312,52 +314,36 @@ main:has(.demo-project) .container {
   right: auto;
   top: 0;
   z-index: 1;
-  gap: 0;
+  gap: 0.22rem;
   width: max-content;
-  min-width: calc(var(--tab-w) + var(--bevel) + var(--folder-r) + 0.25rem);
-  padding: calc(var(--tab-h) + var(--tab-drop)) 0.25rem 0.28rem;
+  min-width: calc(var(--tab-w) + var(--join) + var(--folder-r));
+  padding: calc(var(--tab-h) + var(--tab-gap) + 0.3rem) var(--tab-pad) 0.4rem;
   text-align: left;
   background: rgb(255 255 255 / 0.14);
   border: 0;
   border-radius: 0;
   box-shadow: none;
   backdrop-filter: blur(10px);
-  clip-path: shape(
-    from 10px 0,
-    line to calc(var(--tab-w) - 10px) 0,
-    arc to var(--tab-w) 10px of 10px small cw,
-    line to var(--tab-w) calc(var(--tab-h) + var(--tab-drop) - var(--bevel)),
-    arc to calc(var(--tab-w) + var(--bevel)) calc(var(--tab-h) + var(--tab-drop)) of var(--bevel) small ccw,
-    line to calc(100% - var(--folder-r)) calc(var(--tab-h) + var(--tab-drop)),
-    arc to 100% calc(var(--tab-h) + var(--tab-drop) + var(--folder-r)) of var(--folder-r) small cw,
-    line to 100% calc(100% - var(--folder-r)),
-    arc to calc(100% - var(--folder-r)) 100% of var(--folder-r) small cw,
-    line to var(--folder-r) 100%,
-    arc to 0 calc(100% - var(--folder-r)) of var(--folder-r) small cw,
-    line to 0 10px,
-    arc to 10px 0 of 10px small cw,
-    close
-  );
   transition: opacity 0.12s ease, visibility 0s;
 }
 
-.hero-tabs .nav-menu:hover .nav-dropdown,
-.hero-tabs .nav-menu:focus-within .nav-dropdown,
-.hero-tabs .nav-menu.is-open .nav-dropdown {
+/* Same specificity as the base menu hover rule, and later in the file, so the
+   folder shape wins over that rule's rectangular clip. */
+.hero-tabs .nav-menu .nav-dropdown {
   clip-path: shape(
-    from 10px 0,
-    line to calc(var(--tab-w) - 10px) 0,
-    arc to var(--tab-w) 10px of 10px small cw,
-    line to var(--tab-w) calc(var(--tab-h) + var(--tab-drop) - var(--bevel)),
-    arc to calc(var(--tab-w) + var(--bevel)) calc(var(--tab-h) + var(--tab-drop)) of var(--bevel) small ccw,
-    line to calc(100% - var(--folder-r)) calc(var(--tab-h) + var(--tab-drop)),
-    arc to 100% calc(var(--tab-h) + var(--tab-drop) + var(--folder-r)) of var(--folder-r) small cw,
+    from var(--tab-r) 0,
+    line to calc(var(--tab-w) - var(--tab-r)) 0,
+    arc to var(--tab-w) var(--tab-r) of var(--tab-r) small cw,
+    line to var(--tab-w) calc(var(--tab-h) - var(--tab-r)),
+    arc to calc(var(--tab-w) + var(--join)) calc(var(--tab-h) + var(--tab-gap)) of var(--join) small ccw,
+    line to calc(100% - var(--folder-r)) calc(var(--tab-h) + var(--tab-gap)),
+    arc to 100% calc(var(--tab-h) + var(--tab-gap) + var(--folder-r)) of var(--folder-r) small cw,
     line to 100% calc(100% - var(--folder-r)),
     arc to calc(100% - var(--folder-r)) 100% of var(--folder-r) small cw,
     line to var(--folder-r) 100%,
     arc to 0 calc(100% - var(--folder-r)) of var(--folder-r) small cw,
-    line to 0 10px,
-    arc to 10px 0 of 10px small cw,
+    line to 0 var(--tab-r),
+    arc to var(--tab-r) 0 of var(--tab-r) small cw,
     close
   );
 }
@@ -368,7 +354,7 @@ main:has(.demo-project) .container {
   text-decoration: none;
   border: 0;
   border-radius: 0;
-  padding: 0.05rem 0.08rem;
+  padding: 0;
   line-height: 1.15;
   white-space: nowrap;
   background: transparent;

@@ -65,7 +65,12 @@ function demoCurrent(id: string) {
       trigger.setAttribute("aria-expanded", String(open));
     }
 
-    menu.style.setProperty("--tab-w", `${trigger.offsetWidth}px`);
+    const measure = () => {
+      menu.style.setProperty("--tab-w", `${trigger.getBoundingClientRect().width}px`);
+    };
+    measure();
+    document.fonts?.ready.then(measure);
+    new ResizeObserver(measure).observe(trigger);
 
     trigger.addEventListener("click", () => {
       setOpen(!menu.classList.contains("is-open"));
