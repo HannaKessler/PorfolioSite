@@ -47,7 +47,7 @@ const projects = (await getCollection("projects"))
           </ul>
         </div>
         <a href={site.links.linkedin} rel="noreferrer">LinkedIn</a>
-        <a href="/professional-journey">Professional Journey</a>
+        {/* Hidden until the Professional Journey page is filled out. <a href="/professional-journey">Professional Journey</a> */}
         <a href={site.links.github} rel="noreferrer">Repo</a>
       </nav>
     </div>
@@ -72,7 +72,7 @@ const projects = (await getCollection("projects"))
             </ul>
           </>
         )}
-        <a class="button button-ghost button-small" href="/professional-journey">Professional Journey</a>
+        {/* Hidden until the Professional Journey page is filled out. <a class="button button-ghost button-small" href="/professional-journey">Professional Journey</a> */}
       </div>
       <div class="profile-media">
         <img class="profile-photo" src={site.photo} alt={`Portrait of ${site.name}`} />
