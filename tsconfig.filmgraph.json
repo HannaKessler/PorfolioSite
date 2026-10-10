@@ -1,0 +1,16 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "types": ["vite/client", "node"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
+  },
+  "include": [
+    "src/filmgraph/**/*",
+    "src/components/film-graph/**/*",
+    "filmgraph/**/*",
+    "tests/film-graph/**/*",
+    "playwright.config.ts",
+    "vitest.config.ts"
+  ]
+}

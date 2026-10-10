@@ -1,0 +1,165 @@
+"""
+Film Data Query: notable films, the people who made them, studios and genres.
+Data from Wikidata (CC0). IDs are the numeric part of the Wikidata item ID.
+"""
+type Query {
+  "One film by ID, or null if there is no such film."
+  film(id: ID!): Film
+  "Films, most notable first unless orderBy says otherwise. Cursor paginated."
+  films(filter: FilmFilter, orderBy: FilmOrder = POPULARITY, first: Int = 20, after: String): FilmConnection!
+  person(id: ID!): Person
+  """
+  Name search for autocomplete. Every word must prefix-match the name, ignoring
+  case and accents. An exact name ranks first, then names starting with the text,
+  then the most notable. With role, only people with credits in that role.
+  """
+  people(search: String!, role: Role, first: Int = 10, after: String): PersonConnection!
+  studio(id: ID!): Studio
+  "Studio name search, ranked like people."
+  studios(search: String!, first: Int = 10, after: String): StudioConnection!
+  genre(id: ID!): Genre
+  genres: [Genre!]!
+  "Films both people are credited on, oldest first."
+  sharedFilms(personA: ID!, personB: ID!, role: Role = ACTOR): [Film!]!
+  "Shortest chain of co-stars linking two actors, at most maxHops films long (1 to 3)."
+  actorPath(from: ID!, to: ID!, maxHops: Int = 3): ActorPath
+}
+
+type Film {
+  id: ID!
+  title: String!
+  year: Int!
+  "Running time in minutes."
+  runtime: Int
+  country: String
+  description: String
+  wikidataId: String!
+  "Credits in billing order. Filter by role to get just the cast or crew, or by person for one person's credits."
+  credits(role: Role, person: ID): [Credit!]!
+  directors: [Person!]!
+  genres: [Genre!]!
+  studios: [Studio!]!
+}
+
+type Person {
+  id: ID!
+  name: String!
+  birthYear: Int
+  wikidataId: String!
+  "The person's most notable film, optionally in one role. Handy for telling namesakes apart."
+  knownFor(role: Role): Film
+  "Every credit, oldest film first."
+  credits(role: Role): [Credit!]!
+  "Credits grouped by the decade the film came out."
+  creditsByDecade(role: Role): [DecadeCredits!]!
+}
+
+type Credit {
+  role: Role!
+  "Character name for acting credits, when Wikidata has one."
+  character: String
+  "1 is top billed. Only set for acting credits."
+  billingOrder: Int
+  film: Film!
+  person: Person!
+}
+
+type DecadeCredits {
+  decade: Int!
+  credits: [Credit!]!
+}
+
+type Studio {
+  id: ID!
+  name: String!
+  wikidataId: String!
+  filmCount: Int!
+  "The studio's most notable film."
+  knownFor: Film
+  films(filter: FilmFilter, orderBy: FilmOrder = YEAR, first: Int = 20, after: String): FilmConnection!
+  "Number of the studio's films in each genre, per decade."
+  genreBreakdown: [GenreDecadeCount!]!
+}
+
+type Genre {
+  id: ID!
+  name: String!
+  wikidataId: String!
+  filmCount: Int!
+  films(orderBy: FilmOrder = POPULARITY, first: Int = 20, after: String): FilmConnection!
+}
+
+type GenreDecadeCount {
+  decade: Int!
+  genre: Genre!
+  count: Int!
+}
+
+type ActorPath {
+  hops: Int!
+  steps: [PathStep!]!
+}
+
+type PathStep {
+  from: Person!
+  film: Film!
+  to: Person!
+}
+
+enum Role {
+  ACTOR
+  DIRECTOR
+  WRITER
+}
+
+enum FilmOrder {
+  POPULARITY
+  YEAR
+  TITLE
+}
+
+input FilmFilter {
+  "Prefix match on each word of the title."
+  search: String
+  genre: ID
+  studio: ID
+  yearFrom: Int
+  yearTo: Int
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  endCursor: String
+}
+
+type FilmConnection {
+  edges: [FilmEdge!]!
+  pageInfo: PageInfo!
+  "Total matches for the filter (runs a separate count query)."
+  totalCount: Int!
+}
+
+type FilmEdge {
+  cursor: String!
+  node: Film!
+}
+
+type PersonConnection {
+  edges: [PersonEdge!]!
+  pageInfo: PageInfo!
+}
+
+type PersonEdge {
+  cursor: String!
+  node: Person!
+}
+
+type StudioConnection {
+  edges: [StudioEdge!]!
+  pageInfo: PageInfo!
+}
+
+type StudioEdge {
+  cursor: String!
+  node: Studio!
+}

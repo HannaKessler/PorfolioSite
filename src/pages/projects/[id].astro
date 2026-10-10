@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SecretNotesDemo from "../../components/SecretNotesDemo.astro";
 import CatalogShop from "../../components/CatalogShop.astro";
+import FilmGraphExplorer from "../../components/FilmGraphExplorer.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -17,11 +18,14 @@ const { Content } = await render(project);
 const { title, description, tags, githubUrl, liveUrl, demoUrl, image } = project.data;
 const isSecretNotes = project.id === "secret-notes";
 const isCatalog = project.id === "catalog";
+const isFilmGraph = project.id === "film-graph";
+// Full-width demos: intro header, the demo in a frame, then the write-up.
+const isWideDemo = isCatalog || isFilmGraph;
 ---
 
 <BaseLayout title={title} description={description}>
-  <div class:list={["container", (isSecretNotes || isCatalog) && "demo-project", isCatalog && "os-wide"]}>
-    {isCatalog && (
+  <div class:list={["container", (isSecretNotes || isWideDemo) && "demo-project", isWideDemo && "os-wide"]}>
+    {isWideDemo && (
       <>
         <header class="os-intro">
           <p class="eyebrow">Software demo</p>
@@ -34,7 +38,7 @@ const isCatalog = project.id === "catalog";
           </div>
         </header>
         <div class="os-frame">
-          <CatalogShop />
+          {isCatalog ? <CatalogShop /> : <FilmGraphExplorer />}
         </div>
       </>
     )}
@@ -62,7 +66,7 @@ const isCatalog = project.id === "catalog";
           </div>
         </article>
       </>
-    ) : isCatalog ? (
+    ) : isWideDemo ? (
       <article class="demo-writeup">
         <div class="prose section">
           <Content />
