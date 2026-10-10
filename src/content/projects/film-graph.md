@@ -3,7 +3,7 @@ title: Film Graph
 description: GraphQL and REST side by side over a film database that runs entirely in your browser.
 pubDate: 2026-10-10
 featured: true
-listed: false
+listed: true
 tags:
   - TypeScript
   - GraphQL

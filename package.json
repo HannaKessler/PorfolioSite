@@ -10,7 +10,14 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "filmgraph:data": "tsx filmgraph/build-seed.ts"
+    "filmgraph:data": "tsx filmgraph/build-seed.ts",
+    "filmgraph:codegen": "graphql-codegen --config filmgraph/codegen.ts",
+    "filmgraph:typecheck": "tsc -p tsconfig.filmgraph.json",
+    "filmgraph:check-seed": "tsx filmgraph/check-seed-size.ts",
+    "test": "vitest run",
+    "test:unit": "vitest run --exclude tests/film-graph/contract.test.ts",
+    "test:contract": "vitest run tests/film-graph/contract.test.ts",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@astrojs/react": "^7.0.1",
@@ -37,8 +44,16 @@
     "esbuild": true
   },
   "devDependencies": {
+    "@graphql-codegen/add": "^7.1.1",
+    "@graphql-codegen/cli": "^7.4.6",
+    "@graphql-codegen/typescript": "^6.1.2",
+    "@graphql-codegen/typescript-resolvers": "^6.1.1",
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^22.20.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "tsx": "^4.23.15"
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
   }
 }
