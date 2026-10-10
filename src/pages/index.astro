@@ -13,10 +13,10 @@ const projects = (await getCollection("projects"))
   <section class="hero">
     <img
       class="hero-banner"
-      src="/images/austin-skyline.jpg"
-      alt="Aerial view of the Austin, Texas skyline along the Colorado River"
-      width="2400"
-      height="900"
+      src="/images/_night-crop-preview.jpg"
+      alt="The Austin, Texas skyline lit up at night"
+      width="1200"
+      height="450"
     />
     <div class="hero-inner">
       {site.role ? (
@@ -56,8 +56,7 @@ const projects = (await getCollection("projects"))
   <div class="container">
     <section class="profile" id="about">
       <div class="profile-copy">
-        <p class="profile-name">About</p>
-        <p class="profile-role">{site.name}</p>
+        <h2 class="profile-role">About</h2>
         {site.intro.map((paragraph) => (
           <p class="profile-bio">{paragraph}</p>
         ))}
@@ -97,6 +96,6 @@ const projects = (await getCollection("projects"))
     </section>
   </div>
   <p slot="footer">
-    Austin skyline by <a href="https://commons.wikimedia.org/wiki/User:Quintin_Soloviev" rel="noreferrer">Quintin Soloviev</a>, cropped from <a href="https://commons.wikimedia.org/wiki/File:Skyline_of_Austin,_Texas_(cropped).jpg" rel="noreferrer">Skyline of Austin, Texas</a>, <a href="https://creativecommons.org/licenses/by/4.0" rel="noreferrer">CC BY 4.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Skyline_of_Austin,_Texas_(cropped).jpg" rel="noreferrer">Wikimedia Commons</a>.
+    Austin skyline at night by <a href="https://www.flickr.com/people/47121680@N00" rel="noreferrer">Jonathan Cutrer</a>, cropped from <a href="https://www.flickr.com/photos/joncutrer/10555159946/" rel="noreferrer">Austin Texas Downtown Skyline at Night</a>, <a href="https://creativecommons.org/licenses/by/2.0" rel="noreferrer">CC BY 2.0</a>, via <a href="https://commons.wikimedia.org/wiki/File:Austin_Texas_Downtown_Skyline_at_Night_(10555159946).jpg" rel="noreferrer">Wikimedia Commons</a>.
   </p>
 </BaseLayout>

@@ -807,13 +807,18 @@ h2 {
   }
 
   .profile {
-    grid-template-columns: 1.15fr 0.85fr;
+    grid-template-columns: minmax(0, 1fr) 18rem;
     gap: 2rem;
     padding: 1.5rem;
   }
 
   .profile-media {
     justify-items: end;
+  }
+
+  .profile .profile-bio,
+  .profile .experience {
+    max-width: none;
   }
 }
 
