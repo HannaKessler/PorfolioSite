@@ -146,7 +146,7 @@ test("changing the question marks results out of date instead of re-running", as
   await page.waitForTimeout(800);
   expect(apiCalls).toEqual([]);
   await runQuestion(page);
-  await expect(page.getByText("Out of date")).toHaveCount(0);
+  await expect(page.locator(".fg-ans-stale")).toHaveCount(0);
   await expect(answer(page)).toContainText("Warner Bros. Entertainment made");
 });
 
