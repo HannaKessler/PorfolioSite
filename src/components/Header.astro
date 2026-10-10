@@ -2,9 +2,9 @@
 import { getCollection } from "astro:content";
 import { site } from "../site";
 
-const demos = (await getCollection("projects")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const demos = (await getCollection("projects"))
+  .filter((project) => project.data.listed)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 const pathname = Astro.url.pathname;
 const isHome = pathname === "/";
 

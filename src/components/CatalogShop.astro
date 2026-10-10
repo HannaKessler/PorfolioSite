@@ -1,0 +1,19 @@
+---
+import "../styles/catalog.css";
+import CatalogBar from "./CatalogBar.astro";
+import CatalogConsent from "./CatalogConsent.astro";
+import { initialBrowseHtml } from "../scripts/catalog-html";
+---
+
+<section class="os" id="open-stock" aria-label="Searchable Shop catalog">
+  <CatalogBar />
+  <div id="os-stage" set:html={initialBrowseHtml()} />
+  <CatalogConsent />
+</section>
+
+<script>
+  import { mountCatalog } from "../scripts/catalog-shop";
+
+  const root = document.getElementById("open-stock");
+  if (root) mountCatalog(root);
+</script>

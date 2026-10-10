@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SecretNotesDemo from "../../components/SecretNotesDemo.astro";
+import CatalogShop from "../../components/CatalogShop.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -15,10 +16,28 @@ const { project } = Astro.props;
 const { Content } = await render(project);
 const { title, description, tags, githubUrl, liveUrl, demoUrl, image } = project.data;
 const isSecretNotes = project.id === "secret-notes";
+const isCatalog = project.id === "catalog";
 ---
 
 <BaseLayout title={title} description={description}>
-  <div class:list={["container", isSecretNotes && "demo-project"]}>
+  <div class:list={["container", (isSecretNotes || isCatalog) && "demo-project"]}>
+    {isCatalog && (
+      <>
+        <header class="os-intro">
+          <p class="eyebrow">Software demo</p>
+          <h1>{title}</h1>
+          <p class="lede">{description}</p>
+          <div class="meta-row">
+            {tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        </header>
+        <div class="os-frame">
+          <CatalogShop />
+        </div>
+      </>
+    )}
     {isSecretNotes ? (
       <>
         <SecretNotesDemo />
@@ -35,7 +54,7 @@ const isSecretNotes = project.id === "secret-notes";
             {githubUrl && (
               <a class="button button-ghost" href={githubUrl} rel="noreferrer">GitHub</a>
             )}
-            <a class="button button-ghost" href="/#software">Projects</a>
+            <a class="button button-ghost" href="/#software">Demos</a>
             <a class="button button-ghost" href="/status">Status</a>
           </div>
           <div class="prose section">
@@ -43,6 +62,12 @@ const isSecretNotes = project.id === "secret-notes";
           </div>
         </article>
       </>
+    ) : isCatalog ? (
+      <article class="demo-writeup">
+        <div class="prose section">
+          <Content />
+        </div>
+      </article>
     ) : (
       <>
         <p class="eyebrow">Software</p>

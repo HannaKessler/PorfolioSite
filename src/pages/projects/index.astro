@@ -3,16 +3,16 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
 
-const projects = (await getCollection("projects")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const projects = (await getCollection("projects"))
+  .filter((project) => project.data.listed)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <BaseLayout title="Work" description="Selected software projects.">
   <div class="container">
     <p class="eyebrow">Selected work</p>
-    <h1>Projects</h1>
-    <p class="lede">Projects point to source, live demos, or write-ups.</p>
+    <h1>Demos</h1>
+    <p class="lede">Demos point to source, live demos, or write-ups.</p>
 
     {projects.length > 0 ? (
       <div class="grid">

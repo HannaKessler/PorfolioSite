@@ -33,6 +33,8 @@ const pageTitle = title
     <main id="main">
       <slot />
     </main>
-    <Footer />
+    <Footer>
+      {Astro.slots.has("footer") && <slot name="footer" />}
+    </Footer>
   </body>
 </html>

@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const { title, description, tags, image, demoUrl } = project.data;
+const { title, description, tags, image } = project.data;
 const searchText = [title, description, ...tags].join(" ");
 ---
 
@@ -17,11 +17,6 @@ const searchText = [title, description, ...tags].join(" ");
     </div>
   )}
   <div class="card-body">
-    {demoUrl && (
-      <div class="meta-row">
-        <span class="badge badge-software">Live demo</span>
-      </div>
-    )}
     <h3>{title}</h3>
     <p>{description}</p>
     {tags.length > 0 && (

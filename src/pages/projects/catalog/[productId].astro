@@ -1,0 +1,135 @@
+---
+import catalog from "../../../data/catalog.json";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import CatalogBar from "../../../components/CatalogBar.astro";
+import CatalogConsent from "../../../components/CatalogConsent.astro";
+import "../../../styles/catalog.css";
+import { carouselHtml } from "../../../scripts/catalog-html";
+import {
+  formatDate,
+  formatMoney,
+  formatRating,
+  onSale,
+  productById,
+  similarProducts,
+  stockClass,
+  type Product,
+} from "../../../scripts/catalog-data";
+
+export function getStaticPaths() {
+  return catalog.products.map((product) => ({
+    params: { productId: String(product.id) },
+    props: { productId: product.id },
+  }));
+}
+
+const product = productById(Astro.props.productId) as Product;
+const images = product.images?.length ? product.images : product.thumbnail ? [product.thumbnail] : [];
+const similar = similarProducts(product);
+const similarHtml = similar.length ? carouselHtml({ title: "Similar products", items: similar }, "") : "";
+const description = product.description.slice(0, 160);
+---
+
+<BaseLayout title={product.title} description={description}>
+  <section class="os" id="open-stock-item" aria-label="Searchable Shop product">
+    <CatalogBar />
+    <a class="os-back" href="/projects/catalog" data-back>Back to the shop</a>
+    <article class="os-item">
+      <div>
+        <div class="os-hero">
+          {
+            images[0] ? (
+              <img id="os-hero" src={images[0]} alt={product.title} />
+            ) : (
+              <span class="os-missing">No image</span>
+            )
+          }
+        </div>
+        {
+          images.length > 1 && (
+            <div class="os-thumbs">
+              {images.map((image, index) => (
+                <button type="button" class:list={[{ "is-on": index === 0 }]} data-image={image} aria-label={`Show image ${index + 1}`}>
+                  <img src={image} alt="" />
+                </button>
+              ))}
+            </div>
+          )
+        }
+      </div>
+      <div>
+        <p class="os-kicker">{product.brand || product.categoryName}</p>
+        <h1>{product.title}</h1>
+        <p class="os-meta">{product.categoryName} · {formatRating(product.rating)} stars</p>
+        <p class="os-buy">
+          <span class="os-price">{formatMoney(onSale(product) ? product.salePrice : product.price)}</span>
+          {onSale(product) && <span class="os-was">{formatMoney(product.price)}</span>}
+          {onSale(product) && <span class="os-meta">{product.discountPercentage}% off</span>}
+          <span class:list={["os-stock", stockClass(product.availabilityStatus)]}>{product.availabilityStatus}</span>
+        </p>
+        <p class="os-note">Sample catalog. Nothing here is for sale.</p>
+        <p>{product.description}</p>
+        {
+          product.tags?.length > 0 && (
+            <div class="os-tags">
+              {product.tags.map((tag) => <span>{tag}</span>)}
+            </div>
+          )
+        }
+        <dl class="os-facts">
+          <dt>SKU</dt>
+          <dd>{product.sku}</dd>
+          <dt>Stock</dt>
+          <dd>{product.stock}</dd>
+          <dt>Weight</dt>
+          <dd>{product.weight}</dd>
+          {
+            product.dimensions && (
+              <>
+                <dt>Dimensions</dt>
+                <dd>{product.dimensions.width} × {product.dimensions.height} × {product.dimensions.depth}</dd>
+              </>
+            )
+          }
+          <dt>Warranty</dt>
+          <dd>{product.warrantyInformation}</dd>
+          <dt>Shipping</dt>
+          <dd>{product.shippingInformation}</dd>
+          <dt>Returns</dt>
+          <dd>{product.returnPolicy}</dd>
+          <dt>Minimum order</dt>
+          <dd>{product.minimumOrderQuantity}</dd>
+          <dt>Barcode</dt>
+          <dd>{product.meta?.barcode}</dd>
+          <dt>Listed</dt>
+          <dd>{formatDate(product.meta?.createdAt)}</dd>
+          <dt>Updated</dt>
+          <dd>{formatDate(product.meta?.updatedAt)}</dd>
+        </dl>
+      </div>
+      {
+        product.reviews?.length > 0 && (
+          <section class="os-reviews" aria-label="Reviews">
+            <h2>Reviews</h2>
+            {product.reviews.map((review) => (
+              <article class="os-review">
+                <strong>{formatRating(review.rating)} stars · {review.reviewerName}</strong>
+                <p>{review.comment}</p>
+                <p class="os-meta">{review.reviewerEmail} · {formatDate(review.date)}</p>
+              </article>
+            ))}
+          </section>
+        )
+      }
+    </article>
+    {similarHtml && <div class="os-similar" set:html={similarHtml} />}
+    <CatalogConsent />
+  </section>
+</BaseLayout>
+
+<script>
+  import { mountItem } from "../../../scripts/catalog-item";
+
+  const root = document.getElementById("open-stock-item");
+  if (root) mountItem(root);
+</script>

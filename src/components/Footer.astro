@@ -9,4 +9,9 @@ const year = new Date().getFullYear();
     <p>© {year} {site.name}</p>
     <p>Code on GitHub · <a href="/status">Status</a></p>
   </div>
+  {Astro.slots.has("default") && (
+    <div class="footer-inner footer-credit">
+      <slot />
+    </div>
+  )}
 </footer>
