@@ -29,6 +29,12 @@ export function bindCarousels(root: HTMLElement) {
     true,
   );
 
+  let resizeFrame = 0;
+  window.addEventListener("resize", () => {
+    cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(() => syncScrollers(root));
+  });
+
   syncScrollers(root);
 }
 
@@ -41,6 +47,14 @@ function syncTrack(track: HTMLElement) {
   if (!row) return;
   const prev = row.querySelector<HTMLButtonElement>('[data-scroll="-1"]');
   const next = row.querySelector<HTMLButtonElement>('[data-scroll="1"]');
-  if (prev) prev.disabled = track.scrollLeft <= 2;
-  if (next) next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+  // Show a button only when that direction can actually scroll.
+  showButton(prev, track, track.scrollLeft > 2);
+  showButton(next, track, track.scrollLeft + track.clientWidth < track.scrollWidth - 2);
+}
+
+function showButton(button: HTMLButtonElement | null, track: HTMLElement, show: boolean) {
+  if (!button || button.hidden === !show) return;
+  // Keep keyboard focus in the row if the focused button is about to disappear.
+  if (!show && document.activeElement === button) track.focus({ preventScroll: true });
+  button.hidden = !show;
 }

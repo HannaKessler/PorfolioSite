@@ -1,3 +1,26 @@
+/* Shop and item pages fill the screen with even side margins instead of the
+   72rem site container: 1rem on phones and tablets, then from 1200px a margin
+   that grows from 3rem (1200px) to 6rem (1440px and wider). Header and footer match. */
+body:has(.os-wide) .header-inner,
+body:has(.os-wide) .footer-inner,
+.container.os-wide {
+  width: calc(100% - 2rem);
+}
+
+@media (min-width: 1200px) {
+  body:has(.os-wide) .header-inner,
+  body:has(.os-wide) .footer-inner,
+  .container.os-wide {
+    width: calc(100% - 2 * clamp(3rem, 20vw - 12rem, 6rem));
+  }
+}
+
+/* Intro description and write-up span the full content width. */
+.os-wide .os-intro .lede,
+.os-wide .demo-writeup .prose {
+  max-width: none;
+}
+
 .os-intro {
   margin: 0;
 }
@@ -14,21 +37,34 @@
 
 .os-frame + .demo-writeup {
   margin-top: 2rem;
+  padding-top: 2rem;
+}
+
+.os-frame + .demo-writeup .section {
+  margin-top: 0;
+}
+
+.os-frame + .demo-writeup .prose h2 {
+  margin-top: 2rem;
+}
+
+.os-frame + .demo-writeup .prose h2:first-child {
+  margin-top: 0;
 }
 
 .os {
   --os-card: 13.75rem;
   width: auto;
   margin: 0;
-  padding: 0.35rem 0 1rem;
+  padding: 0;
 }
 
 .os-bar {
   display: grid;
   grid-template-columns: auto 1fr auto;
-  gap: 0.85rem 1rem;
+  gap: 0.75rem 1rem;
   align-items: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .os-logo {
@@ -136,10 +172,11 @@
   text-decoration: underline;
   text-underline-offset: 0.18rem;
   padding: 0.2rem;
+  white-space: nowrap;
 }
 
 .os-row + .os-row {
-  margin-top: 1.6rem;
+  margin-top: 2rem;
 }
 
 .os-row-head,
@@ -148,7 +185,12 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 0.75rem;
-  margin-bottom: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+.os-results-head {
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
 }
 
 .os-row-head h2,
@@ -165,25 +207,41 @@
 }
 
 .os-scroller {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 0.4rem;
-  align-items: center;
+  position: relative;
 }
 
+/* Prev/next sit outside the track, in the page margin, centred on the photos.
+   The script hides each one when that direction can't scroll. */
 .os-scroll {
+  position: absolute;
+  z-index: 2;
+  top: calc(var(--os-card) / 2);
+  transform: translateY(-50%);
   width: 2.2rem;
   height: 2.2rem;
+  padding: 0;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: #fff;
+  box-shadow: 0 2px 8px rgb(26 24 22 / 12%);
   font-size: 1.4rem;
   line-height: 1;
 }
 
-.os-scroll:disabled {
-  opacity: 0.35;
-  cursor: default;
+.os-scroll[data-scroll="-1"] {
+  left: -2.7rem;
+}
+
+.os-scroll[data-scroll="1"] {
+  right: -2.7rem;
+}
+
+.os-scroll[hidden] {
+  display: none;
+}
+
+.os-scroll:hover {
+  border-color: #c8c4be;
 }
 
 .os-track {
@@ -192,7 +250,8 @@
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  padding-bottom: 0.2rem;
+  padding: 0.25rem 0.125rem;
+  margin: -0.25rem -0.125rem;
 }
 
 .os-track::-webkit-scrollbar {
@@ -205,17 +264,18 @@
   display: flex;
   flex-direction: column;
   text-decoration: none;
+  min-width: 0;
+  padding: 0.625rem;
   border: 1px solid var(--line);
   border-radius: 14px;
   background: #fff;
   overflow: hidden;
-  min-height: 100%;
 }
 
 .os-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--os-card), 1fr));
-  gap: 0.85rem;
+  gap: 1rem;
 }
 
 .os-grid .os-card {
@@ -231,6 +291,8 @@
   display: grid;
   place-items: center;
   background: var(--bg-muted);
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .os-photo img,
@@ -246,10 +308,47 @@
 }
 
 .os-card-body {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  padding: 0.75rem 0.8rem 0.9rem;
+  min-width: 0;
+  padding: 0.625rem 0 0.125rem;
+}
+
+/* Card text shares the photo's left and right edge (the card's inner padding). */
+.os-card-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0 0.5rem;
+}
+
+.os-card .os-price {
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.os-card .os-was {
+  line-height: 1.3;
+}
+
+.os-was.is-empty {
+  visibility: hidden;
+}
+
+.os-card .os-title {
+  margin-top: 0.25rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.os-card .os-meta {
+  margin-top: 0.125rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .os-brand,
@@ -268,8 +367,9 @@
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.4rem 0.55rem;
-  margin-top: 0.35rem;
+  gap: 0.25rem 0.5rem;
+  margin: auto 0 0;
+  padding-top: 0.25rem;
 }
 
 .os-price {
@@ -302,15 +402,16 @@
 .os-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  margin: 0.85rem 0 1rem;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem;
 }
 
 .os-chip {
   border: 1px solid var(--line);
   background: #fff;
   border-radius: 999px;
-  padding: 0.28rem 0.7rem;
+  padding: 0.3rem 0.75rem;
+  line-height: 1.3;
 }
 
 .os-chip.is-on {
@@ -373,7 +474,7 @@
 
 .os-back {
   display: inline-block;
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
   color: var(--muted);
   font-weight: 700;
   text-decoration: none;
@@ -386,8 +487,27 @@
 .os-item {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  gap: 1.5rem 2rem;
-  margin-top: 0.4rem;
+  gap: 2rem;
+  align-items: start;
+}
+
+.os-gallery,
+.os-details {
+  min-width: 0;
+}
+
+
+@media (min-width: 1200px) {
+  .os-item {
+    grid-template-columns: minmax(0, 36rem) minmax(0, 1fr);
+    gap: 2rem 3rem;
+  }
+}
+
+@media (min-width: 1600px) {
+  .os-item {
+    grid-template-columns: minmax(0, 40rem) minmax(0, 1fr);
+  }
 }
 
 .os-hero {
@@ -402,8 +522,9 @@
 
 .os-thumbs {
   display: flex;
-  gap: 0.45rem;
-  margin-top: 0.55rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
 }
 
 .os-thumbs button {
@@ -425,16 +546,35 @@
   object-fit: contain;
 }
 
+.os-details > * {
+  margin: 0;
+}
+
+.os-details > * + * {
+  margin-top: 0.75rem;
+}
+
+.os-details > .os-kicker + h1,
+.os-details > h1 + .os-meta {
+  margin-top: 0.25rem;
+}
+
 .os-item h1 {
-  margin: 0.15rem 0 0.45rem;
   font-size: clamp(1.8rem, 3vw, 2.4rem);
+}
+
+.os-details .os-buy {
+  padding-top: 0;
 }
 
 .os-facts {
   display: grid;
-  grid-template-columns: 11rem 1fr;
-  gap: 0.35rem 0.8rem;
-  margin: 1rem 0 0;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.5rem 1.5rem;
+}
+
+.os-details > .os-facts {
+  margin-top: 1.5rem;
 }
 
 .os-facts dt {
@@ -443,13 +583,13 @@
 
 .os-facts dd {
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .os-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
-  margin: 0.8rem 0 0;
+  gap: 0.5rem;
 }
 
 .os-tags span,
@@ -466,38 +606,136 @@
 
 .os-reviews {
   grid-column: 1 / -1;
-  display: grid;
-  gap: 0.7rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.os-reviews h2 {
+  flex: 1 0 100%;
+  margin: 0 0 0.25rem;
+}
+
+.os-reviews .os-review {
+  flex: 1 1 min(100%, 20rem);
 }
 
 .os-review {
-  padding: 0.8rem 0.9rem;
+  padding: 0.75rem 1rem;
 }
 
 .os-review p {
-  margin: 0.3rem 0 0;
+  margin: 0.25rem 0 0;
 }
 
 .os-similar {
   margin-top: 2rem;
 }
 
+/* Below 1200px the page margin is only 1rem, so the buttons tuck just inside
+   the row edges instead. Phones hide them and rely on swipe. */
+@media (max-width: 1199px) {
+  .os-scroll[data-scroll="-1"] {
+    left: 0.5rem;
+  }
+
+  .os-scroll[data-scroll="1"] {
+    right: 0.5rem;
+  }
+}
+
 @media (max-width: 800px) {
-  .os-bar,
-  .os-item,
-  .os-facts {
-    grid-template-columns: 1fr;
+  .os-scroll,
+  .os-scroll[hidden] {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .os-frame {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .os-frame + .demo-writeup {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .os-bar {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.5rem 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .os-logo {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .os-logo svg {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .os-search {
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .os-cookie-btn {
-    justify-self: start;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: end;
   }
 
-  .os-scroll {
-    display: none;
+  .os-item {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
   }
 
-  .os-scroller {
-    grid-template-columns: 1fr;
+  .os-hero {
+    max-width: 28rem;
+  }
+
+  .os-facts {
+    gap: 0.5rem 1rem;
+  }
+
+  .os-row + .os-row {
+    margin-top: 1.5rem;
+  }
+
+  .os-similar {
+    margin-top: 1.5rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .os {
+    --os-card: 11.5rem;
+  }
+
+  .os-logo svg {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .os-search input {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .os-search button[type="submit"] {
+    padding: 0.4rem 0.75rem;
+  }
+
+  .os-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .os-row-head h2,
+  .os-results-head h2 {
+    font-size: 1.2rem;
   }
 }

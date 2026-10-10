@@ -20,7 +20,7 @@ const isCatalog = project.id === "catalog";
 ---
 
 <BaseLayout title={title} description={description}>
-  <div class:list={["container", (isSecretNotes || isCatalog) && "demo-project"]}>
+  <div class:list={["container", (isSecretNotes || isCatalog) && "demo-project", isCatalog && "os-wide"]}>
     {isCatalog && (
       <>
         <header class="os-intro">

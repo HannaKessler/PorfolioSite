@@ -23,19 +23,22 @@ function httpsUrl(value: string) {
 
 export function cardHtml(product: Product, query: string) {
   const photo = httpsUrl(product.thumbnail || product.images?.[0] || "");
-  const price = onSale(product)
-    ? `<span class="os-price">${esc(formatMoney(product.salePrice))}</span><span class="os-was">${esc(formatMoney(product.price))}</span>`
-    : `<span class="os-price">${esc(formatMoney(product.price))}</span>`;
+  const sale = onSale(product);
+  const price = esc(formatMoney(sale ? product.salePrice : product.price));
+  // The old-price line is always rendered so titles line up across a row.
+  const was = sale
+    ? `<span class="os-was">${esc(formatMoney(product.price))}</span>`
+    : `<span class="os-was is-empty" aria-hidden="true">&nbsp;</span>`;
   const image = photo
     ? `<img src="${esc(photo)}" alt="" loading="lazy" />`
     : `<span class="os-missing">No image</span>`;
   return `<a class="os-card" href="${esc(productHref(product.id, query))}">
     <span class="os-photo">${image}</span>
     <span class="os-card-body">
-      <span class="os-brand">${esc(product.brand || product.categoryName)}</span>
-      <span class="os-title">${esc(product.title)}</span>
-      <span class="os-meta">${esc(product.categoryName)} · ${esc(formatRating(product.rating))} stars</span>
-      <span class="os-buy">${price}<span class="os-stock ${stockClass(product.availabilityStatus)}">${esc(product.availabilityStatus)}</span></span>
+      <span class="os-card-price"><span class="os-price">${price}</span><span class="os-stock ${stockClass(product.availabilityStatus)}">${esc(product.availabilityStatus)}</span></span>
+      ${was}
+      <span class="os-title" title="${esc(product.title)}">${esc(product.title)}</span>
+      <span class="os-meta">${esc(product.brand || product.categoryName)} · ${esc(formatRating(product.rating))} stars</span>
     </span>
   </a>`;
 }
@@ -51,7 +54,7 @@ export function carouselHtml(row: ShopRow, query: string) {
       ${forget}
     </div>
     <div class="os-scroller">
-      <button type="button" class="os-scroll" data-scroll="-1" aria-label="Previous products">‹</button>
+      <button type="button" class="os-scroll" data-scroll="-1" aria-label="Previous products" hidden>‹</button>
       <div class="os-track" tabindex="0">${cards}</div>
       <button type="button" class="os-scroll" data-scroll="1" aria-label="Next products">›</button>
     </div>
