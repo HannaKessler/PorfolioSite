@@ -1,5 +1,5 @@
 /**
- * CI budget check for the Film Graph seed: it ships to every visitor who runs
+ * CI budget check for the Film Data Query seed: it ships to every visitor who runs
  * the demo, so keep it bounded. Fails if the gzipped parts total more than
  * 8 MB, any part is over 3 MB gzipped, or the manifest and parts disagree.
  */
@@ -37,7 +37,7 @@ if (gzipped > BUDGET_GZIP_BYTES) problems.push(`gzipped total ${gzipped} bytes i
 
 const mb = (bytes: number) => `${(bytes / 1048576).toFixed(2)} MB`;
 console.log(
-  `Film Graph seed: ${rows.films} films, ${rows.people} people, ${rows.credits} credits in ${manifest.parts.length} parts; ` +
+  `Film Data Query seed: ${rows.films} films, ${rows.people} people, ${rows.credits} credits in ${manifest.parts.length} parts; ` +
     `${mb(raw)} raw, ${mb(gzipped)} gzip (budget ${mb(BUDGET_GZIP_BYTES)}).`,
 );
 if (problems.length) {

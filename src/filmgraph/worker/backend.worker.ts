@@ -166,7 +166,7 @@ async function boot(): Promise<Backend> {
     setTimeout(() => {
       db.dumpDataDir("gzip")
         .then((blob) => writeSnapshot(seedKey, blob))
-        .catch((error) => console.warn("Film Graph: could not save the database snapshot", error));
+        .catch((error) => console.warn("Film Data Query: could not save the database snapshot", error));
     }, 1500);
   }
   return backend;

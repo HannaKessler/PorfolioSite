@@ -1,5 +1,5 @@
 /**
- * Film Graph offline data pipeline.
+ * Film Data Query offline data pipeline.
  *
  * Pulls every reasonably notable film from the Wikidata SPARQL endpoint (data
  * is CC0) with its full cast, directors, writers, studios and genres, cleans it

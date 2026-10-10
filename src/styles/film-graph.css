@@ -1,4 +1,4 @@
-/* Film Graph explorer. Uses the site's colors, fonts and radius from global.css. */
+/* Film Data Query explorer. Uses the site's colors, fonts and radius from global.css. */
 .fg {
   --fg-mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Consolas, "Liberation Mono", monospace;
   --fg-gap: 1.25rem;

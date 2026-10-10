@@ -1,5 +1,5 @@
 """
-Film Graph: notable films, the people who made them, studios and genres.
+Film Data Query: notable films, the people who made them, studios and genres.
 Data from Wikidata (CC0). IDs are the numeric part of the Wikidata item ID.
 """
 type Query {

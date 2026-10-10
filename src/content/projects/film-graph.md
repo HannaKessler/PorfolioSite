@@ -1,5 +1,5 @@
 ---
-title: Film Graph
+title: Film Data Query
 description: GraphQL and REST side by side over a film database that runs entirely in your browser.
 pubDate: 2026-10-10
 featured: true
@@ -16,7 +16,7 @@ demoUrl: /projects/film-graph
 
 ## What it is
 
-Film Graph is an explorer that answers questions about films through two APIs at once, GraphQL and REST, and compares them as they run. It covers 23,638 films, 93,510 people and 367,146 credits from [Wikidata](https://www.wikidata.org/) (CC0), with full casts, directors, writers, studios and genres. The whole backend runs in the visitor's browser. Postgres, a GraphQL server and a REST API all run on the client, so the demo is a static page with no hosting cost, and each visitor gets a private copy of the database.
+Film Data Query is an explorer that answers questions about films through two APIs at once, GraphQL and REST, and compares them as they run. It covers 23,638 films, 93,510 people and 367,146 credits from [Wikidata](https://www.wikidata.org/) (CC0), with full casts, directors, writers, studios and genres. The whole backend runs in the visitor's browser. Postgres, a GraphQL server and a REST API all run on the client, so the demo is a static page with no hosting cost, and each visitor gets a private copy of the database.
 
 Questions read as sentences with blanks, such as "Every film ___ directed, with its cast" or "Shortest link between ___ and ___." Each blank is an accessible autocomplete that searches the database by name, filtered to the role the sentence needs (directors, actors or studios). Suggestions show a birth year and best-known film to tell namesakes apart. Pressing Run sends the question to both APIs and shows the answer as readable text: a film list with casts, credits by decade, a genre-by-decade table, or a chain of co-stars. Below the answer are the generated GraphQL query (editable, with schema-aware autocomplete), the raw responses, a side-by-side comparison, a request log with the SQL behind every call, and demos of N+1 batching and persisted queries. The page downloads nothing and runs nothing until the visitor presses Run or starts typing a name.
 

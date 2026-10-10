@@ -1,4 +1,4 @@
-name: Film Graph CI
+name: Film Data Query CI
 
 on:
   push:

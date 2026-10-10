@@ -1,5 +1,5 @@
 /**
- * Shape of the Film Graph seed in src/data/film-graph/: a manifest plus parts,
+ * Shape of the Film Data Query seed in src/data/film-graph/: a manifest plus parts,
  * each holding some of the tables. Rows are arrays to keep the files small.
  */
 export const SEED_VERSION = 2;

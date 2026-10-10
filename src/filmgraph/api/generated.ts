@@ -167,7 +167,7 @@ export type PersonEdge = {
 };
 
 /**
- * Film Graph: notable films, the people who made them, studios and genres.
+ * Film Data Query: notable films, the people who made them, studios and genres.
  * Data from Wikidata (CC0). IDs are the numeric part of the Wikidata item ID.
  */
 export type Query = {
@@ -196,7 +196,7 @@ export type Query = {
 
 
 /**
- * Film Graph: notable films, the people who made them, studios and genres.
+ * Film Data Query: notable films, the people who made them, studios and genres.
  * Data from Wikidata (CC0). IDs are the numeric part of the Wikidata item ID.
  */
 export type QueryActorPathArgs = {
@@ -207,7 +207,7 @@ export type QueryActorPathArgs = {
 
 
 /**
- * Film Graph: notable films, the people who made them, studios and genres.
+ * Film Data Query: notable films, the people who made them, studios and genres.
  * Data from Wikidata (CC0). IDs are the numeric part of the Wikidata item ID.
  */
 export type QueryFilmArgs = {
@@ -216,7 +216,7 @@ export type QueryFilmArgs = {
 
 
 /**
- * Film Graph: notable films, the people who made them, studios and genres.
+ * Film Data Query: notable films, the people who made them, studios and genres.
  * Data from Wikidata (CC0). IDs are the numeric part of the Wikidata item ID.
  */
 export type QueryFilmsArgs = {
@@ -228,7 +228,7 @@ export type QueryFilmsArgs = {
 
 
 /**
- * Film Graph: notable films, the people who made them, studios and genres.
+ * Film Data Query: notable films, the people who made them, studios and genres.
  * Data from Wikidata (CC0). IDs are the numeric part of the Wikidata item ID.
  */
 export type QueryGenreArgs = {
@@ -237,7 +237,7 @@ export type QueryGenreArgs = {
 
 
 /**
- * Film Graph: notable films, the people who made them, studios and genres.
+ * Film Data Query: notable films, the people who made them, studios and genres.
  * Data from Wikidata (CC0). IDs are the numeric part of the Wikidata item ID.
  */
 export type QueryPeopleArgs = {
@@ -249,7 +249,7 @@ export type QueryPeopleArgs = {
 
 
 /**
- * Film Graph: notable films, the people who made them, studios and genres.
+ * Film Data Query: notable films, the people who made them, studios and genres.
  * Data from Wikidata (CC0). IDs are the numeric part of the Wikidata item ID.
  */
 export type QueryPersonArgs = {
@@ -258,7 +258,7 @@ export type QueryPersonArgs = {
 
 
 /**
- * Film Graph: notable films, the people who made them, studios and genres.
+ * Film Data Query: notable films, the people who made them, studios and genres.
  * Data from Wikidata (CC0). IDs are the numeric part of the Wikidata item ID.
  */
 export type QuerySharedFilmsArgs = {
@@ -269,7 +269,7 @@ export type QuerySharedFilmsArgs = {
 
 
 /**
- * Film Graph: notable films, the people who made them, studios and genres.
+ * Film Data Query: notable films, the people who made them, studios and genres.
  * Data from Wikidata (CC0). IDs are the numeric part of the Wikidata item ID.
  */
 export type QueryStudioArgs = {
@@ -278,7 +278,7 @@ export type QueryStudioArgs = {
 
 
 /**
- * Film Graph: notable films, the people who made them, studios and genres.
+ * Film Data Query: notable films, the people who made them, studios and genres.
  * Data from Wikidata (CC0). IDs are the numeric part of the Wikidata item ID.
  */
 export type QueryStudiosArgs = {

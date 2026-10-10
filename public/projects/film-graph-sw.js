@@ -1,5 +1,5 @@
 /*
- * Film Graph service worker.
+ * Film Data Query service worker.
  *
  * Scope is /projects/film-graph, and it only answers requests under
  * /projects/film-graph/api/. Every other request (including the rest of the
@@ -31,7 +31,7 @@ function errorResponse(status, code, message) {
 async function forward(event) {
   const client = event.clientId ? await self.clients.get(event.clientId) : null;
   if (!client) {
-    return errorResponse(503, "NO_CLIENT", "The Film Graph API runs inside the demo page. Open the page to use it.");
+    return errorResponse(503, "NO_CLIENT", "The Film Data Query API runs inside the demo page. Open the page to use it.");
   }
   const request = event.request;
   const body = request.method === "GET" || request.method === "HEAD" ? null : await request.arrayBuffer();

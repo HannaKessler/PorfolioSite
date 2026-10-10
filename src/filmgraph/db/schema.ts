@@ -1,5 +1,5 @@
 /**
- * Postgres schema for Film Graph. Runs in PGlite in the browser and in Node tests.
+ * Postgres schema for Film Data Query. Runs in PGlite in the browser and in Node tests.
  * Bump SCHEMA_VERSION whenever this changes, so saved browser snapshots are rebuilt.
  */
 export const SCHEMA_VERSION = 3;

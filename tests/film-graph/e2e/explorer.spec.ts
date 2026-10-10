@@ -219,7 +219,7 @@ test("the rest of the site is unaffected and never loads Postgres", async ({ pag
     if (BACKEND.test(request.url()) || /QueryEditor/.test(request.url())) heavy.push(request.url());
   });
   await page.goto("/");
-  await expect(page.getByRole("link", { name: /Film Graph/ }).first()).toBeAttached();
+  await expect(page.getByRole("link", { name: /Film Data Query/ }).first()).toBeAttached();
   await page.goto("/projects/catalog/");
   await expect(page.locator("#open-stock")).toBeVisible();
   expect(await page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(false);
