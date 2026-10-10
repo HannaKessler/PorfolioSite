@@ -54,7 +54,7 @@ export function ComparisonStrip({ graphql, rest, restError, running }: Props) {
         <h2 id="fg-compare-title">GraphQL vs REST</h2>
         <p>Measured in your browser for the last run. Run the same preset again to see ETag revalidation kick in.</p>
       </div>
-      <div className="fg-table-wrap" tabIndex={0} role="region" aria-labelledby="fg-compare-title">
+      <div className="fg-table-wrap" tabIndex={0} role="region" aria-label="Comparison table, scrollable">
         <table className="fg-table">
           <thead>
             <tr>

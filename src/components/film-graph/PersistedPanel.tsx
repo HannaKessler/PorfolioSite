@@ -47,9 +47,6 @@ export function PersistedPanel({ stats, onProbe, disabled }: Props) {
                   : "–"}
               </dd>
             </div>
-            {!stats.persisted && !stats.probe && (
-              <p className="fg-stats-wide fg-hint">Turn on Send persisted query hash and run GraphQL to compare.</p>
-            )}
             {stats.error && (
               <div className="fg-stats-wide">
                 <dt>Server said</dt>
@@ -57,6 +54,9 @@ export function PersistedPanel({ stats, onProbe, disabled }: Props) {
               </div>
             )}
           </dl>
+        )}
+        {stats && !stats.persisted && !stats.probe && (
+          <p className="fg-hint">Turn on Send persisted query hash and run GraphQL to compare.</p>
         )}
       </div>
     </section>
