@@ -1,0 +1,66 @@
+/* Full-width demo pages (the Searchable Shop and Film Graph) fill the screen
+   with even side margins instead of the 72rem site container: 1rem on phones
+   and tablets, then from 1200px a margin that grows from 3rem (1200px) to 6rem
+   (1440px and wider). Header and footer match. */
+body:has(.os-wide) .header-inner,
+body:has(.os-wide) .footer-inner,
+.container.os-wide {
+  width: calc(100% - 2rem);
+}
+
+@media (min-width: 1200px) {
+  body:has(.os-wide) .header-inner,
+  body:has(.os-wide) .footer-inner,
+  .container.os-wide {
+    width: calc(100% - 2 * clamp(3rem, 20vw - 12rem, 6rem));
+  }
+}
+
+/* Intro description and write-up span the full content width. */
+.os-wide .os-intro .lede,
+.os-wide .demo-writeup .prose {
+  max-width: none;
+}
+
+.os-intro {
+  margin: 0;
+}
+
+.os-intro .lede {
+  margin-bottom: 0.85rem;
+}
+
+.os-frame {
+  margin: 2rem 0 0;
+  padding: 2rem 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.os-frame + .demo-writeup {
+  margin-top: 2rem;
+  padding-top: 2rem;
+}
+
+.os-frame + .demo-writeup .section {
+  margin-top: 0;
+}
+
+.os-frame + .demo-writeup .prose h2 {
+  margin-top: 2rem;
+}
+
+.os-frame + .demo-writeup .prose h2:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 720px) {
+  .os-frame {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .os-frame + .demo-writeup {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+}

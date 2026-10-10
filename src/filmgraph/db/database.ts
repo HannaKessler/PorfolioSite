@@ -13,7 +13,23 @@ export interface SqlEvent {
   sql: string;
   params: unknown[];
   rows: number;
+  /** Time from sending the query to getting rows, including any wait in PGlite's queue. */
   ms: number;
+  /** performance.now() when the query was sent. */
+  at: number;
+}
+
+/** Wall-clock time the database was busy, merging overlapping queries. */
+export function busyMs(events: SqlEvent[]): number {
+  const spans = events.map((event) => [event.at, event.at + event.ms]).sort((a, b) => a[0] - b[0]);
+  let total = 0;
+  let end = -Infinity;
+  for (const [start, stop] of spans) {
+    if (stop <= end) continue;
+    total += stop - Math.max(start, end);
+    end = stop;
+  }
+  return total;
 }
 
 /**
@@ -38,6 +54,7 @@ export class Db {
       params,
       rows: result.rows.length,
       ms: performance.now() - start,
+      at: start,
     });
     return result.rows;
   }
