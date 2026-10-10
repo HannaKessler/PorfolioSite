@@ -42,7 +42,7 @@ The REST API has 13 routes: `/films`, `/films/:id`, `/films/:id/credits`, `/peop
 
 ## Performance
 
-**Batching.** Every GraphQL request gets fresh DataLoaders for films, people, studios, genres and credits, so lookups made in the same tick become one `WHERE id = ANY($1)` query. The N+1 panel asks for Pulp Fiction's cast and every cast member's films, first with batching turned off through a request header and then on. In my runs, batching off took 156 SQL queries and 85 ms, and batching on took 5 queries and 21 ms.
+**Batching.** Every GraphQL request gets fresh DataLoaders for films, people, studios, genres and credits, so lookups made in the same tick become one `WHERE id = ANY($1)` query. The N+1 panel asks for Pulp Fiction's cast and every cast member's films, first with batching turned off through a request header and then on. In my runs, batching off took 156 SQL queries (85 to 360 ms) and batching on took 5 queries (11 to 21 ms). The response was identical both ways.
 
 **Persisted queries.** The preset queries ship with the backend as an allowlist, keyed by their SHA-256 hashes, through Yoga's persisted operations plugin. With the toggle on, the page sends only the hash and the variables. For the director preset, that cut the request body from 372 bytes to 154 bytes, saving 218 bytes (59%). A second toggle switches the server to allowlist mode, where any query that isn't registered is rejected. The panel has a button to try one.
 
