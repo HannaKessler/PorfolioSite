@@ -3,6 +3,7 @@
  * call these functions, so the two APIs read the same rows with the same SQL.
  */
 import type { Db } from "./database";
+import { FOLD_FROM, FOLD_TO } from "./schema";
 
 export type Role = "actor" | "director" | "writer";
 export type FilmOrder = "popularity" | "year" | "title";
@@ -278,42 +279,101 @@ export async function countFilms(db: Db, filter: FilmFilter): Promise<number> {
   return row?.count ?? 0;
 }
 
-/** Name search over people or studios, ordered by name with a keyset cursor. */
-export async function searchNamed<T extends "person" | "studio">(
+/** Lowercases and strips accents the same way the search_name columns do. */
+export function foldName(text: string): string {
+  const folded = text.toLowerCase().normalize("NFKC");
+  let out = "";
+  for (const char of folded) {
+    const index = FOLD_FROM.indexOf(char);
+    out += index >= 0 ? FOLD_TO[index] : char;
+  }
+  return out;
+}
+
+export interface NameSearchOptions {
+  /** People only: keep people with at least one credit in this role, and rank by it. */
+  role?: Role | null;
+  first?: number | null;
+  after?: string | null;
+}
+
+/**
+ * Ranked name search for autocomplete. Every typed word must prefix-match a
+ * word of the name (full-text index on the accent-folded name). Results rank
+ * an exact name first, then names that start with the typed text, then by
+ * notability: the summed popularity of the person's films in the role, or of
+ * the studio's films. Cursors are opaque offsets into that ranking.
+ */
+export async function searchNames<T extends "person" | "studio">(
   db: Db,
   table: T,
   search: string,
-  options: { first?: number | null; after?: string | null } = {},
+  options: NameSearchOptions = {},
 ): Promise<Page<T extends "person" ? PersonRow : NamedRow>> {
   const size = checkPageSize(options.first, 10);
-  const query = toPrefixQuery(search);
+  const folded = foldName(search);
+  const query = toPrefixQuery(folded);
   if (!query) throw new ApiError("BAD_USER_INPUT", "Search needs at least one letter or number.");
-  const params: unknown[] = [query];
-  let after = "";
-  if (options.after) {
-    const [name, id] = decodeCursor(options.after, ["string", "number"]);
-    params.push(name, id);
-    after = `AND (t.name, t.id) > ($2::text, $3)`;
-  }
-  params.push(size + 1);
-  const columns =
+  const offset = options.after ? Number(decodeCursor(options.after, ["number"])[0]) : 0;
+  const phrase = folded.split(/[^\p{L}\p{N}]+/u).filter(Boolean).join(" ");
+  const like = phrase.replace(/[\\%_]/g, (char) => `\\${char}`) + "%";
+  const rows =
     table === "person"
-      ? `t.id, t.name, t.birth_year AS "birthYear", t.wikidata_id AS "wikidataId"`
-      : `t.id, t.name, t.wikidata_id AS "wikidataId"`;
-  const rows = await db.many<PersonRow & NamedRow>(
-    `SELECT ${columns} FROM ${table} t
-     WHERE to_tsvector('simple', t.name) @@ to_tsquery('simple', $1) ${after}
-     ORDER BY t.name, t.id LIMIT $${params.length}`,
-    params,
-  );
+      ? await db.many<PersonRow>(
+          `SELECT t.id, t.name, t.birth_year AS "birthYear", t.wikidata_id AS "wikidataId"
+           FROM person t
+           JOIN person_score s ON s.person_id = t.id AND s.role IS NOT DISTINCT FROM $2::credit_role
+           WHERE to_tsvector('simple', t.search_name) @@ to_tsquery('simple', $1)
+           ORDER BY (t.search_name = $3) DESC, (t.search_name LIKE $4) DESC, s.score DESC, t.id
+           OFFSET $5 LIMIT $6`,
+          [query, options.role ?? null, phrase, like, offset, size + 1],
+        )
+      : await db.many<NamedRow>(
+          `SELECT t.id, t.name, t.wikidata_id AS "wikidataId"
+           FROM studio t
+           WHERE to_tsvector('simple', t.search_name) @@ to_tsquery('simple', $1)
+           ORDER BY (t.search_name = $2) DESC, (t.search_name LIKE $3) DESC, t.score DESC, t.id
+           OFFSET $4 LIMIT $5`,
+          [query, phrase, like, offset, size + 1],
+        );
   const page = rows.slice(0, size);
-  const cursors = page.map((row) => encodeCursor([row.name, row.id]));
+  const cursors = page.map((_, index) => encodeCursor([offset + index + 1]));
   return {
     rows: page as never,
     hasNextPage: rows.length > size,
     endCursor: cursors.at(-1) ?? null,
     cursors,
   };
+}
+
+/** Each person's most notable film (optionally in one role), for disambiguation. */
+export function knownForByPersonIds(db: Db, ids: readonly number[], role: Role | null) {
+  return db.many<{ id: number; filmId: number }>(
+    `SELECT DISTINCT ON (c.person_id) c.person_id AS id, c.film_id AS "filmId"
+     FROM credit c JOIN film f ON f.id = c.film_id
+     WHERE c.person_id = ANY($1::int[]) AND ($2::credit_role IS NULL OR c.role = $2::credit_role)
+     ORDER BY c.person_id, f.popularity DESC, f.id`,
+    [ids, role],
+  );
+}
+
+/** Each studio's most notable film. */
+export function knownForByStudioIds(db: Db, ids: readonly number[]) {
+  return db.many<{ id: number; filmId: number }>(
+    `SELECT DISTINCT ON (fs.studio_id) fs.studio_id AS id, fs.film_id AS "filmId"
+     FROM film_studio fs JOIN film f ON f.id = fs.film_id
+     WHERE fs.studio_id = ANY($1::int[])
+     ORDER BY fs.studio_id, f.popularity DESC, f.id`,
+    [ids],
+  );
+}
+
+/** Film counts for several studios in one query. */
+export function filmCountsByStudioIds(db: Db, ids: readonly number[]) {
+  return db.many<{ id: number; count: number }>(
+    `SELECT studio_id AS id, count(*)::int AS count FROM film_studio WHERE studio_id = ANY($1::int[]) GROUP BY studio_id`,
+    [ids],
+  );
 }
 
 export function allGenres(db: Db) {

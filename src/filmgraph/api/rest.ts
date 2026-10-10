@@ -19,7 +19,10 @@ import {
   groupBy,
   listFilms,
   peopleByIds,
-  searchNamed,
+  filmCountsByStudioIds,
+  knownForByPersonIds,
+  knownForByStudioIds,
+  searchNames,
   studioFilmCount,
   studiosByFilmIds,
   studiosByIds,
@@ -108,6 +111,18 @@ export function createRest(basePath: string) {
     return row;
   }
 
+  /** Short film references keyed by the owner id, for "known for" details. */
+  async function filmRefs(db: Db, pairs: { id: number; filmId: number }[]) {
+    const films = pairs.length ? await filmsByIds(db, [...new Set(pairs.map((pair) => pair.filmId))]) : [];
+    const byFilm = new Map(films.map((film) => [film.id, film]));
+    return new Map(
+      pairs.map((pair) => {
+        const film = byFilm.get(pair.filmId)!;
+        return [pair.id, { id: film.id, title: film.title, year: film.year, href: ref("films", film.id) }];
+      }),
+    );
+  }
+
   const routes: [RegExp, Handler][] = [
     [/^\/films$/, (db, _, query) => filmList(db, filterParams(query), query, "popularity")],
     [
@@ -144,9 +159,17 @@ export function createRest(basePath: string) {
         const search = query.get("search");
         if (!search) throw new ApiError("BAD_USER_INPUT", "search is required.");
         const limit = intParam(query, "limit") ?? 10;
-        const page = await searchNamed(db, "person", search, { first: limit, after: query.get("cursor") });
+        const wanted = roleParam(query);
+        const page = await searchNames(db, "person", search, { role: wanted, first: limit, after: query.get("cursor") });
+        const ids = page.rows.map((person) => person.id);
+        const knownFor = ids.length ? await knownForByPersonIds(db, ids, wanted) : [];
+        const films = await filmRefs(db, knownFor);
         return {
-          data: page.rows.map((person) => ({ ...person, links: { self: ref("people", person.id) } })),
+          data: page.rows.map((person) => ({
+            ...person,
+            knownFor: films.get(person.id) ?? null,
+            links: { self: ref("people", person.id) },
+          })),
           page: { limit, nextCursor: page.hasNextPage ? page.endCursor : null },
         };
       },
@@ -191,9 +214,20 @@ export function createRest(basePath: string) {
         const search = query.get("search");
         if (!search) throw new ApiError("BAD_USER_INPUT", "search is required.");
         const limit = intParam(query, "limit") ?? 10;
-        const page = await searchNamed(db, "studio", search, { first: limit, after: query.get("cursor") });
+        const page = await searchNames(db, "studio", search, { first: limit, after: query.get("cursor") });
+        const ids = page.rows.map((studio) => studio.id);
+        const [counts, knownFor] = ids.length
+          ? await Promise.all([filmCountsByStudioIds(db, ids), knownForByStudioIds(db, ids)])
+          : [[], []];
+        const countOf = new Map(counts.map((row) => [row.id, row.count]));
+        const films = await filmRefs(db, knownFor);
         return {
-          data: page.rows.map((studio) => ({ ...studio, links: { self: ref("studios", studio.id) } })),
+          data: page.rows.map((studio) => ({
+            ...studio,
+            filmCount: countOf.get(studio.id) ?? 0,
+            knownFor: films.get(studio.id) ?? null,
+            links: { self: ref("studios", studio.id), films: `${ref("studios", studio.id)}/films` },
+          })),
           page: { limit, nextCursor: page.hasNextPage ? page.endCursor : null },
         };
       },

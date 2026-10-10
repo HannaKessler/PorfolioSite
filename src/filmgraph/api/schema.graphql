@@ -8,9 +8,14 @@ type Query {
   "Films, most notable first unless orderBy says otherwise. Cursor paginated."
   films(filter: FilmFilter, orderBy: FilmOrder = POPULARITY, first: Int = 20, after: String): FilmConnection!
   person(id: ID!): Person
-  "People whose name matches the search (prefix match on each word)."
-  people(search: String!, first: Int = 10, after: String): PersonConnection!
+  """
+  Name search for autocomplete. Every word must prefix-match the name, ignoring
+  case and accents. An exact name ranks first, then names starting with the text,
+  then the most notable. With role, only people with credits in that role.
+  """
+  people(search: String!, role: Role, first: Int = 10, after: String): PersonConnection!
   studio(id: ID!): Studio
+  "Studio name search, ranked like people."
   studios(search: String!, first: Int = 10, after: String): StudioConnection!
   genre(id: ID!): Genre
   genres: [Genre!]!
@@ -29,8 +34,8 @@ type Film {
   country: String
   description: String
   wikidataId: String!
-  "Credits in billing order. Filter by role to get just the cast or crew."
-  credits(role: Role): [Credit!]!
+  "Credits in billing order. Filter by role to get just the cast or crew, or by person for one person's credits."
+  credits(role: Role, person: ID): [Credit!]!
   directors: [Person!]!
   genres: [Genre!]!
   studios: [Studio!]!
@@ -41,6 +46,8 @@ type Person {
   name: String!
   birthYear: Int
   wikidataId: String!
+  "The person's most notable film, optionally in one role. Handy for telling namesakes apart."
+  knownFor(role: Role): Film
   "Every credit, oldest film first."
   credits(role: Role): [Credit!]!
   "Credits grouped by the decade the film came out."
@@ -67,6 +74,8 @@ type Studio {
   name: String!
   wikidataId: String!
   filmCount: Int!
+  "The studio's most notable film."
+  knownFor: Film
   films(filter: FilmFilter, orderBy: FilmOrder = YEAR, first: Int = 20, after: String): FilmConnection!
   "Number of the studio's films in each genre, per decade."
   genreBreakdown: [GenreDecadeCount!]!

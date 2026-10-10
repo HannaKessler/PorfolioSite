@@ -4,13 +4,17 @@ import {
   byId,
   creditsByFilmIds,
   creditsByPersonIds,
+  filmCountsByStudioIds,
   filmsByIds,
   genresByFilmIds,
   genresByIds,
   groupBy,
+  knownForByPersonIds,
+  knownForByStudioIds,
   peopleByIds,
   studiosByFilmIds,
   studiosByIds,
+  type Role,
 } from "../db/access";
 
 /**
@@ -23,7 +27,22 @@ export function createLoaders(db: Db, batching: boolean) {
   const options = { batch: batching, cache: batching };
   const make = <V>(fn: (keys: readonly number[]) => Promise<V[]>) => new DataLoader<number, V>(fn, options);
 
+  const knownFor = new Map<Role | null, DataLoader<number, number | null>>();
+  const filmIdOf = (ids: readonly number[], rows: { id: number; filmId: number }[]) =>
+    byId(ids, rows).map((row) => row?.filmId ?? null);
+
   return {
+    /** The person's most notable film id in a role (or overall), one loader per role. */
+    knownFor(role: Role | null) {
+      let loader = knownFor.get(role);
+      if (!loader) {
+        loader = make(async (ids) => filmIdOf(ids, await knownForByPersonIds(db, ids, role)));
+        knownFor.set(role, loader);
+      }
+      return loader;
+    },
+    studioKnownFor: make(async (ids) => filmIdOf(ids, await knownForByStudioIds(db, ids))),
+    studioFilmCount: make(async (ids) => byId(ids, await filmCountsByStudioIds(db, ids)).map((row) => row?.count ?? 0)),
     film: make(async (ids) => byId(ids, await filmsByIds(db, ids))),
     person: make(async (ids) => byId(ids, await peopleByIds(db, ids))),
     studio: make(async (ids) => byId(ids, await studiosByIds(db, ids))),

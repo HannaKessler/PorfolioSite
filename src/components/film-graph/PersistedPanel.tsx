@@ -21,8 +21,8 @@ export function PersistedPanel({ stats, onProbe, disabled }: Props) {
     <section className="fg-card" aria-labelledby="fg-pq-title">
       <h2 id="fg-pq-title">Persisted queries</h2>
       <p>
-        The preset queries are registered with the server when the site is built. With <em>Send persisted query hash</em>{" "}
-        on, the page sends a SHA-256 hash and the variables instead of the query text. With <em>Reject non-persisted
+        Every question's query ships with the server as an allowlist, keyed by its SHA-256 hash. With <em>Send persisted query hash</em>{" "}
+        on, the page sends only the hash and the variables instead of the query text. With <em>Reject non-persisted
         queries</em> on, the server only runs queries on that list.
       </p>
       <button type="button" className="button button-ghost button-small" onClick={onProbe} disabled={disabled}>

@@ -1,6 +1,6 @@
-import type { Seed } from "../seed-format";
+import type { Seed, SeedPart } from "../seed-format";
 import { ROLE_NAMES } from "../seed-format";
-import { SCHEMA_SQL } from "./schema";
+import { INDEX_SQL, SCHEMA_SQL } from "./schema";
 
 /** The small slice of the PGlite API the app uses, so Node tests and the browser share code. */
 export interface PgLike {
@@ -74,64 +74,78 @@ export async function isSeeded(pg: PgLike, version: string): Promise<boolean> {
   return row.rows[0]?.value === version;
 }
 
-/** Drops everything and loads the seed with one set-based INSERT per table. */
-export async function loadSeed(
-  pg: PgLike,
-  seed: Seed,
-  version: string,
-  onProgress?: (step: string) => void,
-): Promise<void> {
+/** Drops everything and creates empty tables, ready for seed parts. */
+export async function beginSeed(pg: PgLike): Promise<void> {
   await pg.exec(`DROP SCHEMA public CASCADE; CREATE SCHEMA public;`);
   await pg.exec(SCHEMA_SQL);
+}
 
-  const insert = async (label: string, sql: string, rows: unknown[]) => {
-    onProgress?.(label);
+/**
+ * Loads whichever tables a seed part holds, one set-based INSERT per table
+ * (the rows travel as a single JSON parameter). Parts must arrive in
+ * dependency order: films and lookups, then people, then credits.
+ */
+export async function loadSeedPart(pg: PgLike, part: SeedPart, onProgress?: (step: string) => void): Promise<void> {
+  const insert = async (label: string, sql: string, rows: unknown[] | undefined) => {
+    if (!rows?.length) return;
+    onProgress?.(`${label} (${rows.length.toLocaleString("en-US")})`);
     await pg.query(sql, [JSON.stringify(rows)]);
   };
-
   await insert(
-    `films (${seed.films.length})`,
+    "films",
     `INSERT INTO film (id, title, year, runtime, country, description, popularity)
      SELECT (r->>0)::int, r->>1, (r->>2)::smallint, (r->>3)::smallint, r->>4, r->>5, (r->>6)::int
      FROM json_array_elements($1::json) AS r`,
-    seed.films,
+    part.films,
   );
   await insert(
-    `people (${seed.people.length})`,
-    `INSERT INTO person (id, name, birth_year)
-     SELECT (r->>0)::int, r->>1, (r->>2)::smallint FROM json_array_elements($1::json) AS r`,
-    seed.people,
-  );
-  await insert(
-    `credits (${seed.credits.length})`,
-    `INSERT INTO credit (film_id, person_id, role, character, billing_order)
-     SELECT (r->>0)::int, (r->>1)::int, (r->>2)::credit_role, r->>3, (r->>4)::smallint
-     FROM json_array_elements($1::json) AS r`,
-    seed.credits.map(([film, person, role, character, order]) => [film, person, ROLE_NAMES[role], character, order]),
-  );
-  await insert(
-    `studios (${seed.studios.length})`,
+    "studios",
     `INSERT INTO studio (id, name) SELECT (r->>0)::int, r->>1 FROM json_array_elements($1::json) AS r`,
-    seed.studios,
+    part.studios,
   );
   await insert(
     "studio links",
     `INSERT INTO film_studio (film_id, studio_id)
      SELECT (r->>0)::int, (r->>1)::int FROM json_array_elements($1::json) AS r`,
-    seed.filmStudios,
+    part.filmStudios,
   );
   await insert(
-    `genres (${seed.genres.length})`,
+    "genres",
     `INSERT INTO genre (id, name) SELECT (r->>0)::int, r->>1 FROM json_array_elements($1::json) AS r`,
-    seed.genres,
+    part.genres,
   );
   await insert(
     "genre links",
     `INSERT INTO film_genre (film_id, genre_id)
      SELECT (r->>0)::int, (r->>1)::int FROM json_array_elements($1::json) AS r`,
-    seed.filmGenres,
+    part.filmGenres,
   );
+  await insert(
+    "people",
+    `INSERT INTO person (id, name, birth_year)
+     SELECT (r->>0)::int, r->>1, (r->>2)::smallint FROM json_array_elements($1::json) AS r`,
+    part.people,
+  );
+  await insert(
+    "credits",
+    `INSERT INTO credit (film_id, person_id, role, character, billing_order)
+     SELECT (r->>0)::int, (r->>1)::int, (r->>2)::credit_role, r->>3, (r->>4)::smallint
+     FROM json_array_elements($1::json) AS r`,
+    part.credits?.map(([film, person, role, character, order]) => [film, person, ROLE_NAMES[role], character, order]),
+  );
+}
+
+/** Builds the secondary indexes, refreshes statistics and records the seed version. */
+export async function finishSeed(pg: PgLike, version: string, onProgress?: (step: string) => void): Promise<void> {
   onProgress?.("indexes and statistics");
+  await pg.exec(INDEX_SQL);
   await pg.exec("ANALYZE;");
   await pg.query("INSERT INTO meta (key, value) VALUES ('seed', $1)", [version]);
+}
+
+/** Loads a whole seed held in memory (tests, scripts). */
+export async function loadSeed(pg: PgLike, seed: Seed, version: string, onProgress?: (step: string) => void): Promise<void> {
+  await beginSeed(pg);
+  await loadSeedPart(pg, seed, onProgress);
+  await finishSeed(pg, version, onProgress);
 }

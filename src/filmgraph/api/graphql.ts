@@ -10,9 +10,8 @@ import {
   allGenres,
   countFilms,
   listFilms,
-  searchNamed,
+  searchNames,
   sharedFilms,
-  studioFilmCount,
   studioGenreBreakdown,
   type CreditRow,
   type FilmFilter,
@@ -60,9 +59,10 @@ export const resolvers: Resolvers<GraphQLContext> = {
       return { page: await listFilms(db, parsed, { first, after, orderBy: order(orderBy) }), filter: parsed };
     },
     person: (_, { id }, { loaders }) => loaders.person.load(parseId(id)),
-    people: (_, { search, first, after }, { db }) => searchNamed(db, "person", search, { first, after }),
+    people: (_, { search, role: wanted, first, after }, { db }) =>
+      searchNames(db, "person", search, { role: role(wanted), first, after }),
     studio: (_, { id }, { loaders }) => loaders.studio.load(parseId(id)),
-    studios: (_, { search, first, after }, { db }) => searchNamed(db, "studio", search, { first, after }),
+    studios: (_, { search, first, after }, { db }) => searchNames(db, "studio", search, { first, after }),
     genre: (_, { id }, { loaders }) => loaders.genre.load(parseId(id)),
     genres: (_, __, { db }) => allGenres(db),
     sharedFilms: (_, { personA, personB, role: wanted }, { db }) =>
@@ -73,7 +73,11 @@ export const resolvers: Resolvers<GraphQLContext> = {
     },
   },
   Film: {
-    credits: async (film, { role: wanted }, { loaders }) => byRole(await loaders.creditsByFilm.load(film.id), wanted),
+    credits: async (film, { role: wanted, person }, { loaders }) => {
+      const credits = byRole(await loaders.creditsByFilm.load(film.id), wanted);
+      const personId = optionalId(person, "person");
+      return personId === null ? credits : credits.filter((credit) => credit.personId === personId);
+    },
     directors: async (film, _, { loaders }) => {
       const credits = byRole(await loaders.creditsByFilm.load(film.id), "DIRECTOR");
       const people = await loaders.person.loadMany(credits.map((credit) => credit.personId));
@@ -83,6 +87,10 @@ export const resolvers: Resolvers<GraphQLContext> = {
     studios: (film, _, { loaders }) => loaders.studiosByFilm.load(film.id),
   },
   Person: {
+    knownFor: async (person, { role: wanted }, { loaders }) => {
+      const filmId = await loaders.knownFor(role(wanted)).load(person.id);
+      return filmId === null ? null : loaders.film.load(filmId);
+    },
     credits: async (person, { role: wanted }, { loaders }) =>
       byRole(await loaders.creditsByPerson.load(person.id), wanted),
     creditsByDecade: async (person, { role: wanted }, { loaders }) => {
@@ -103,7 +111,11 @@ export const resolvers: Resolvers<GraphQLContext> = {
     person: async (credit, _, { loaders }) => must(await loaders.person.load(credit.personId), "Person"),
   },
   Studio: {
-    filmCount: (studio, _, { db }) => studioFilmCount(db, studio.id),
+    filmCount: (studio, _, { loaders }) => loaders.studioFilmCount.load(studio.id),
+    knownFor: async (studio, _, { loaders }) => {
+      const filmId = await loaders.studioKnownFor.load(studio.id);
+      return filmId === null ? null : loaders.film.load(filmId);
+    },
     films: async (studio, { filter, orderBy, first, after }, { db }) => {
       const parsed = { ...filterOf(filter), studioId: studio.id };
       return { page: await listFilms(db, parsed, { first, after, orderBy: order(orderBy) }), filter: parsed };

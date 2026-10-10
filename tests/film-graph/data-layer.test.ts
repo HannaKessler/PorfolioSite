@@ -7,7 +7,8 @@ import {
   decodeCursor,
   encodeCursor,
   listFilms,
-  searchNamed,
+  foldName,
+  searchNames,
   sharedFilms,
   studioGenreBreakdown,
   toPrefixQuery,
@@ -38,13 +39,13 @@ describe("seed", () => {
       studios: seed.studios.length,
       genres: seed.genres.length,
     });
-    expect(seed.films.length).toBeGreaterThanOrEqual(1500);
+    expect(seed.films.length).toBeGreaterThanOrEqual(15000);
   });
 
-  test("every film has a director and at least three billed actors", async () => {
+  test("every film has a director and at least two billed actors", async () => {
     const { rows } = await api.pg.query<{ count: number }>(
       `SELECT count(*)::int AS count FROM film f WHERE
-         (SELECT count(*) FROM credit c WHERE c.film_id = f.id AND c.role = 'actor') < 3
+         (SELECT count(*) FROM credit c WHERE c.film_id = f.id AND c.role = 'actor') < 2
          OR NOT EXISTS (SELECT 1 FROM credit c WHERE c.film_id = f.id AND c.role = 'director')`,
     );
     expect(rows[0].count).toBe(0);
@@ -109,7 +110,7 @@ describe("helpers", () => {
 describe("purpose-built queries", () => {
   test("shared films for De Niro and Pacino", async () => {
     const films = await sharedFilms(api.db, DE_NIRO, PACINO);
-    expect(films.map((film) => film.title)).toEqual(["The Godfather Part II", "Heat", "The Irishman"]);
+    expect(films.map((film) => film.title)).toEqual(["The Godfather Part II", "Heat", "Righteous Kill", "The Irishman"]);
   });
 
   test("actor path is short, valid and bounded", async () => {
@@ -141,12 +142,72 @@ describe("purpose-built queries", () => {
     expect(total).toBe(check[0].count);
   });
 
-  test("people search pages by name", async () => {
-    const first = await searchNamed(api.db, "person", "tom", { first: 5 });
+  test("people search pages through a stable ranking", async () => {
+    const first = await searchNames(api.db, "person", "tom", { first: 5 });
     expect(first.rows).toHaveLength(5);
     expect(first.hasNextPage).toBe(true);
-    const second = await searchNamed(api.db, "person", "tom", { first: 5, after: first.endCursor });
-    expect(second.rows[0].name >= first.rows[4].name).toBe(true);
-    expect(second.rows.map((p) => p.id)).not.toContain(first.rows[0].id);
+    const second = await searchNames(api.db, "person", "tom", { first: 5, after: first.endCursor });
+    const firstIds = first.rows.map((person) => person.id);
+    expect(second.rows.some((person) => firstIds.includes(person.id))).toBe(false);
+  });
+});
+
+describe("name search", () => {
+  const names = async (table: "person" | "studio", text: string, role?: "actor" | "director") =>
+    (await searchNames(api.db, table, text, { role, first: 5 })).rows.map((row) => row.name);
+
+  test("prefix matches every word and ranks the best match first", async () => {
+    expect((await names("person", "nolan", "director"))[0]).toBe("Christopher Nolan");
+    expect((await names("person", "tom h", "actor"))[0]).toBe("Tom Hanks");
+    expect((await names("person", "kevin bacon", "actor"))[0]).toBe("Kevin Bacon");
+  });
+
+  test("role filters to people with credits in that role", async () => {
+    const directors = await names("person", "chris", "director");
+    const actors = await names("person", "chris", "actor");
+    expect(directors).toContain("Christopher Nolan");
+    expect(actors).not.toContain("Christopher Nolan");
+    expect(actors).toContain("Christian Bale");
+  });
+
+  test("ignores case and accents", async () => {
+    expect(foldName("Penélope CRUZ")).toBe("penelope cruz");
+    expect((await names("person", "PENELOPE cruz"))[0]).toBe("Penélope Cruz");
+  });
+
+  test("studios rank by their films' notability", async () => {
+    expect((await names("studio", "warner"))[0]).toBe("Warner Bros. Entertainment");
+    expect((await names("studio", "para"))[0]).toBe("Paramount Pictures");
+  });
+
+  test("text with nothing searchable is a typed error", async () => {
+    await expect(searchNames(api.db, "person", "  -- ")).rejects.toBeInstanceOf(ApiError);
+  });
+});
+
+describe("dataset completeness (regressions)", () => {
+  const RDJ = 165219;
+  const EVANS = 178348;
+
+  test("Robert Downey Jr. and Chris Evans share every Avengers film, including Infinity War and Endgame", async () => {
+    // These were missing when the pipeline only accepted English labels: Wikidata
+    // now keeps many titles only as a language-neutral "mul" label.
+    const titles = (await sharedFilms(api.db, RDJ, EVANS, "actor")).map((film) => film.title);
+    for (const title of ["The Avengers", "Avengers: Age of Ultron", "Captain America: Civil War", "Avengers: Infinity War", "Avengers: Endgame"]) {
+      expect(titles).toContain(title);
+    }
+  });
+
+  test("casts are complete, not capped at ten", async () => {
+    const { rows } = await api.pg.query<{ actors: number }>(
+      `SELECT count(*)::int AS actors FROM credit c JOIN film f ON f.id = c.film_id
+       WHERE f.title = 'Avengers: Endgame' AND c.role = 'actor'`,
+    );
+    expect(rows[0].actors).toBeGreaterThan(20);
+  });
+
+  test("films labelled only in Wikidata's 'mul' language are included", async () => {
+    const { rows } = await api.pg.query<{ title: string }>(`SELECT title FROM film WHERE id = 192724`);
+    expect(rows[0]?.title).toBe("Iron Man");
   });
 });

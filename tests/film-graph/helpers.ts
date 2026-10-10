@@ -3,10 +3,32 @@ import { PGlite } from "@electric-sql/pglite";
 import { Db, loadSeed, type SqlEvent } from "../../src/filmgraph/db/database";
 import { createBackend } from "../../src/filmgraph/api/server";
 import { PERSISTED_DOCUMENTS } from "../../src/filmgraph/operations";
-import type { Seed } from "../../src/filmgraph/seed-format";
+import type { Seed, SeedManifest, SeedPart } from "../../src/filmgraph/seed-format";
 import { BATCHING_HEADER, GRAPHQL_URL, REST_BASE } from "../../src/filmgraph/config";
 
-export const seed: Seed = JSON.parse(readFileSync(new URL("../../src/data/film-graph-seed.json", import.meta.url), "utf8"));
+const dataDir = new URL("../../src/data/film-graph/", import.meta.url);
+export const manifest: SeedManifest = JSON.parse(readFileSync(new URL("manifest.json", dataDir), "utf8"));
+
+/** The whole seed, reassembled from its parts exactly as the browser loads them. */
+export const seed: Seed = (() => {
+  const whole: Seed = {
+    version: manifest.version,
+    generatedAt: manifest.generatedAt,
+    source: manifest.source,
+    films: [],
+    people: [],
+    credits: [],
+    studios: [],
+    filmStudios: [],
+    genres: [],
+    filmGenres: [],
+  };
+  for (const { file } of manifest.parts) {
+    const part: SeedPart = JSON.parse(readFileSync(new URL(file, dataDir), "utf8"));
+    for (const key of Object.keys(part) as (keyof SeedPart)[]) (whole[key] as unknown[]).push(...(part[key] as unknown[]));
+  }
+  return whole;
+})();
 
 const ORIGIN = "http://localhost";
 

@@ -1,0 +1,87 @@
+{
+ "version": 2,
+ "generatedAt": "2026-10-10T21:07:44Z",
+ "source": "Wikidata (https://www.wikidata.org), CC0 1.0",
+ "selection": {
+  "minSitelinks": 10,
+  "candidates": 26061,
+  "maxFilms": 30000
+ },
+ "counts": {
+  "films": 23638,
+  "people": 93510,
+  "credits": 367146,
+  "studios": 3222,
+  "genres": 30
+ },
+ "parts": [
+  {
+   "file": "part-00.json",
+   "tables": [
+    "films",
+    "studios",
+    "filmStudios",
+    "genres",
+    "filmGenres"
+   ],
+   "bytes": 3346191,
+   "gzipBytes": 1024505
+  },
+  {
+   "file": "part-01.json",
+   "tables": [
+    "people"
+   ],
+   "bytes": 1874641,
+   "gzipBytes": 761844
+  },
+  {
+   "file": "part-02.json",
+   "tables": [
+    "people"
+   ],
+   "bytes": 1107594,
+   "gzipBytes": 459083
+  },
+  {
+   "file": "part-03.json",
+   "tables": [
+    "credits"
+   ],
+   "bytes": 2260298,
+   "gzipBytes": 683671
+  },
+  {
+   "file": "part-04.json",
+   "tables": [
+    "credits"
+   ],
+   "bytes": 2216782,
+   "gzipBytes": 632648
+  },
+  {
+   "file": "part-05.json",
+   "tables": [
+    "credits"
+   ],
+   "bytes": 2260659,
+   "gzipBytes": 615249
+  },
+  {
+   "file": "part-06.json",
+   "tables": [
+    "credits"
+   ],
+   "bytes": 2310020,
+   "gzipBytes": 634931
+  },
+  {
+   "file": "part-07.json",
+   "tables": [
+    "credits"
+   ],
+   "bytes": 1522597,
+   "gzipBytes": 458032
+  }
+ ]
+}

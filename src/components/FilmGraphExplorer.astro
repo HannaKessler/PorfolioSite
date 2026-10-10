@@ -6,13 +6,7 @@ import Explorer from "./film-graph/Explorer.tsx";
 
 <section class="fg" id="film-graph" aria-label="Film Graph explorer">
   <Explorer client:only="react">
-    <div slot="fallback" class="fg-banner" role="status">
-      <div class="fg-spinner" aria-hidden="true"></div>
-      <div>
-        <strong>Loading the explorer…</strong>
-        <p>Everything below runs in your browser, so the first visit downloads a small Postgres build.</p>
-      </div>
-    </div>
+    <p slot="fallback" class="fg-hint">Loading the explorer…</p>
   </Explorer>
   <noscript>
     <p class="fg-noscript">

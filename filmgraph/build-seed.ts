@@ -1,38 +1,52 @@
 /**
  * Film Graph offline data pipeline.
  *
- * Pulls a curated set of notable films from the Wikidata SPARQL endpoint
- * (data is CC0), cleans it and writes src/data/film-graph-seed.json, a compact
- * column-array seed that the browser loads into PGlite.
+ * Pulls every reasonably notable film from the Wikidata SPARQL endpoint (data
+ * is CC0) with its full cast, directors, writers, studios and genres, cleans it
+ * and writes src/data/film-graph/: a manifest plus seed parts of a few MB each,
+ * which the browser downloads one by one (with progress) and loads into PGlite.
  *
  * Run: npm run filmgraph:data   (raw responses are cached in filmgraph/.cache)
+ * Tune with FILMGRAPH_MIN_SITELINKS and FILMGRAPH_MAX_FILMS.
  */
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
-import { ROLE_CODES, SEED_VERSION, type Seed } from "../src/filmgraph/seed-format.ts";
+import { ROLE_CODES, SEED_VERSION, type Seed, type SeedManifest, type SeedPart } from "../src/filmgraph/seed-format.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..");
 const cacheDir = join(here, ".cache");
-const outFile = join(root, "src", "data", "film-graph-seed.json");
+const outDir = join(root, "src", "data", "film-graph");
 
 const ENDPOINT = "https://query.wikidata.org/sparql";
 const USER_AGENT =
   "FilmGraphSeedBuilder/1.0 (https://github.com/HannaKessler/PorfolioSite; portfolio demo, run by hand)";
 
-const TARGET_FILMS = 2000;
-const MIN_SITELINKS = 30;
-// Fetch details for a margin above the target so films dropped for thin credits can be replaced.
-const MAX_CANDIDATES = 2600;
-const MAX_CAST = 10;
-const MIN_ACTORS = 3;
-const FILM_BATCH = 120;
-const PERSON_BATCH = 400;
-const MAX_GENRES = 24;
-const MIN_GENRE_FILMS = 12;
+/** Films need at least this many Wikipedia/Wikimedia sitelinks to be considered. */
+const MIN_SITELINKS = Number(process.env.FILMGRAPH_MIN_SITELINKS ?? 10);
+/** Upper bound on films kept, most linked first, to keep the browser download sensible. */
+const MAX_FILMS = Number(process.env.FILMGRAPH_MAX_FILMS ?? 30000);
+const MIN_ACTORS = 2;
+/** Parallel SPARQL requests. WDQS allows a handful per client; stay well under. */
+const FILM_CONCURRENCY = 2;
+const FILM_BATCH = 250;
+const PERSON_BATCH = 500;
+const MAX_GENRES = 30;
+const MIN_GENRE_FILMS = 40;
+/** Rows per seed part, so each download is a few MB. */
+const PEOPLE_PER_PART = 60000;
+const CREDITS_PER_PART = 80000;
+/** Feature films, animated features and film adaptations are all films here. */
+const FILM_TYPES = ["Q11424", "Q24869", "Q29168811", "Q202866", "Q1257444"];
+/**
+ * Labels: Wikidata increasingly stores names only as a language-neutral "mul"
+ * label and removes the identical English one (Avengers: Infinity War has no
+ * English label), so take English when present and fall back to "mul".
+ */
+const LABEL_LANGS = `("en", "mul")`;
 
 type Binding = Record<string, { type: string; value: string; "xml:lang"?: string }>;
 
@@ -88,6 +102,18 @@ const yearOf = (value?: string) => {
   return match ? Number(match[1]) : null;
 };
 
+/** Runs fn over items with at most `limit` in flight. */
+async function pool<T>(items: T[], limit: number, fn: (item: T, index: number) => Promise<void>) {
+  let next = 0;
+  const worker = async () => {
+    while (next < items.length) {
+      const index = next++;
+      await fn(items[index], index);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+}
+
 function chunks<T>(items: T[], size: number): T[][] {
   const out: T[][] = [];
   for (let i = 0; i < items.length; i += size) out.push(items.slice(i, i + size));
@@ -103,6 +129,8 @@ function clean(text: string | undefined, max = 200): string | null {
 
 /** Wikidata labels that are just the QID mean "no English label". */
 const hasLabel = (label: string | undefined) => !!label && !/^Q\d+$/.test(label);
+/** English label if there is one, else the language-neutral "mul" label. */
+const pickLabel = (row: Binding, en: string, mul: string) => row[en]?.value ?? row[mul]?.value;
 
 async function main() {
   mkdirSync(cacheDir, { recursive: true });
@@ -110,15 +138,19 @@ async function main() {
   console.log("1/6 Candidate films by sitelinks");
   const candidates = (
     await sparql(
-      `SELECT ?film ?sl WHERE { ?film wdt:P31 wd:Q11424 ; wikibase:sitelinks ?sl . FILTER(?sl >= ${MIN_SITELINKS}) }`,
+      `SELECT DISTINCT ?film ?sl WHERE {
+        VALUES ?type { ${FILM_TYPES.map((q) => `wd:${q}`).join(" ")} }
+        ?film wdt:P31 ?type ; wikibase:sitelinks ?sl . FILTER(?sl >= ${MIN_SITELINKS})
+      }`,
       "candidates",
     )
   )
     .map((row) => ({ id: num(row.film.value), sitelinks: Number(row.sl.value) }))
     .sort((a, b) => b.sitelinks - a.sitelinks || a.id - b.id);
-  const candidateIds = [...new Set(candidates.map((c) => c.id))].slice(0, MAX_CANDIDATES);
+  // Fetch details for a margin above the cap, so films dropped for thin credits can be replaced.
+  const candidateIds = [...new Set(candidates.map((c) => c.id))].slice(0, Math.ceil(MAX_FILMS * 1.25));
   const sitelinks = new Map(candidates.map((c) => [c.id, c.sitelinks]));
-  console.log(`  ${candidateIds.length} candidates`);
+  console.log(`  ${candidates.length} films with ${MIN_SITELINKS}+ sitelinks; fetching ${candidateIds.length}`);
 
   type FilmRow = {
     id: number;
@@ -138,27 +170,31 @@ async function main() {
 
   console.log("2/6 Film details, cast, crew, studios and genres");
   const batches = chunks(candidateIds, FILM_BATCH);
-  for (const [index, batch] of batches.entries()) {
+  let done = 0;
+  await pool(batches, FILM_CONCURRENCY, async (batch, index) => {
     const ids = values(batch);
     const tag = `batch ${index + 1}/${batches.length}`;
-    process.stdout.write(`  ${tag}\r`);
 
     const core = await sparql(
-      `SELECT ?film (SAMPLE(?t) AS ?title) (SAMPLE(?d) AS ?desc) (MIN(?date) AS ?released) (MAX(?dur) AS ?minutes) (SAMPLE(?cl) AS ?country) WHERE {
+      `SELECT ?film (SAMPLE(?te) AS ?titleEn) (SAMPLE(?tm) AS ?titleMul) (SAMPLE(?d) AS ?desc) (MIN(?date) AS ?released)
+             (MAX(?dur) AS ?minutes) (SAMPLE(?cl) AS ?country) WHERE {
         VALUES ?film { ${ids} }
-        ?film rdfs:label ?t . FILTER(LANG(?t) = "en")
+        OPTIONAL { ?film rdfs:label ?te . FILTER(LANG(?te) = "en") }
+        OPTIONAL { ?film rdfs:label ?tm . FILTER(LANG(?tm) = "mul") }
         OPTIONAL { ?film schema:description ?d . FILTER(LANG(?d) = "en") }
         OPTIONAL { ?film wdt:P577 ?date }
         OPTIONAL { ?film p:P2047/psv:P2047 [ wikibase:quantityAmount ?dur ; wikibase:quantityUnit wd:Q7727 ] }
-        OPTIONAL { ?film wdt:P495 ?c . ?c rdfs:label ?cl . FILTER(LANG(?cl) = "en") }
+        OPTIONAL { ?film wdt:P495 ?c . ?c rdfs:label ?cl . FILTER(LANG(?cl) IN ${LABEL_LANGS}) }
       } GROUP BY ?film`,
       `${tag} core`,
     );
     for (const row of core) {
+      const title = pickLabel(row, "titleEn", "titleMul");
+      if (!title) continue;
       const runtime = row.minutes ? Math.round(Number(row.minutes.value)) : null;
       films.set(num(row.film.value), {
         id: num(row.film.value),
-        title: row.title.value.trim(),
+        title: title.trim(),
         year: yearOf(row.released?.value),
         runtime: runtime && runtime > 0 && runtime < 1000 ? runtime : null,
         description: clean(row.desc?.value, 160),
@@ -172,7 +208,7 @@ async function main() {
         ?film p:P161 ?st . ?st ps:P161 ?person .
         OPTIONAL { ?st pq:P1545 ?ord }
         OPTIONAL { ?st pq:P4633 ?charName }
-        OPTIONAL { ?st pq:P453 ?role . ?role rdfs:label ?roleLabel . FILTER(LANG(?roleLabel) = "en") }
+        OPTIONAL { ?st pq:P453 ?role . ?role rdfs:label ?roleLabel . FILTER(LANG(?roleLabel) IN ${LABEL_LANGS}) }
       }`,
       `${tag} cast`,
     );
@@ -216,11 +252,18 @@ async function main() {
         `SELECT ?film ?item ?label WHERE {
           VALUES ?film { ${ids} }
           ?film wdt:${prop} ?item .
-          OPTIONAL { ?item rdfs:label ?label . FILTER(LANG(?label) = "en") }
+          OPTIONAL { ?item rdfs:label ?label . FILTER(LANG(?label) IN ${LABEL_LANGS}) }
         }`,
         `${tag} ${kind}s`,
       );
-      for (const row of rows) if (row.label) tagRows.push({ ...row, kind: { type: "literal", value: kind } });
+      // Prefer the English label when an item has both.
+      const best = new Map<string, Binding>();
+      for (const row of rows) {
+        if (!row.label) continue;
+        const key = `${row.film.value} ${row.item.value}`;
+        if (!best.has(key) || row.label["xml:lang"] === "en") best.set(key, row);
+      }
+      for (const row of best.values()) tagRows.push({ ...row, kind: { type: "literal", value: kind } });
     }
     for (const row of tagRows) {
       const film = num(row.film.value);
@@ -233,7 +276,9 @@ async function main() {
         genreLabels.set(item, row.label.value);
       }
     }
-  }
+    done += 1;
+    process.stdout.write(`  ${done}/${batches.length} film batches\r`);
+  });
   console.log("");
 
   console.log("3/6 Choosing films");
@@ -246,20 +291,21 @@ async function main() {
   type PersonRow = { id: number; name: string; birthYear: number | null; sitelinks: number };
   const people = new Map<number, PersonRow>();
   const personBatches = chunks(allPeople, PERSON_BATCH);
-  for (const [index, batch] of personBatches.entries()) {
-    process.stdout.write(`  batch ${index + 1}/${personBatches.length}\r`);
+  let peopleDone = 0;
+  await pool(personBatches, FILM_CONCURRENCY, async (batch, index) => {
     const rows = await sparql(
-      `SELECT ?p (SAMPLE(?n) AS ?name) (MIN(?b) AS ?born) (SAMPLE(?sl) AS ?links) WHERE {
+      `SELECT ?p (SAMPLE(?ne) AS ?nameEn) (SAMPLE(?nm) AS ?nameMul) (MIN(?b) AS ?born) (SAMPLE(?sl) AS ?links) WHERE {
         VALUES ?p { ${values(batch)} }
-        ?p rdfs:label ?n . FILTER(LANG(?n) = "en")
+        OPTIONAL { ?p rdfs:label ?ne . FILTER(LANG(?ne) = "en") }
+        OPTIONAL { ?p rdfs:label ?nm . FILTER(LANG(?nm) = "mul") }
         OPTIONAL { ?p wdt:P569 ?b }
         OPTIONAL { ?p wikibase:sitelinks ?sl }
       } GROUP BY ?p`,
       `people ${index + 1}`,
     );
     for (const row of rows) {
-      const name = row.name.value.trim();
-      if (!hasLabel(name)) continue;
+      const name = pickLabel(row, "nameEn", "nameMul")?.trim();
+      if (!name || !hasLabel(name)) continue;
       people.set(num(row.p.value), {
         id: num(row.p.value),
         name,
@@ -267,13 +313,15 @@ async function main() {
         sitelinks: Number(row.links?.value ?? 0),
       });
     }
-  }
+    peopleDone += 1;
+    process.stdout.write(`  ${peopleDone}/${personBatches.length} people batches\r`);
+  });
   console.log("");
 
   console.log("5/6 Cleaning and billing order");
-  // Cast billing: Wikidata rarely records billing order, and SPARQL cannot see the
-  // order statements were entered in. Use the series ordinal (P1545) when present,
-  // otherwise rank by the actor's own notability (sitelinks), then id for stability.
+  // Full casts, no cap. Billing: Wikidata often records the cast ordinal (P1545);
+  // where it doesn't, SPARQL cannot see the order statements were entered in, so
+  // those actors follow by their own notability (sitelinks), then id for stability.
   const credits: Seed["credits"] = [];
   const keptFilms: FilmRow[] = [];
   const crewByFilm = new Map<number, typeof crew>();
@@ -293,13 +341,12 @@ async function main() {
         if (a.ordinal !== null) return -1;
         if (b.ordinal !== null) return 1;
         return people.get(b.person)!.sitelinks - people.get(a.person)!.sitelinks || a.person - b.person;
-      })
-      .slice(0, MAX_CAST);
+      });
     const filmCrew = (crewByFilm.get(id) ?? []).filter((entry) => people.has(entry.person));
     const directors = filmCrew.filter((entry) => entry.role === "director");
-    // Drop films with too few credits: at least 3 billed actors and a director.
+    // Drop films with too few credits: at least two actors and a director.
     if (actors.length < MIN_ACTORS || directors.length === 0) continue;
-    if (keptFilms.length >= TARGET_FILMS) break;
+    if (keptFilms.length >= MAX_FILMS) break;
     keptFilms.push(film);
     actors.forEach((actor, index) =>
       credits.push([id, actor.person, ROLE_CODES.actor, actor.character, index + 1]),
@@ -372,16 +419,45 @@ async function main() {
     filmGenres,
   };
 
-  console.log("6/6 Writing seed");
-  const json = JSON.stringify(seed);
-  mkdirSync(dirname(outFile), { recursive: true });
-  writeFileSync(outFile, json);
-  const gz = gzipSync(json, { level: 9 }).length;
+  console.log("6/6 Writing seed parts");
+  rmSync(outDir, { recursive: true, force: true });
+  mkdirSync(outDir, { recursive: true });
+  const parts: SeedPart[] = [
+    { films: seed.films, studios: seed.studios, filmStudios: seed.filmStudios, genres: seed.genres, filmGenres: seed.filmGenres },
+  ];
+  for (let i = 0; i < seed.people.length; i += PEOPLE_PER_PART) parts.push({ people: seed.people.slice(i, i + PEOPLE_PER_PART) });
+  for (let i = 0; i < seed.credits.length; i += CREDITS_PER_PART) parts.push({ credits: seed.credits.slice(i, i + CREDITS_PER_PART) });
+  const manifest: SeedManifest = {
+    version: seed.version,
+    generatedAt: seed.generatedAt,
+    source: seed.source,
+    selection: { minSitelinks: MIN_SITELINKS, candidates: candidates.length, maxFilms: MAX_FILMS },
+    counts: {
+      films: seed.films.length,
+      people: seed.people.length,
+      credits: seed.credits.length,
+      studios: seed.studios.length,
+      genres: seed.genres.length,
+    },
+    parts: [],
+  };
+  let raw = 0;
+  let gzipped = 0;
+  parts.forEach((part, index) => {
+    const name = `part-${String(index).padStart(2, "0")}.json`;
+    const json = JSON.stringify(part);
+    writeFileSync(join(outDir, name), json);
+    const gz = gzipSync(json, { level: 9 }).length;
+    raw += json.length;
+    gzipped += gz;
+    manifest.parts.push({ file: name, tables: Object.keys(part), bytes: Buffer.byteLength(json), gzipBytes: gz });
+  });
+  writeFileSync(join(outDir, "manifest.json"), JSON.stringify(manifest, null, 1));
   console.log(
     `  ${seed.films.length} films, ${seed.people.length} people, ${seed.credits.length} credits, ` +
       `${seed.studios.length} studios, ${seed.genres.length} genres`,
   );
-  console.log(`  ${outFile}: ${(json.length / 1024).toFixed(0)} KB raw, ${(gz / 1024).toFixed(0)} KB gzip`);
+  console.log(`  ${parts.length} parts: ${(raw / 1048576).toFixed(1)} MB raw, ${(gzipped / 1048576).toFixed(2)} MB gzip`);
 }
 
 main().catch((error) => {

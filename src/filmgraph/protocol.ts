@@ -25,6 +25,8 @@ export interface BootStatus {
   /** True when the database was built from the seed on this visit. */
   seeded?: boolean;
   seedBytes?: number;
+  /** 0 to 1 while downloading and loading the seed. */
+  progress?: number;
   counts?: { films: number; people: number; credits: number };
 }
 

@@ -1,11 +1,24 @@
-import { Suspense, lazy, useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
+import { Suspense, lazy, useCallback, useId, useMemo, useRef, useState } from "react";
 import { connect, type Connection } from "../../filmgraph/client/connection";
 import { createApi, type Api, type LogEntry } from "../../filmgraph/client/api";
-import { PRESETS, SIX_DEGREES_PRESET, type Preset } from "../../filmgraph/client/presets";
+import {
+  PRESETS,
+  SIX_DEGREES_PRESET,
+  defaultChoices,
+  variablesFor,
+  type BlankKind,
+  type Choice,
+  type Preset,
+} from "../../filmgraph/client/presets";
+import { graphqlSearch, suggestionsFromGraphQL } from "../../filmgraph/client/search";
+import { formatMs } from "../../filmgraph/client/metrics";
 import { runGraphQL, runRest, type GraphQLRun, type RestRun } from "../../filmgraph/client/runner";
 import type { RunMetrics } from "../../filmgraph/client/metrics";
 import type { BootStatus } from "../../filmgraph/protocol";
-import { BootBanner } from "./BootBanner";
+import { Answer, type AnswerState } from "./Answer";
+import { BootBanner, EngineNote } from "./BootBanner";
+import { QuestionBuilder } from "./QuestionBuilder";
+import type { SearchOutcome } from "./NameCombobox";
 import { ComparisonStrip } from "./ComparisonStrip";
 import { NPlusOne, type NPlusOneResult } from "./NPlusOne";
 import { PersistedPanel, type PersistedStats } from "./PersistedPanel";
@@ -36,6 +49,22 @@ function parseVariables(text: string): Record<string, string> | string {
   }
 }
 
+/** The question as plain text with the chosen names, e.g. for the request log. */
+const questionText = (preset: Preset, choices: Record<string, Choice>) =>
+  preset.sentence.map((part) => (typeof part === "string" ? part : (choices[part.variable] ?? part.default).name)).join("");
+
+const sameVariables = (a: Record<string, unknown>, b: Record<string, unknown>) =>
+  JSON.stringify(Object.entries(a).sort()) === JSON.stringify(Object.entries(b).sort());
+
+interface LastRun {
+  /** Counts runs, so tests and assistive tech can tell a fresh result from an old one. */
+  count: number;
+  signature: string;
+  presetId: string;
+  custom: boolean;
+  question: string;
+}
+
 export default function Explorer() {
   const [status, setStatus] = useState<BootStatus | null>(null);
   const [connection, setConnection] = useState<Connection | null>(null);
@@ -45,6 +74,7 @@ export default function Explorer() {
   const [runs, setRuns] = useState<LoggedRun[]>([]);
 
   const [preset, setPreset] = useState<Preset>(PRESETS[0]);
+  const [choicesBy, setChoicesBy] = useState<Record<string, Record<string, Choice>>>({});
   const [query, setQuery] = useState(PRESETS[0].query);
   const [variablesText, setVariablesText] = useState(prettyVariables(PRESETS[0].variables));
   const [options, setOptions] = useState<Options>({ batching: true, persisted: false, persistedOnly: false, etags: true });
@@ -55,47 +85,63 @@ export default function Explorer() {
   const [running, setRunning] = useState<null | "graphql" | "rest" | "both" | "n1">(null);
   const [n1, setN1] = useState<NPlusOneResult | null>(null);
   const [persistedStats, setPersistedStats] = useState<PersistedStats | null>(null);
-  const autoRan = useRef(false);
+  const [lastRun, setLastRun] = useState<LastRun | null>(null);
+  const [runError, setRunError] = useState<string | null>(null);
+  const [runStatus, setRunStatus] = useState("");
+  const [started, setStarted] = useState(false);
+  const bootRef = useRef<Promise<Api> | null>(null);
   const editorLabel = useId();
   const variablesId = useId();
 
+  const choices = choicesBy[preset.id] ?? defaultChoices(preset);
   const isCustom = query.trim() !== preset.query.trim();
   const variables = useMemo(() => parseVariables(variablesText), [variablesText]);
   const variablesError = typeof variables === "string" ? variables : null;
   const ready = status?.phase === "ready" && !!connection;
+  const booting = started && !ready && status?.phase !== "error";
+  const handEdited = typeof variables !== "string" && !sameVariables(variables, variablesFor(preset, choices));
+  const signature = JSON.stringify([preset.id, query.trim(), variablesText.replace(/\s+/g, "")]);
+  const stale = !!lastRun && lastRun.signature !== signature;
 
-  useEffect(() => {
-    let cancelled = false;
-    connect((next) => !cancelled && setStatus(next))
-      .then((conn) => {
-        if (cancelled) return;
-        apiRef.current = createApi(conn, (entry) => {
+  /**
+   * Starts the in-browser backend the first time it is needed (Run, or typing
+   * in a name blank). Nothing is downloaded or booted on page load.
+   */
+  const ensureBackend = useCallback((): Promise<Api> => {
+    if (!bootRef.current) {
+      setStarted(true);
+      setStatus({ phase: "engine", detail: "Starting the backend worker", elapsedMs: 0 });
+      bootRef.current = connect(setStatus).then((conn) => {
+        const api = createApi(conn, (entry) => {
           const run = currentRun.current;
           if (!run) return;
           run.entries.push(entry);
           setRuns((list) => list.map((item) => (item.id === run.id ? { ...run, entries: [...run.entries] } : item)));
         });
+        apiRef.current = api;
         setConnection(conn);
-      })
-      .catch((error: Error) => !cancelled && setStatus({ phase: "error", detail: error.message, elapsedMs: 0 }));
-    return () => {
-      cancelled = true;
-    };
+        return api;
+      });
+      bootRef.current.catch((error: Error) => setStatus({ phase: "error", detail: error.message, elapsedMs: 0 }));
+    }
+    return bootRef.current;
   }, []);
 
   /** Groups the requests made by one button press in the request log. */
-  const withRun = useCallback(async <T,>(label: string, fn: (api: Api) => Promise<T>): Promise<T | null> => {
-    const api = apiRef.current;
-    if (!api) return null;
-    const run: LoggedRun = { id: ++runCounter.current, label, startedAt: performance.now(), entries: [] };
-    currentRun.current = run;
-    setRuns((list) => [run, ...list].slice(0, 12));
-    try {
-      return await fn(api);
-    } finally {
-      currentRun.current = null;
-    }
-  }, []);
+  const withRun = useCallback(
+    async <T,>(label: string, fn: (api: Api) => Promise<T>): Promise<T | null> => {
+      const api = await ensureBackend();
+      const run: LoggedRun = { id: ++runCounter.current, label, startedAt: performance.now(), entries: [] };
+      currentRun.current = run;
+      setRuns((list) => [run, ...list].slice(0, 12));
+      try {
+        return await fn(api);
+      } finally {
+        currentRun.current = null;
+      }
+    },
+    [ensureBackend],
+  );
 
   const doGraphQL = useCallback(
     async (api: Api, vars: Record<string, string>, text: string) => {
@@ -122,46 +168,75 @@ export default function Explorer() {
     [options.etags],
   );
 
-  const run = useCallback(
-    async (which: "graphql" | "rest" | "both", target: Preset = preset, text: string = query, varsText = variablesText) => {
-      const vars = parseVariables(varsText);
-      if (typeof vars === "string" || running) return;
-      setRunning(which);
-      const customQuery = text.trim() !== target.query.trim();
-      try {
-        await withRun(`${target.label}${customQuery ? " (edited)" : ""} · ${which === "both" ? "GraphQL + REST" : which === "graphql" ? "GraphQL" : "REST"}`, async (api) => {
-          if (which !== "rest") await doGraphQL(api, vars, text);
-          if (which !== "graphql") {
-            if (customQuery) setRestRun(null);
-            else await doRest(api, vars, target);
-          }
-        });
-        if (which === "rest") setResultTab("rest");
-        if (which === "graphql") setResultTab("graphql");
-      } finally {
-        setRunning(null);
-      }
-    },
-    [preset, query, variablesText, running, withRun, doGraphQL, doRest],
-  );
-
-  const choosePreset = (next: Preset) => {
-    setPreset(next);
-    setQuery(next.query);
-    const text = prettyVariables(next.variables);
-    setVariablesText(text);
-    setGqlRun(null);
-    setRestRun(null);
-    void run("both", next, next.query, text);
+  /** The only way queries run: the Run button, Ctrl+Enter, or the GraphQL/REST-only buttons. */
+  const run = async (which: "graphql" | "rest" | "both") => {
+    const vars = parseVariables(variablesText);
+    if (typeof vars === "string" || running) return;
+    const target = preset;
+    const text = query;
+    const customQuery = text.trim() !== target.query.trim();
+    const question = questionText(target, choices);
+    setRunning(which);
+    setRunError(null);
+    setRunStatus("");
+    const startedAt = performance.now();
+    try {
+      let graphqlRequests = 0;
+      let restRequests = 0;
+      await withRun(`${customQuery ? "Edited query" : question} · ${which === "both" ? "GraphQL + REST" : which === "graphql" ? "GraphQL" : "REST"}`, async (api) => {
+        if (which !== "rest") {
+          const result = await doGraphQL(api, vars, text);
+          graphqlRequests = result.metrics.requests;
+        } else setGqlRun(null);
+        if (which !== "graphql" && !customQuery) {
+          const result = await doRest(api, vars, target);
+          restRequests = result.metrics.requests;
+        } else setRestRun(null);
+      });
+      setLastRun((previous) => ({ count: (previous?.count ?? 0) + 1, signature, presetId: target.id, custom: customQuery, question }));
+      setResultTab(which === "rest" ? "rest" : "graphql");
+      const parts = [graphqlRequests && `GraphQL ${graphqlRequests} request`, restRequests && `REST ${restRequests} requests`].filter(Boolean);
+      setRunStatus(`Done in ${formatMs(performance.now() - startedAt)}${parts.length ? `: ${parts.join(", ")}` : ""}.`);
+    } catch (error) {
+      setRunError((error as Error).message);
+    } finally {
+      setRunning(null);
+    }
   };
 
-  // Run the first preset once the backend is ready, so the page opens with results.
-  useEffect(() => {
-    if (ready && !autoRan.current) {
-      autoRan.current = true;
-      void run("both");
-    }
-  }, [ready, run]);
+  // Picking a question or a name only changes the request; Run executes it.
+  const choosePreset = (next: Preset) => {
+    if (next.id === preset.id) return;
+    const nextChoices = choicesBy[next.id] ?? defaultChoices(next);
+    setPreset(next);
+    setQuery(next.query);
+    setVariablesText(prettyVariables(variablesFor(next, nextChoices)));
+  };
+
+  const chooseName = (variable: string, choice: Choice) => {
+    const nextChoices = { ...choices, [variable]: choice };
+    setChoicesBy((all) => ({ ...all, [preset.id]: nextChoices }));
+    setVariablesText(prettyVariables(variablesFor(preset, nextChoices)));
+  };
+
+  const search = useCallback(
+    async (kind: BlankKind, text: string): Promise<SearchOutcome> => {
+      const api = await ensureBackend();
+      const { query: searchQuery, variables: searchVariables } = graphqlSearch(kind, text);
+      // Always sent as a persisted query hash, so it keeps working in allowlist mode.
+      const result = await api.graphql(searchQuery, searchVariables, {
+        batching: true,
+        persisted: true,
+        persistedOnly: options.persistedOnly,
+      });
+      if (!result.body?.data && result.body?.errors?.length) throw new Error(result.body.errors[0].message);
+      return {
+        suggestions: suggestionsFromGraphQL(kind, result.body?.data),
+        via: `POST /graphql (persisted hash) · ${result.entry.dbQueries} SQL · ${formatMs(result.entry.ms)}`,
+      };
+    },
+    [ensureBackend, options.persistedOnly],
+  );
 
   const runNPlusOne = async () => {
     if (running) return;
@@ -211,34 +286,56 @@ export default function Explorer() {
 
   const setOption = (key: keyof Options) => (value: boolean) => setOptions((current) => ({ ...current, [key]: value }));
   const restSteps = preset.restSteps(typeof variables === "string" ? preset.variables : variables);
-  const busy = !!running || !ready;
+  const failed = status?.phase === "error";
+  const busy = !!running || failed;
   const graphqlMetrics: RunMetrics | null = gqlRun?.metrics ?? null;
+
+  let answer: AnswerState;
+  if (running && running !== "n1" && !ready) answer = { kind: "booting", detail: status?.detail ? `${status.detail}.` : "" };
+  else if (running && running !== "n1") answer = { kind: "running" };
+  else if (runError) answer = { kind: "error", message: runError };
+  else if (!lastRun) answer = { kind: "idle" };
+  else if (lastRun.custom) answer = { kind: "custom" };
+  else {
+    const body = gqlRun?.result.body;
+    const data = body?.data ?? restRun?.data;
+    if (data) answer = { kind: "done", presetId: lastRun.presetId, data };
+    else if (restRun?.error) answer = { kind: "error", message: restRun.error };
+    else answer = { kind: "error", message: body?.errors?.[0]?.message ?? "The request returned no data." };
+  }
 
   return (
     <div className="fg-app">
-      <BootBanner status={status} connection={connection} onReset={resetDatabase} />
+      <BootBanner status={status} connection={connection} started={started} onReset={resetDatabase} />
 
-      <section className="fg-section" aria-labelledby="fg-presets-title">
-        <div className="fg-section-head">
-          <h2 id="fg-presets-title">Pick a question</h2>
-          <p>Each one runs as a single GraphQL query and as the REST calls needed for the same data.</p>
-        </div>
-        <div className="fg-presets" role="group" aria-label="Preset queries">
-          {PRESETS.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className="fg-chip"
-              aria-pressed={item.id === preset.id}
-              onClick={() => choosePreset(item)}
-              disabled={busy}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-        <p className="fg-summary">{preset.summary}</p>
-      </section>
+      <QuestionBuilder
+        presets={PRESETS}
+        preset={preset}
+        choices={choices}
+        onPreset={choosePreset}
+        onChoice={chooseName}
+        onRun={() => void run("both")}
+        search={search}
+        onFirstInput={() => void ensureBackend()}
+        booting={booting}
+        running={running === "both"}
+        disabled={busy || !!variablesError}
+        status={runStatus}
+      />
+
+      <Answer
+        state={answer}
+        stale={stale && answer.kind !== "running" && answer.kind !== "booting"}
+        question={lastRun?.question ?? null}
+        runCount={lastRun?.count ?? 0}
+      />
+
+      <div className="fg-section-head fg-raw-head">
+        <h2>Under the hood</h2>
+        <p>The generated GraphQL query and REST calls for your question, their raw responses, and how they compare.</p>
+        {stale && answer.kind === "done" && <p className="fg-ans-stale fg-stale-inline">These results are from your previous question.</p>}
+      </div>
+      <EngineNote status={status} connection={connection} onReset={resetDatabase} />
 
       <div className="fg-workbench">
         <section className="fg-panel" aria-labelledby="fg-request-title">
@@ -264,14 +361,14 @@ export default function Explorer() {
             {requestTab === "graphql" ? (
               <>
                 <p id={editorLabel} className="fg-hint">
-                  Edit freely. Autocomplete knows the schema. <kbd>Ctrl</kbd>+<kbd>Enter</kbd> runs it,{" "}
-                  <kbd>Esc</kbd> then <kbd>Tab</kbd> leaves the editor.
+                  Generated from your question. Edit freely: autocomplete knows the schema. <kbd>Ctrl</kbd>+<kbd>Enter</kbd>{" "}
+                  runs it, <kbd>Esc</kbd> then <kbd>Tab</kbd> leaves the editor.
                 </p>
                 <Suspense fallback={<textarea className="fg-textarea fg-editor-fallback" value={query} onChange={(e) => setQuery(e.target.value)} aria-labelledby={editorLabel} rows={16} />}>
-                  <QueryEditor value={query} onChange={setQuery} onRun={() => void run("graphql")} labelId={editorLabel} />
+                  <QueryEditor value={query} onChange={setQuery} onRun={() => void run("both")} labelId={editorLabel} />
                 </Suspense>
                 <label className="fg-label" htmlFor={variablesId}>
-                  Variables <span className="fg-hint-inline">(IDs are Wikidata IDs)</span>
+                  Variables <span className="fg-hint-inline">(the IDs of the names you picked)</span>
                 </label>
                 <textarea
                   id={variablesId}
@@ -283,6 +380,9 @@ export default function Explorer() {
                   aria-invalid={!!variablesError}
                   aria-describedby={variablesError ? `${variablesId}-error` : undefined}
                 />
+                {handEdited && !variablesError && (
+                  <p className="fg-note">You edited the variables, so they may not match the names in the question.</p>
+                )}
                 {variablesError && (
                   <p id={`${variablesId}-error`} className="fg-error-text">
                     {variablesError}
@@ -296,7 +396,7 @@ export default function Explorer() {
                   before it.
                 </p>
                 {isCustom ? (
-                  <p className="fg-note">You edited the query, so there is no matching REST plan. Choose a preset to compare.</p>
+                  <p className="fg-note">You edited the query, so there is no matching REST plan. Pick a question to compare.</p>
                 ) : (
                   <ol className="fg-steps">
                     {restSteps.map((step) => (
@@ -354,7 +454,7 @@ export default function Explorer() {
               gqlRun ? (
                 <JsonView value={gqlRun.result.body} label="GraphQL response body" />
               ) : (
-                <p className="fg-placeholder">{ready ? "Run a query to see the response." : "Waiting for the database…"}</p>
+                <p className="fg-placeholder">{running ? "Running…" : "Press Run to see the response."}</p>
               )
             ) : restRun ? (
               restRun.error ? (
@@ -364,7 +464,7 @@ export default function Explorer() {
               )
             ) : (
               <p className="fg-placeholder">
-                {isCustom ? "Edited queries have no REST plan." : ready ? "Run REST to see the assembled result." : "Waiting for the database…"}
+                {isCustom ? "Edited queries have no REST plan." : running ? "Running…" : "Press Run to see the assembled result."}
               </p>
             )}
           </div>

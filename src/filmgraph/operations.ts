@@ -55,6 +55,12 @@ export const SHARED_FILMS = `query SharedFilms($a: ID!, $b: ID!) {
     directors {
       name
     }
+    asA: credits(role: ACTOR, person: $a) {
+      character
+    }
+    asB: credits(role: ACTOR, person: $b) {
+      character
+    }
   }
 }`;
 
@@ -115,6 +121,40 @@ export const SIX_DEGREES = `query SixDegrees($id: ID!) {
   }
 }`;
 
+/** Autocomplete for the question builder's blanks: people, optionally by role. */
+export const PEOPLE_SEARCH = `query PeopleSearch($text: String!, $role: Role, $first: Int = 8) {
+  people(search: $text, role: $role, first: $first) {
+    edges {
+      node {
+        id
+        name
+        birthYear
+        knownFor(role: $role) {
+          title
+          year
+        }
+      }
+    }
+  }
+}`;
+
+/** Autocomplete for studio blanks. */
+export const STUDIO_SEARCH = `query StudioSearch($text: String!, $first: Int = 8) {
+  studios(search: $text, first: $first) {
+    edges {
+      node {
+        id
+        name
+        filmCount
+        knownFor {
+          title
+          year
+        }
+      }
+    }
+  }
+}`;
+
 export const PERSISTED_DOCUMENTS = [
   DIRECTOR_WITH_CAST,
   FILMOGRAPHY_BY_DECADE,
@@ -122,4 +162,6 @@ export const PERSISTED_DOCUMENTS = [
   STUDIO_OUTPUT,
   ACTOR_PATH,
   SIX_DEGREES,
+  PEOPLE_SEARCH,
+  STUDIO_SEARCH,
 ];

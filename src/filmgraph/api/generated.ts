@@ -41,7 +41,7 @@ export type DecadeCredits = {
 export type Film = {
   __typename?: 'Film';
   country: Maybe<Scalars['String']['output']>;
-  /** Credits in billing order. Filter by role to get just the cast or crew. */
+  /** Credits in billing order. Filter by role to get just the cast or crew, or by person for one person's credits. */
   credits: Array<Credit>;
   description: Maybe<Scalars['String']['output']>;
   directors: Array<Person>;
@@ -57,6 +57,7 @@ export type Film = {
 
 
 export type FilmCreditsArgs = {
+  person?: InputMaybe<Scalars['ID']['input']>;
   role?: InputMaybe<Role>;
 };
 
@@ -132,6 +133,8 @@ export type Person = {
   /** Credits grouped by the decade the film came out. */
   creditsByDecade: Array<DecadeCredits>;
   id: Scalars['ID']['output'];
+  /** The person's most notable film, optionally in one role. Handy for telling namesakes apart. */
+  knownFor: Maybe<Film>;
   name: Scalars['String']['output'];
   wikidataId: Scalars['String']['output'];
 };
@@ -143,6 +146,11 @@ export type PersonCreditsArgs = {
 
 
 export type PersonCreditsByDecadeArgs = {
+  role?: InputMaybe<Role>;
+};
+
+
+export type PersonKnownForArgs = {
   role?: InputMaybe<Role>;
 };
 
@@ -172,12 +180,17 @@ export type Query = {
   films: FilmConnection;
   genre: Maybe<Genre>;
   genres: Array<Genre>;
-  /** People whose name matches the search (prefix match on each word). */
+  /**
+   * Name search for autocomplete. Every word must prefix-match the name, ignoring
+   * case and accents. An exact name ranks first, then names starting with the text,
+   * then the most notable. With role, only people with credits in that role.
+   */
   people: PersonConnection;
   person: Maybe<Person>;
   /** Films both people are credited on, oldest first. */
   sharedFilms: Array<Film>;
   studio: Maybe<Studio>;
+  /** Studio name search, ranked like people. */
   studios: StudioConnection;
 };
 
@@ -230,6 +243,7 @@ export type QueryGenreArgs = {
 export type QueryPeopleArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
+  role?: InputMaybe<Role>;
   search: Scalars['String']['input'];
 };
 
@@ -285,6 +299,8 @@ export type Studio = {
   /** Number of the studio's films in each genre, per decade. */
   genreBreakdown: Array<GenreDecadeCount>;
   id: Scalars['ID']['output'];
+  /** The studio's most notable film. */
+  knownFor: Maybe<Film>;
   name: Scalars['String']['output'];
   wikidataId: Scalars['String']['output'];
 };
@@ -507,6 +523,7 @@ export type PersonResolvers<ContextType = any, ParentType extends ResolversParen
   credits?: Resolver<Array<ResolversTypes['Credit']>, ParentType, ContextType, Partial<PersonCreditsArgs>>;
   creditsByDecade?: Resolver<Array<ResolversTypes['DecadeCredits']>, ParentType, ContextType, Partial<PersonCreditsByDecadeArgs>>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  knownFor?: Resolver<Maybe<ResolversTypes['Film']>, ParentType, ContextType, Partial<PersonKnownForArgs>>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   wikidataId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
@@ -539,6 +556,7 @@ export type StudioResolvers<ContextType = any, ParentType extends ResolversParen
   films?: Resolver<ResolversTypes['FilmConnection'], ParentType, ContextType, RequireFields<StudioFilmsArgs, 'first' | 'orderBy'>>;
   genreBreakdown?: Resolver<Array<ResolversTypes['GenreDecadeCount']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  knownFor?: Resolver<Maybe<ResolversTypes['Film']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   wikidataId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };

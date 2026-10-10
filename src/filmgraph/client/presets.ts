@@ -1,7 +1,9 @@
 /**
- * Explorer presets. Each one pairs a GraphQL document with a REST plan: the
- * sequence of REST calls a client would make to build exactly the same data.
- * The contract tests run both and check they produce identical results.
+ * Explorer questions. Each one is a sentence with blanks (people or studios
+ * the visitor picks by name), a GraphQL document whose variables are the
+ * chosen ids, and a REST plan: the sequence of REST calls a client would make
+ * to build exactly the same data. The contract tests run both and check they
+ * produce identical results.
  */
 import {
   ACTOR_PATH,
@@ -15,10 +17,31 @@ import {
 /** GET a REST path relative to the REST base and return the parsed JSON body. */
 export type RestGet = (path: string) => Promise<any>;
 
+/** What a blank searches for. Directors and actors are people filtered by role. */
+export type BlankKind = "director" | "actor" | "studio";
+
+export interface Choice {
+  id: string;
+  name: string;
+}
+
+export interface Blank {
+  /** The GraphQL variable this blank fills. */
+  variable: string;
+  kind: BlankKind;
+  /** Accessible name for the blank, e.g. "Director" or "Second actor". */
+  label: string;
+  default: Choice;
+}
+
+/** A sentence: plain text and blanks, in reading order. */
+export type SentencePart = string | Blank;
+
 export interface Preset {
   id: string;
   label: string;
   summary: string;
+  sentence: SentencePart[];
   query: string;
   variables: Record<string, string>;
   /** Human-readable REST call sequence, shown before running. */
@@ -29,11 +52,27 @@ export interface Preset {
 
 const enc = encodeURIComponent;
 
+function blank(variable: string, kind: BlankKind, label: string, id: string, name: string): Blank {
+  return { variable, kind, label, default: { id, name } };
+}
+
+export const blanksOf = (preset: Preset) => preset.sentence.filter((part): part is Blank => typeof part !== "string");
+
+/** Variables for a preset from the chosen people or studios. */
+export function variablesFor(preset: Preset, choices: Record<string, Choice>): Record<string, string> {
+  return Object.fromEntries(blanksOf(preset).map((b) => [b.variable, (choices[b.variable] ?? b.default).id]));
+}
+
+/** Default choices for a preset's blanks. */
+export const defaultChoices = (preset: Preset): Record<string, Choice> =>
+  Object.fromEntries(blanksOf(preset).map((b) => [b.variable, b.default]));
+
 export const PRESETS: Preset[] = [
   {
     id: "director",
-    label: "Director with full cast",
-    summary: "Every film Christopher Nolan directed, with each film's billed cast.",
+    label: "Every film [director] directed, with its cast",
+    summary: "Each film in the list comes with its billed cast and character names.",
+    sentence: ["Every film ", blank("id", "director", "Director", "25191", "Christopher Nolan"), " directed, with its cast"],
     query: DIRECTOR_WITH_CAST,
     variables: { id: "25191" },
     restSteps: ({ id }) => [
@@ -70,8 +109,9 @@ export const PRESETS: Preset[] = [
   },
   {
     id: "filmography",
-    label: "Filmography by decade",
-    summary: "Tom Hanks's acting credits grouped by decade, with each film's genres.",
+    label: "[Actor]’s films, by decade",
+    summary: "Acting credits grouped by decade, with each film’s genres.",
+    sentence: [blank("id", "actor", "Actor", "2263", "Tom Hanks"), "’s films, by decade"],
     query: FILMOGRAPHY_BY_DECADE,
     variables: { id: "2263" },
     restSteps: ({ id }) => [
@@ -110,8 +150,15 @@ export const PRESETS: Preset[] = [
   },
   {
     id: "shared",
-    label: "Films two actors share",
-    summary: "Films with both Robert De Niro and Al Pacino in the cast, and who directed them.",
+    label: "Films [actor] and [actor] both appear in",
+    summary: "Films with both actors in the cast, their characters, and who directed them.",
+    sentence: [
+      "Films ",
+      blank("a", "actor", "First actor", "36949", "Robert De Niro"),
+      " and ",
+      blank("b", "actor", "Second actor", "41163", "Al Pacino"),
+      " both appear in",
+    ],
     query: SHARED_FILMS,
     variables: { a: "36949", b: "41163" },
     restSteps: ({ a, b }) => [
@@ -120,7 +167,7 @@ export const PRESETS: Preset[] = [
       `GET /people/${a}/films?role=actor`,
       `GET /people/${b}/films?role=actor`,
       "Intersect the two lists in the client",
-      "GET /films/{filmId}/credits?role=director  (one per shared film)",
+      "GET /films/{filmId}/credits  (one per shared film, for directors and characters)",
     ],
     async rest(get, { a, b }) {
       const [personA, personB, filmsA, filmsB] = await Promise.all([
@@ -134,22 +181,31 @@ export const PRESETS: Preset[] = [
       const shared = filmsA.data
         .map((credit: any) => credit.film)
         .filter((film: any) => inB.has(film.id) && !seen.has(film.id) && seen.add(film.id));
-      const directors = await Promise.all(shared.map((film: any) => get(`/films/${film.id}/credits?role=director`)));
+      const credits = await Promise.all(shared.map((film: any) => get(`/films/${film.id}/credits`)));
+      const actingAs = (list: any[], id: string) =>
+        list
+          .filter((credit: any) => credit.role === "actor" && String(credit.person.id) === String(id))
+          .map((credit: any) => ({ character: credit.character }));
       return {
         a: { name: personA.name },
         b: { name: personB.name },
         sharedFilms: shared.map((film: any, index: number) => ({
           title: film.title,
           year: film.year,
-          directors: directors[index].data.map((credit: any) => ({ name: credit.person.name })),
+          directors: credits[index].data
+            .filter((credit: any) => credit.role === "director")
+            .map((credit: any) => ({ name: credit.person.name })),
+          asA: actingAs(credits[index].data, a),
+          asB: actingAs(credits[index].data, b),
         })),
       };
     },
   },
   {
     id: "studio",
-    label: "Studio output by genre",
-    summary: "Warner Bros. films per genre in each decade. GraphQL aggregates in SQL; REST pages through every film.",
+    label: "What [studio] made, by genre over time",
+    summary: "Films per genre in each decade. GraphQL aggregates in SQL; REST pages through every film.",
+    sentence: ["What ", blank("id", "studio", "Studio", "126399", "Warner Bros. Entertainment"), " made, by genre over time"],
     query: STUDIO_OUTPUT,
     variables: { id: "126399" },
     restSteps: ({ id }) => [
@@ -191,8 +247,14 @@ export const PRESETS: Preset[] = [
   },
   {
     id: "path",
-    label: "Shortest link between two actors",
-    summary: "The shortest co-star chain from Kevin Bacon to Marilyn Monroe, up to 3 films.",
+    label: "Shortest link between [actor] and [actor]",
+    summary: "The shortest co-star chain between two actors, up to 3 films.",
+    sentence: [
+      "Shortest link between ",
+      blank("from", "actor", "First actor", "3454165", "Kevin Bacon"),
+      " and ",
+      blank("to", "actor", "Second actor", "4616", "Marilyn Monroe"),
+    ],
     query: ACTOR_PATH,
     variables: { from: "3454165", to: "4616" },
     restSteps: ({ from, to }) => [
@@ -227,6 +289,7 @@ export const SIX_DEGREES_PRESET: Preset = {
   id: "six-degrees",
   label: "Six degrees (N+1 demo)",
   summary: "Pulp Fiction's cast, then every cast member's other films.",
+  sentence: ["Pulp Fiction’s cast, then every cast member’s other films"],
   query: SIX_DEGREES,
   variables: { id: "104123" },
   restSteps: ({ id }) => [

@@ -9,11 +9,20 @@
  * keeps all the heavy code off every other page of the site.
  */
 import { PGlite } from "@electric-sql/pglite";
-import seedUrl from "../../data/film-graph-seed.json?url";
-import { isSeeded, loadSeed } from "../db/database";
+import manifest from "../../data/film-graph/manifest.json";
+import { SCHEMA_VERSION } from "../db/schema";
+import { beginSeed, finishSeed, isSeeded, loadSeedPart } from "../db/database";
 import { createBackend, type Backend } from "../api/server";
 import { PERSISTED_DOCUMENTS } from "../operations";
-import type { Seed } from "../seed-format";
+import type { SeedManifest, SeedPart } from "../seed-format";
+
+// Hashed URLs of the seed parts (emitted as static assets at build time).
+const partUrls = import.meta.glob("../../data/film-graph/part-*.json", {
+  query: "?url",
+  import: "default",
+  eager: true,
+}) as Record<string, string>;
+const seedManifest = manifest as SeedManifest;
 import type { BootStatus, WireRequest, WireResponse, WorkerInbound, WorkerOutbound } from "../protocol";
 
 interface WorkerScope {
@@ -71,9 +80,60 @@ async function writeSnapshot(key: string, blob: Blob): Promise<void> {
 
 let pg: PGlite | null = null;
 
+const mb = (bytes: number) => `${(bytes / 1048576).toFixed(1)} MB`;
+
+/** Downloads one part, reporting bytes as they stream in. */
+async function download(url: string, onBytes: (bytes: number) => void): Promise<SeedPart> {
+  const response = await fetch(url);
+  if (!response.ok || !response.body) throw new Error(`Seed download failed (HTTP ${response.status})`);
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    chunks.push(value);
+    onBytes(value.byteLength);
+  }
+  return JSON.parse(await new Blob(chunks as BlobPart[]).text()) as SeedPart;
+}
+
+/**
+ * Downloads the seed parts in order and loads each one as soon as it arrives,
+ * while the next one downloads. Returns the total bytes downloaded.
+ */
+async function seedFromParts(db: PGlite, seedKey: string): Promise<number> {
+  const parts = seedManifest.parts;
+  const total = parts.reduce((sum, part) => sum + part.bytes, 0);
+  let received = 0;
+  let loaded = 0;
+  const report = (phase: "download" | "seed", detail: string) =>
+    status({ phase, detail, progress: (received / total + loaded / parts.length) / 2 });
+  const urlOf = (file: string) => {
+    const url = partUrls[`../../data/film-graph/${file}`];
+    if (!url) throw new Error(`Seed part ${file} is missing from the build`);
+    return url;
+  };
+  const fetchPart = (index: number) =>
+    download(urlOf(parts[index].file), (bytes) => {
+      received += bytes;
+      report("download", `Downloading film data: ${mb(received)} of ${mb(total)}`);
+    });
+
+  await beginSeed(db);
+  let pending = fetchPart(0);
+  for (let index = 0; index < parts.length; index += 1) {
+    const part = await pending;
+    if (index + 1 < parts.length) pending = fetchPart(index + 1);
+    await loadSeedPart(db, part, (step) => report("seed", `Loading ${step}, part ${index + 1} of ${parts.length}`));
+    loaded += 1;
+  }
+  await finishSeed(db, seedKey, (step) => status({ phase: "seed", detail: `Building ${step}`, progress: 0.98 }));
+  return received;
+}
+
 async function boot(): Promise<Backend> {
-  // The seed URL includes a content hash in production, so a new seed re-seeds.
-  const seedKey = seedUrl;
+  // A new seed (generatedAt) or schema version rebuilds any saved copy.
+  const seedKey = `${seedManifest.generatedAt}#seed${seedManifest.version}#schema${SCHEMA_VERSION}`;
   status({ phase: "engine", detail: "Starting Postgres (WASM)" });
   const snapshot = await readSnapshot(seedKey);
   let seeded = false;
@@ -89,13 +149,7 @@ async function boot(): Promise<Backend> {
   }
   if (!pg) {
     pg = await PGlite.create();
-    status({ phase: "download", detail: "Downloading film data" });
-    const response = await fetch(seedUrl);
-    if (!response.ok) throw new Error(`Seed download failed (HTTP ${response.status})`);
-    const text = await response.text();
-    seedBytes = text.length;
-    const seed = JSON.parse(text) as Seed;
-    await loadSeed(pg, seed, seedKey, (step) => status({ phase: "seed", detail: `Loading ${step}` }));
+    seedBytes = await seedFromParts(pg, seedKey);
     seeded = true;
   }
   const counts = (

@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, test } from "vitest";
 import { setup, type TestApi } from "./helpers";
-import { SIX_DEGREES, DIRECTOR_WITH_CAST } from "../../src/filmgraph/operations";
+import { SIX_DEGREES, DIRECTOR_WITH_CAST, PEOPLE_SEARCH, STUDIO_SEARCH } from "../../src/filmgraph/operations";
 import { sha256Hex } from "../../src/filmgraph/hash";
 import { PERSISTED_ONLY_HEADER } from "../../src/filmgraph/config";
 
@@ -94,5 +94,32 @@ describe("persisted queries", () => {
     expect(result.body.errors[0].message).toMatch(/PersistedQueryOnly/i);
     const allowed = await api.graphql(`{ genres { name } }`);
     expect(allowed.body.data.genres.length).toBeGreaterThan(10);
+  });
+});
+
+describe("name search", () => {
+  test("people search by role, with a known-for film, in a few batched queries", async () => {
+    const result = await api.graphql(PEOPLE_SEARCH, { text: "nolan", role: "DIRECTOR" });
+    expect(result.body.errors).toBeUndefined();
+    const first = result.body.data.people.edges[0].node;
+    expect(first).toMatchObject({ name: "Christopher Nolan", birthYear: 1970 });
+    expect(first.knownFor.title).toBeTruthy();
+    expect(result.trace.sql.length).toBeLessThanOrEqual(3);
+  });
+
+  test("studio search returns film counts and a known-for film", async () => {
+    const result = await api.graphql(STUDIO_SEARCH, { text: "warner" });
+    const first = result.body.data.studios.edges[0].node;
+    expect(first.name).toBe("Warner Bros. Entertainment");
+    expect(first.filmCount).toBeGreaterThan(100);
+    expect(first.knownFor.title).toBeTruthy();
+  });
+
+  test("Film.credits can be filtered to one person", async () => {
+    const result = await api.graphql(
+      `{ film(id: "47703") { credits(role: ACTOR, person: "41163") { character person { name } } } }`,
+    );
+    expect(result.body.data.film.credits).toHaveLength(1);
+    expect(result.body.data.film.credits[0].person.name).toBe("Al Pacino");
   });
 });
