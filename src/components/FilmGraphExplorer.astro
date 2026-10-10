@@ -1,37 +1,23 @@
 ---
 import "../styles/demo-layout.css";
+import "../styles/film-graph.css";
+import Explorer from "./film-graph/Explorer.tsx";
 ---
 
 <section class="fg" id="film-graph" aria-label="Film Graph explorer">
-  <p id="fg-status" role="status">Starting the in-browser backend…</p>
-  <pre id="fg-out"></pre>
+  <Explorer client:only="react">
+    <div slot="fallback" class="fg-banner" role="status">
+      <div class="fg-spinner" aria-hidden="true"></div>
+      <div>
+        <strong>Loading the explorer…</strong>
+        <p>Everything below runs in your browser, so the first visit downloads a small Postgres build.</p>
+      </div>
+    </div>
+  </Explorer>
+  <noscript>
+    <p class="fg-noscript">
+      This demo runs a database and an API inside your browser, so it needs JavaScript. The write-up below explains how
+      it works.
+    </p>
+  </noscript>
 </section>
-
-<script>
-  import { connect } from "../filmgraph/client/connection";
-  import { GRAPHQL_URL, REST_BASE } from "../filmgraph/config";
-
-  const status = document.getElementById("fg-status")!;
-  const out = document.getElementById("fg-out")!;
-  const connection = await connect((s) => {
-    status.textContent = `${s.phase}: ${s.detail ?? ""} (${Math.round(s.elapsedMs)} ms)`;
-    (window as any).__fgStatus = s;
-  });
-  const gql = await connection.fetch(GRAPHQL_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query: '{ film(id: "47703") { title year directors { name } } }' }),
-  });
-  const rest = await connection.fetch(`${REST_BASE}/films/47703`);
-  const etag = rest.headers.get("etag");
-  const again = await connection.fetch(`${REST_BASE}/films/47703`, { headers: { "If-None-Match": etag ?? "" } });
-  const result = {
-    mode: connection.mode,
-    fallbackReason: connection.fallbackReason,
-    graphql: { status: gql.status, queries: gql.headers.get("x-db-queries"), body: await gql.json() },
-    rest: { status: rest.status, etag, title: (await rest.json()).title },
-    revalidate: again.status,
-  };
-  (window as any).__fgSmoke = result;
-  out.textContent = JSON.stringify(result, null, 2);
-</script>

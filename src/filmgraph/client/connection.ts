@@ -36,12 +36,17 @@ function waitForController(timeoutMs: number): Promise<boolean> {
   });
 }
 
+const timeout = <T>(promise: Promise<T>, ms: number) =>
+  Promise.race([promise, new Promise<null>((resolve) => setTimeout(() => resolve(null), ms))]);
+
 async function setUpServiceWorker(): Promise<string | null> {
   if (!("serviceWorker" in navigator)) return "This browser does not support service workers.";
   if (!window.isSecureContext) return "Service workers need HTTPS or localhost.";
+  if (!location.pathname.startsWith(SW_SCOPE)) return "This page is outside the service worker's scope.";
   try {
     await navigator.serviceWorker.register(SW_URL, { scope: SW_SCOPE });
-    await navigator.serviceWorker.ready;
+    const ready = await timeout(navigator.serviceWorker.ready, 8000);
+    if (!ready) return "The service worker did not start in time.";
     const controlled = await waitForController(4000);
     return controlled ? null : "The page is not controlled by the service worker (a hard reload bypasses it).";
   } catch (error) {

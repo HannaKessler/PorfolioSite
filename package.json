@@ -13,19 +13,32 @@
     "filmgraph:data": "tsx filmgraph/build-seed.ts"
   },
   "dependencies": {
+    "@astrojs/react": "^7.0.1",
+    "@codemirror/autocomplete": "^6.20.3",
+    "@codemirror/commands": "^6.11.1",
+    "@codemirror/language": "^6.13.1",
+    "@codemirror/lint": "^6.9.7",
+    "@codemirror/state": "^6.7.6",
+    "@codemirror/view": "^6.43.14",
     "@electric-sql/pglite": "^0.5.8",
     "@fontsource-variable/nunito-sans": "^5.3.0",
     "@fontsource/faculty-glyphic": "^5.3.0",
     "@graphql-yoga/plugin-persisted-operations": "^3.24.4",
+    "@lezer/highlight": "^1.2.5",
     "astro": "^7.3.2",
+    "cm6-graphql": "^0.2.2",
     "dataloader": "^2.2.3",
     "graphql": "^16.14.2",
-    "graphql-yoga": "^5.24.4"
+    "graphql-yoga": "^5.24.4",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "allowScripts": {
     "esbuild": true
   },
   "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "tsx": "^4.23.15"
   }
 }
