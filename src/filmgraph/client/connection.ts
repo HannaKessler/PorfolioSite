@@ -64,10 +64,21 @@ export async function connect(onStatus: (status: BootStatus) => void): Promise<C
   const traces = new Map<string, RequestTrace>();
   const waiters = new Map<string, (trace: RequestTrace) => void>();
   let resetDone: (() => void) | null = null;
+  // Resolves once the database is seeded or restored, so the first run times queries, not setup.
+  let markReady: () => void = () => {};
+  let markFailed: (error: Error) => void = () => {};
+  const databaseReady = new Promise<void>((resolve, reject) => {
+    markReady = resolve;
+    markFailed = reject;
+  });
 
   worker.addEventListener("message", (event: MessageEvent<WorkerOutbound>) => {
     const message = event.data;
-    if (message.type === "status") onStatus(message.status);
+    if (message.type === "status") {
+      onStatus(message.status);
+      if (message.status.phase === "ready") markReady();
+      if (message.status.phase === "error") markFailed(new Error(message.status.detail ?? "The database could not start."));
+    }
     if (message.type === "trace") {
       traces.set(message.trace.requestId, message.trace);
       waiters.get(message.trace.requestId)?.(message.trace);
@@ -76,7 +87,9 @@ export async function connect(onStatus: (status: BootStatus) => void): Promise<C
     if (message.type === "reset-done") resetDone?.();
   });
   worker.addEventListener("error", (event) => {
-    onStatus({ phase: "error", detail: event.message || "The backend worker failed to start.", elapsedMs: 0 });
+    const detail = event.message || "The backend worker failed to start.";
+    onStatus({ phase: "error", detail, elapsedMs: 0 });
+    markFailed(new Error(detail));
   });
 
   // The service worker forwards API requests to this page; pass them to the worker.
@@ -93,6 +106,7 @@ export async function connect(onStatus: (status: BootStatus) => void): Promise<C
 
   const fallbackReason = await setUpServiceWorker();
   const mode: TransportMode = fallbackReason ? "direct" : "service-worker";
+  await databaseReady;
 
   async function direct(url: string, init: RequestInit = {}): Promise<Response> {
     const request = new Request(new URL(url, location.href), init);
