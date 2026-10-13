@@ -77,7 +77,9 @@ export async function loadModel(files: File[], options: LoadOptions = {}): Promi
 
   const manager = new THREE.LoadingManager();
   manager.setURLModifier((url) => {
-    if (url.startsWith("data:") || ownUrls.has(url)) return url;
+    // data: and blob: URLs are textures embedded in the model file itself
+    // (FBXLoader and GLTFLoader create blob: URLs for them).
+    if (url.startsWith("data:") || url.startsWith("blob:") || ownUrls.has(url)) return url;
     const file = map.get(matchKey(url));
     if (file) {
       const blobUrl = urlFor(file);
