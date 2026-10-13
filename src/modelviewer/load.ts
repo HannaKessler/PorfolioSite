@@ -7,7 +7,6 @@ import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 import { PLYLoader } from "three/examples/jsm/loaders/PLYLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
-import { setupAlpha } from "./alpha";
 import { buildFileMap, matchKey, pickMainFile, pickMaterialFile } from "./files";
 
 export interface LoadedModel {
@@ -47,14 +46,7 @@ function meshFromGeometry(geometry: THREE.BufferGeometry): THREE.Mesh {
  * and a LoadingManager URL modifier maps each reference inside the model
  * (textures, .bin buffers) to the supplied file with the same name.
  */
-export interface LoadOptions {
-  /** Whether the renderer uses MSAA (enables alpha-to-coverage on cutouts). */
-  antialias?: boolean;
-  /** Called when materials change after load (texture alpha is detected asynchronously). */
-  onChange?: () => void;
-}
-
-export async function loadModel(files: File[], options: LoadOptions = {}): Promise<LoadedModel> {
+export async function loadModel(files: File[]): Promise<LoadedModel> {
   const pick = pickMainFile(files);
   if (!pick.ok) throw new Error(pick.error);
   const { main, format } = pick;
@@ -133,11 +125,6 @@ export async function loadModel(files: File[], options: LoadOptions = {}): Promi
       throw new Error(`${main.name} loaded but contains no visible geometry.`);
     }
     object.name = main.name;
-    setupAlpha(object, {
-      fromGltf: format === "gltf" || format === "glb",
-      antialias: options.antialias ?? true,
-      onChange: options.onChange,
-    });
     // Textures finish loading after the model itself, so the blob URLs stay
     // alive until the model is replaced.
     return { object, name: main.name, missing: [...missing], release };
