@@ -17,6 +17,22 @@ function lazyBabylonPane() {
 }
 let BabylonPane = lazyBabylonPane();
 
+// The hand-written renderers, also fetched only once a model is open.
+function lazyCustomPane() {
+  return lazy(() =>
+    import("./CustomPane").catch((error: unknown) => {
+      CustomPane = lazyCustomPane();
+      throw error;
+    }),
+  );
+}
+let CustomPane = lazyCustomPane();
+
+const CUSTOM_PANES = [
+  { backend: "webgpu", label: "Custom · WebGPU" },
+  { backend: "webgl2", label: "Custom · WebGL2" },
+] as const;
+
 /**
  * Keeps a failure in one engine's pane (a chunk that fails to download, a
  * loader exception, a lost WebGL context) inside that pane instead of
@@ -263,6 +279,18 @@ export default function Viewer() {
             </PaneBoundary>
           )}
         </div>
+        {CUSTOM_PANES.map(({ backend, label }) => (
+          <div className="mv-pane" key={backend}>
+            <span className="mv-pane-label">{label}</span>
+            {model && (
+              <PaneBoundary engine={label} resetKey={model}>
+                <Suspense fallback={<div className="mv-pane-note">Loading renderer…</div>}>
+                  <CustomPane backend={backend} model={model} />
+                </Suspense>
+              </PaneBoundary>
+            )}
+          </div>
+        ))}
 
         {status.kind !== "ready" && (
           <div className={`mv-overlay mv-${status.kind}`} role={status.kind === "error" ? "alert" : "status"}>

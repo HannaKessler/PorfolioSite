@@ -138,7 +138,8 @@
   height: 100% !important;
 }
 
-.mv-babylon-canvas {
+.mv-babylon-canvas,
+.mv-custom-canvas {
   display: block;
   outline: none;
   touch-action: none;
@@ -171,10 +172,23 @@
   pointer-events: none;
 }
 
+/* Two rows: library engines on top, the hand-written renderers below. */
+.mv-stage {
+  grid-template-rows: 1fr 1fr;
+  height: clamp(40rem, 125vh, 76rem);
+}
+
+.mv-custom-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
 @media (max-width: 720px) {
   .mv-stage {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
-    height: clamp(36rem, 110vh, 52rem);
+    grid-template-rows: repeat(4, 1fr);
+    height: clamp(64rem, 220vh, 100rem);
   }
 }
