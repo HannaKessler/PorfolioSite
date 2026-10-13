@@ -1,6 +1,6 @@
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { Canvas, createPortal, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import { Grid, OrbitControls } from "@react-three/drei";
 import { disposeObject, loadModel, type LoadedModel } from "../../modelviewer/load";
 import { SAMPLES, type Sample } from "../../modelviewer/samples";
@@ -40,20 +40,15 @@ function placeAndFrame(object: THREE.Object3D, camera: THREE.PerspectiveCamera, 
 function Scene({ model }: { model: LoadedModel | null }) {
   const { camera, controls, invalidate } = useThree();
   const [scale, setScale] = useState(1);
-  // The ground grid lives in its own scene and is drawn in a separate pass
-  // before the model, with the depth buffer cleared in between. Model depth
-  // (including transparent texels of foliage cards) can then never hide it,
-  // whatever order three.js sorts transparent objects in.
-  const gridScene = useMemo(() => new THREE.Scene(), []);
-  useFrame(({ gl, scene, camera: frameCamera }) => {
-    const autoClear = gl.autoClear;
-    gl.autoClear = false;
-    gl.clear();
-    gl.render(gridScene, frameCamera);
-    gl.clearDepth();
-    gl.render(scene, frameCamera);
-    gl.autoClear = autoClear;
-  }, 1);
+  const grid = useRef<THREE.Mesh>(null);
+
+  useEffect(() => {
+    const material = grid.current?.material as THREE.Material | undefined;
+    if (material) {
+      material.depthWrite = false;
+      material.needsUpdate = true;
+    }
+  }, []);
 
   useEffect(() => {
     if (!model) return;
@@ -74,8 +69,11 @@ function Scene({ model }: { model: LoadedModel | null }) {
       <hemisphereLight args={[0xffffff, 0x8d8a85, 1.6]} />
       <directionalLight position={[3, 5, 4]} intensity={2.2} />
       <directionalLight position={[-4, 2, -3]} intensity={0.6} />
-      {createPortal(
-        <Grid
+      {/* Drawn before the model's transparent surfaces and without writing
+          depth, so foliage and other alpha-textured meshes blend over it. */}
+      <Grid
+        ref={grid}
+        renderOrder={-1}
         args={[10, 10]}
         cellSize={cell}
         sectionSize={cell * 5}
@@ -84,9 +82,7 @@ function Scene({ model }: { model: LoadedModel | null }) {
         fadeDistance={scale * 12}
         fadeStrength={1.5}
         infiniteGrid
-        />,
-        gridScene,
-      )}
+      />
       {model && <primitive object={model.object} />}
       <OrbitControls makeDefault enableDamping={false} />
     </>
