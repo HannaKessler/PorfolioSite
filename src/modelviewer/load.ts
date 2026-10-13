@@ -127,6 +127,7 @@ export async function loadModel(files: File[]): Promise<LoadedModel> {
       throw new Error(`${main.name} loaded but contains no visible geometry.`);
     }
     object.name = main.name;
+    disableDepthWriteOnTexturedTransparency(object);
     // Textures finish loading after the model itself, so the blob URLs stay
     // alive until the model is replaced.
     return { object, name: main.name, missing: [...missing], release };
@@ -152,6 +153,26 @@ function hasRenderableContent(object: THREE.Object3D): boolean {
     if (geometry?.getAttribute?.("position")?.count) found = true;
   });
   return found;
+}
+
+/**
+ * Transparent materials with a texture (foliage cards, decals) should not
+ * write depth. Loaders such as FBXLoader leave depthWrite on, and when all
+ * the cards are in one mesh three.js cannot sort them, so the fully
+ * transparent part of a near card hides blades on the cards behind it.
+ * Turning depthWrite off for these materials only keeps the soft blended
+ * edges. Opaque materials, alpha-tested (glTF MASK) materials and untextured
+ * transparent materials are left as loaded.
+ */
+function disableDepthWriteOnTexturedTransparency(object: THREE.Object3D): void {
+  object.traverse((child) => {
+    const mesh = child as THREE.Mesh;
+    const materials = Array.isArray(mesh.material) ? mesh.material : mesh.material ? [mesh.material] : [];
+    for (const material of materials) {
+      const textured = material as THREE.Material & { map?: THREE.Texture | null; alphaMap?: THREE.Texture | null };
+      if (material.transparent && (textured.map || textured.alphaMap)) material.depthWrite = false;
+    }
+  });
 }
 
 /** Free GPU memory held by a model: geometries, materials and their textures. */
