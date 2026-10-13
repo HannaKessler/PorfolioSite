@@ -7,6 +7,7 @@ import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 import { PLYLoader } from "three/examples/jsm/loaders/PLYLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
+import { fbxDoubleSidedModels } from "./fbxCulling";
 import { buildFileMap, matchKey, pickMainFile, pickMaterialFile } from "./files";
 
 export interface LoadedModel {
@@ -101,6 +102,7 @@ export async function loadModel(files: File[]): Promise<LoadedModel> {
       }
       case "fbx":
         object = await new FBXLoader(manager).loadAsync(mainUrl);
+        applyFbxCulling(object, await main.arrayBuffer());
         break;
       case "obj": {
         const text = await main.text();
@@ -153,6 +155,37 @@ function hasRenderableContent(object: THREE.Object3D): boolean {
     if (geometry?.getAttribute?.("position")?.count) found = true;
   });
   return found;
+}
+
+/**
+ * Honor FBX "Culling: CullingOff" (double-sided) on the meshes it applies to.
+ * glTF's doubleSided is already applied by GLTFLoader; OBJ, STL and PLY have
+ * no sidedness flag, so those stay as loaded.
+ */
+function applyFbxCulling(object: THREE.Object3D, buffer: ArrayBuffer): void {
+  let names: Set<string>;
+  try {
+    names = fbxDoubleSidedModels(buffer);
+  } catch {
+    return; // Unreadable culling data: keep the loader's defaults.
+  }
+  if (names.size === 0) return;
+  const wanted = new Set([...names].map((name) => THREE.PropertyBinding.sanitizeNodeName(name)));
+  const converted = new Map<THREE.Material, THREE.Material>();
+  const toDoubleSided = (material: THREE.Material) => {
+    let result = converted.get(material);
+    if (!result) {
+      result = material.side === THREE.DoubleSide ? material : material.clone();
+      result.side = THREE.DoubleSide;
+      converted.set(material, result);
+    }
+    return result;
+  };
+  object.traverse((child) => {
+    const mesh = child as THREE.Mesh;
+    if (!mesh.isMesh || !wanted.has(mesh.name)) return;
+    mesh.material = Array.isArray(mesh.material) ? mesh.material.map(toDoubleSided) : toDoubleSided(mesh.material);
+  });
 }
 
 /**
