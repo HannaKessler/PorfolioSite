@@ -1,0 +1,14 @@
+---
+import "../styles/demo-layout.css";
+import "../styles/model-viewer.css";
+import Viewer from "./model-viewer/Viewer.tsx";
+---
+
+<section class="mv" id="model-viewer" aria-label="3D model viewer">
+  <Viewer client:only="react">
+    <p slot="fallback" class="mv-hint">Loading the viewer…</p>
+  </Viewer>
+  <noscript>
+    <p class="mv-hint">The viewer renders models with WebGL in your browser, so it needs JavaScript.</p>
+  </noscript>
+</section>

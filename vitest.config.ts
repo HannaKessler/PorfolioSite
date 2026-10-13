@@ -4,7 +4,7 @@ import { defineConfig } from "vitest/config";
 // in-memory PGlite and loads the real seed, so allow a generous timeout.
 export default defineConfig({
   test: {
-    include: ["tests/film-graph/**/*.test.ts"],
+    include: ["tests/film-graph/**/*.test.ts", "tests/model-viewer/**/*.test.ts"],
     environment: "node",
     testTimeout: 30_000,
     hookTimeout: 60_000,
