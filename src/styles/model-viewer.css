@@ -172,10 +172,22 @@
   pointer-events: none;
 }
 
-/* Two rows: library engines on top, the hand-written renderers below. */
+/*
+ * Four panes, 2 x 2. Each row's height is set so both rows, the sample
+ * controls above and the footnote below fit in one screen once the viewer is
+ * scrolled into view; it never drops below a usable size or grows past a
+ * comfortable one. Widths come from the page column, so panes stay roughly
+ * no wider than about 1.8:1 instead of stretching on wide monitors.
+ */
 .mv-stage {
-  grid-template-rows: 1fr 1fr;
-  height: clamp(40rem, 125vh, 76rem);
+  --mv-chrome: 7.5rem; /* toolbar, footnote and the gaps between them */
+  --mv-pane-height: clamp(220px, calc((100svh - var(--mv-chrome)) / 2), 460px);
+  height: auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, var(--mv-pane-height));
+  width: 100%;
+  max-width: calc(var(--mv-pane-height) * 3.6);
+  margin-inline: auto;
 }
 
 .mv-custom-canvas {
@@ -185,10 +197,12 @@
   height: 100%;
 }
 
+/* Phones: one pane per row, each a little wider than tall. */
 @media (max-width: 720px) {
   .mv-stage {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, 1fr);
-    height: clamp(64rem, 220vh, 100rem);
+    --mv-pane-height: max(240px, 60vw);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(4, var(--mv-pane-height));
+    max-width: none;
   }
 }
