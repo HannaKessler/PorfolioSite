@@ -1,6 +1,6 @@
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas, invalidate, useThree } from "@react-three/fiber";
 import { Grid, OrbitControls } from "@react-three/drei";
 import { disposeObject, loadModel, type LoadedModel } from "../../modelviewer/load";
 import { SAMPLES, type Sample } from "../../modelviewer/samples";
@@ -40,6 +40,15 @@ function placeAndFrame(object: THREE.Object3D, camera: THREE.PerspectiveCamera, 
 function Scene({ model }: { model: LoadedModel | null }) {
   const { camera, controls, invalidate } = useThree();
   const [scale, setScale] = useState(1);
+  const grid = useRef<THREE.Mesh>(null);
+
+  useEffect(() => {
+    const material = grid.current?.material as THREE.Material | undefined;
+    if (material) {
+      material.depthWrite = false;
+      material.needsUpdate = true;
+    }
+  }, []);
 
   useEffect(() => {
     if (!model) return;
@@ -60,7 +69,11 @@ function Scene({ model }: { model: LoadedModel | null }) {
       <hemisphereLight args={[0xffffff, 0x8d8a85, 1.6]} />
       <directionalLight position={[3, 5, 4]} intensity={2.2} />
       <directionalLight position={[-4, 2, -3]} intensity={0.6} />
+      {/* Drawn before the model's transparent surfaces and without writing
+          depth, so foliage and other alpha-textured meshes blend over it. */}
       <Grid
+        ref={grid}
+        renderOrder={-1}
         args={[10, 10]}
         cellSize={cell}
         sectionSize={cell * 5}
@@ -99,7 +112,7 @@ export default function Viewer() {
       const id = ++request.current;
       setStatus({ kind: "loading", label });
       try {
-        const model = await loadModel(files);
+        const model = await loadModel(files, { antialias: true, onChange: () => invalidate() });
         if (id !== request.current) {
           disposeObject(model.object);
           model.release();
