@@ -21,6 +21,9 @@
   },
   "dependencies": {
     "@astrojs/react": "^7.0.1",
+    "@babylonjs/core": "^9.30.0",
+    "@babylonjs/loaders": "^9.30.0",
+    "@babylonjs/materials": "^9.30.0",
     "@codemirror/autocomplete": "^6.20.3",
     "@codemirror/commands": "^6.11.1",
     "@codemirror/language": "^6.13.1",

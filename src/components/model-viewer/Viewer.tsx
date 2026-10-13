@@ -1,9 +1,12 @@
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { Canvas, useThree } from "@react-three/fiber";
 import { Grid, OrbitControls } from "@react-three/drei";
 import { disposeObject, loadModel, type LoadedModel } from "../../modelviewer/load";
 import { SAMPLES, type Sample } from "../../modelviewer/samples";
+
+// Babylon.js is only fetched once a model is opened, keeping the initial page light.
+const BabylonPane = lazy(() => import("./BabylonPane"));
 
 type Status =
   | { kind: "empty" }
@@ -93,6 +96,7 @@ export default function Viewer() {
   const [status, setStatus] = useState<Status>({ kind: "empty" });
   const [dragging, setDragging] = useState(false);
   const current = useRef<LoadedModel | null>(null);
+  const [files, setFiles] = useState<File[] | null>(null);
   const request = useRef(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -111,6 +115,7 @@ export default function Viewer() {
     async (files: File[], label: string) => {
       const id = ++request.current;
       setStatus({ kind: "loading", label });
+      setFiles(files);
       try {
         const model = await loadModel(files);
         if (id !== request.current) {
@@ -192,6 +197,8 @@ export default function Viewer() {
           onFiles(event.dataTransfer.files);
         }}
       >
+        <div className="mv-pane">
+        <span className="mv-pane-label">three.js</span>
         <Canvas
           frameloop="demand"
           dpr={[1, 2]}
@@ -206,6 +213,15 @@ export default function Viewer() {
             <Scene model={model} />
           </Suspense>
         </Canvas>
+        </div>
+        <div className="mv-pane">
+          <span className="mv-pane-label">Babylon.js</span>
+          {files && (
+            <Suspense fallback={<div className="mv-pane-note">Loading Babylon.js…</div>}>
+              <BabylonPane files={files} />
+            </Suspense>
+          )}
+        </div>
 
         {status.kind !== "ready" && (
           <div className={`mv-overlay mv-${status.kind}`} role={status.kind === "error" ? "alert" : "status"}>
