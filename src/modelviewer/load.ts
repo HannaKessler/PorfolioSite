@@ -9,6 +9,7 @@ import { PLYLoader } from "three/examples/jsm/loaders/PLYLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { toCreasedNormals } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { readFbxModelFlags } from "./fbxModels";
+import { uvsWithinUnitSquare } from "./uv";
 import { buildFileMap, matchKey, objNeedsSmoothNormals, pickMainFile, pickMaterialFile } from "./files";
 
 export interface LoadedModel {
@@ -135,6 +136,7 @@ export async function loadModel(files: File[]): Promise<LoadedModel> {
       throw new Error(`${main.name} loaded but contains no visible geometry.`);
     }
     object.name = main.name;
+    if (format === "fbx" || format === "obj") clampTexturesForUnitUVs(object);
     disableDepthWriteOnTexturedTransparency(object);
     // Textures finish loading after the model itself, so the blob URLs stay
     // alive until the model is replaced.
@@ -234,6 +236,42 @@ function smoothObjNormals(object: THREE.Object3D): void {
  * edges. Opaque materials, alpha-tested (glTF MASK) materials and untextured
  * transparent materials are left as loaded.
  */
+const TEXTURE_SLOTS = ["map", "alphaMap", "normalMap", "bumpMap", "specularMap", "emissiveMap", "roughnessMap", "metalnessMap", "aoMap", "lightMap", "displacementMap"] as const;
+
+/**
+ * FBX and OBJ textures default to Repeat wrapping. When a mesh's UVs stay
+ * inside [0, 1] nothing tiles, and Repeat only makes filtering at the UV
+ * edges pull in texels from the opposite edge of the image (e.g. a faint
+ * dotted line along the top of foliage cards whose blades touch the bottom
+ * of the texture). Clamp those textures, unless another mesh tiles them or
+ * the texture itself is offset or scaled.
+ */
+function clampTexturesForUnitUVs(object: THREE.Object3D): void {
+  const clampable = new Set<THREE.Texture>();
+  const tiled = new Set<THREE.Texture>();
+  object.traverse((child) => {
+    const mesh = child as THREE.Mesh;
+    if (!mesh.isMesh) return;
+    const inside = uvsWithinUnitSquare(mesh.geometry.getAttribute("uv")?.array as ArrayLike<number> | undefined);
+    const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+    for (const material of materials) {
+      for (const slot of TEXTURE_SLOTS) {
+        const texture = (material as unknown as Record<string, THREE.Texture | null | undefined>)[slot];
+        if (!texture?.isTexture) continue;
+        const untransformed = texture.repeat.x === 1 && texture.repeat.y === 1 && texture.offset.x === 0 && texture.offset.y === 0 && texture.rotation === 0;
+        (inside && untransformed && texture.channel === 0 ? clampable : tiled).add(texture);
+      }
+    }
+  });
+  for (const texture of clampable) {
+    if (tiled.has(texture)) continue;
+    if (texture.wrapS === THREE.ClampToEdgeWrapping && texture.wrapT === THREE.ClampToEdgeWrapping) continue;
+    texture.wrapS = THREE.ClampToEdgeWrapping;
+    texture.wrapT = THREE.ClampToEdgeWrapping;
+    texture.needsUpdate = true;
+  }
+}
+
 function disableDepthWriteOnTexturedTransparency(object: THREE.Object3D): void {
   object.traverse((child) => {
     const mesh = child as THREE.Mesh;

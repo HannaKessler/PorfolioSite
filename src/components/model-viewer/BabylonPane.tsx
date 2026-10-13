@@ -21,6 +21,9 @@ import { registerBuiltInLoaders } from "@babylonjs/loaders/dynamic";
 import { STLFileLoader } from "@babylonjs/loaders/STL/stlFileLoader.pure";
 import { buildFileMap, matchKey, pickMainFile } from "../../modelviewer/files";
 import { readFbxModelFlags } from "../../modelviewer/fbxModels";
+import { uvsWithinUnitSquare } from "../../modelviewer/uv";
+import { Texture } from "@babylonjs/core/Materials/Textures/texture";
+import { VertexBuffer } from "@babylonjs/core/Buffers/buffer";
 
 registerBuiltInLoaders();
 
@@ -54,7 +57,9 @@ function createWorld(canvas: HTMLCanvasElement): World {
   const camera = new ArcRotateCamera("camera", 0.876, 1.151, 5, new Vector3(0, 0.5, 0), scene);
   camera.fov = (40 * Math.PI) / 180;
   camera.wheelDeltaPercentage = 0.02;
-  camera.attachControl(true);
+  // Let the camera call preventDefault on wheel and pointer events, so the
+  // wheel zooms the model instead of scrolling the page (as in the three.js pane).
+  camera.attachControl(false);
 
   const hemi = new HemisphericLight("hemi", new Vector3(0, 1, 0), scene);
   hemi.intensity = 0.9;
@@ -143,12 +148,33 @@ function applyFileSettings(format: string, meshes: AbstractMesh[], fbxBuffer: Ar
       // Unreadable flags: keep what the loader produced.
     }
   }
+  if (format === "fbx" || format === "obj") clampTexturesForUnitUVs(meshes);
   // Alpha-blended, textured surfaces (foliage cards) are one mesh and can't be
   // sorted per face, so don't let them hide each other through depth writes.
   for (const mesh of meshes) {
     const material = mesh.material as (AbstractMesh["material"] & { diffuseTexture?: unknown; albedoTexture?: unknown; opacityTexture?: unknown }) | null;
     if (!material || !material.needAlphaBlending()) continue;
     if (material.diffuseTexture || material.albedoTexture || material.opacityTexture) material.disableDepthWrite = true;
+  }
+}
+
+/** Same rule as the three.js loader: clamp instead of repeat when a mesh's UVs never leave [0, 1]. */
+function clampTexturesForUnitUVs(meshes: AbstractMesh[]) {
+  const clampable = new Set<Texture>();
+  const tiled = new Set<Texture>();
+  for (const mesh of meshes) {
+    if (!mesh.material) continue;
+    const inside = uvsWithinUnitSquare(mesh.getVerticesData(VertexBuffer.UVKind));
+    for (const texture of mesh.material.getActiveTextures()) {
+      if (!(texture instanceof Texture)) continue;
+      const untransformed = texture.uScale === 1 && texture.vScale === 1 && texture.uOffset === 0 && texture.vOffset === 0 && texture.wAng === 0;
+      (inside && untransformed && texture.coordinatesIndex === 0 ? clampable : tiled).add(texture);
+    }
+  }
+  for (const texture of clampable) {
+    if (tiled.has(texture)) continue;
+    texture.wrapU = Texture.CLAMP_ADDRESSMODE;
+    texture.wrapV = Texture.CLAMP_ADDRESSMODE;
   }
 }
 
@@ -163,7 +189,10 @@ export default function BabylonPane({ files }: { files: File[] | null }) {
     worldRef.current = world;
     const observer = new ResizeObserver(() => world.engine.resize());
     observer.observe(canvas);
+    const stopScroll = (event: WheelEvent) => event.preventDefault();
+    canvas.addEventListener("wheel", stopScroll, { passive: false });
     return () => {
+      canvas.removeEventListener("wheel", stopScroll);
       observer.disconnect();
       clearModel(world);
       world.scene.dispose();
