@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { type ReactNode, Component, lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { Canvas, useThree } from "@react-three/fiber";
 import { Grid, OrbitControls } from "@react-three/drei";
@@ -6,7 +6,44 @@ import { disposeObject, loadModel, type LoadedModel } from "../../modelviewer/lo
 import { SAMPLES, type Sample } from "../../modelviewer/samples";
 
 // Babylon.js is only fetched once a model is opened, keeping the initial page light.
-const BabylonPane = lazy(() => import("./BabylonPane"));
+// A failed download isn't cached: the next model opened tries again.
+function lazyBabylonPane() {
+  return lazy(() =>
+    import("./BabylonPane").catch((error: unknown) => {
+      BabylonPane = lazyBabylonPane();
+      throw error;
+    }),
+  );
+}
+let BabylonPane = lazyBabylonPane();
+
+/**
+ * Keeps a failure in one engine's pane (a chunk that fails to download, a
+ * loader exception, a lost WebGL context) inside that pane instead of
+ * unmounting the whole viewer. Resets when a new model is opened.
+ */
+class PaneBoundary extends Component<{ engine: string; resetKey: unknown; children: ReactNode }, { error: Error | null; key: unknown }> {
+  state = { error: null as Error | null, key: this.props.resetKey };
+
+  static getDerivedStateFromError(error: unknown) {
+    return { error: error instanceof Error ? error : new Error(String(error)) };
+  }
+
+  static getDerivedStateFromProps(props: { resetKey: unknown }, state: { key: unknown }) {
+    return props.resetKey !== state.key ? { error: null, key: props.resetKey } : null;
+  }
+
+  componentDidCatch(error: unknown) {
+    console.error(`${this.props.engine} pane failed:`, error);
+  }
+
+  render() {
+    if (this.state.error) {
+      return <div className="mv-pane-note" role="alert">{this.props.engine} couldn't show this model: {this.state.error.message}</div>;
+    }
+    return this.props.children;
+  }
+}
 
 type Status =
   | { kind: "empty" }
@@ -199,6 +236,7 @@ export default function Viewer() {
       >
         <div className="mv-pane">
         <span className="mv-pane-label">three.js</span>
+        <PaneBoundary engine="three.js" resetKey={files}>
         <Canvas
           frameloop="demand"
           dpr={[1, 2]}
@@ -213,13 +251,16 @@ export default function Viewer() {
             <Scene model={model} />
           </Suspense>
         </Canvas>
+        </PaneBoundary>
         </div>
         <div className="mv-pane">
           <span className="mv-pane-label">Babylon.js</span>
           {files && (
-            <Suspense fallback={<div className="mv-pane-note">Loading Babylon.js…</div>}>
-              <BabylonPane files={files} />
-            </Suspense>
+            <PaneBoundary engine="Babylon.js" resetKey={files}>
+              <Suspense fallback={<div className="mv-pane-note">Loading Babylon.js…</div>}>
+                <BabylonPane files={files} />
+              </Suspense>
+            </PaneBoundary>
           )}
         </div>
 
