@@ -86,3 +86,9 @@ export function pickMaterialFile<T extends NamedFile>(
   const stem = matchKey(objName).replace(/\.obj$/, "");
   return mtls.find((file) => matchKey(file.name).replace(/\.mtl$/, "") === stem) ?? (mtls.length === 1 ? mtls[0] : undefined);
 }
+
+/** True when an OBJ asks for smoothing ("s" with a group other than 0/off) but supplies no "vn" normals. */
+export function objNeedsSmoothNormals(text: string): boolean {
+  return !/^\s*vn\s/m.test(text) && /^\s*s\s+(?!0\s*$|off\s*$)\S+/im.test(text);
+}
+

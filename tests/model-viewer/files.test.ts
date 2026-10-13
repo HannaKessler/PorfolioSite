@@ -4,6 +4,7 @@ import {
   buildFileMap,
   extensionOf,
   pickMainFile,
+  objNeedsSmoothNormals,
   pickMaterialFile,
   resolveReference,
 } from "../../src/modelviewer/files";
@@ -57,5 +58,15 @@ describe("pickMaterialFile", () => {
   });
   it("returns nothing when no material file is present", () => {
     expect(pickMaterialFile("chair.obj", "mtllib chair.mtl", [f("chair.png")])).toBeUndefined();
+  });
+});
+
+describe("objNeedsSmoothNormals", () => {
+  it("is true only for smoothing on without vn normals", () => {
+    expect(objNeedsSmoothNormals("v 0 0 0\ns 1\nf 1 2 3")).toBe(true);
+    expect(objNeedsSmoothNormals("v 0 0 0\nvn 0 1 0\ns 1\nf 1//1 2//1 3//1")).toBe(false);
+    expect(objNeedsSmoothNormals("v 0 0 0\ns off\nf 1 2 3")).toBe(false);
+    expect(objNeedsSmoothNormals("v 0 0 0\ns 0\nf 1 2 3")).toBe(false);
+    expect(objNeedsSmoothNormals("v 0 0 0\nf 1 2 3")).toBe(false);
   });
 });

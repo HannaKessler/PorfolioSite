@@ -7,8 +7,9 @@ import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 import { PLYLoader } from "three/examples/jsm/loaders/PLYLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
-import { fbxDoubleSidedModels } from "./fbxCulling";
-import { buildFileMap, matchKey, pickMainFile, pickMaterialFile } from "./files";
+import { toCreasedNormals } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { readFbxModelFlags } from "./fbxModels";
+import { buildFileMap, matchKey, objNeedsSmoothNormals, pickMainFile, pickMaterialFile } from "./files";
 
 export interface LoadedModel {
   object: THREE.Object3D;
@@ -33,11 +34,15 @@ function dracoLoader(): DRACOLoader {
 function meshFromGeometry(geometry: THREE.BufferGeometry): THREE.Mesh {
   if (!geometry.getAttribute("normal")) geometry.computeVertexNormals();
   const hasColor = Boolean(geometry.getAttribute("color"));
+  // Binary STL may carry a default color with alpha in its header ("COLOR=rgba").
+  const alpha = (geometry as THREE.BufferGeometry & { alpha?: number }).alpha;
+  const translucent = typeof alpha === "number" && alpha < 1;
   const material = new THREE.MeshStandardMaterial({
     color: hasColor ? 0xffffff : 0xb9b4ad,
     vertexColors: hasColor,
     roughness: 0.55,
     metalness: 0.05,
+    ...(translucent ? { transparent: true, opacity: alpha, depthWrite: false } : {}),
   });
   return new THREE.Mesh(geometry, material);
 }
@@ -102,7 +107,7 @@ export async function loadModel(files: File[]): Promise<LoadedModel> {
       }
       case "fbx":
         object = await new FBXLoader(manager).loadAsync(mainUrl);
-        applyFbxCulling(object, await main.arrayBuffer());
+        applyFbxModelFlags(object, await main.arrayBuffer());
         break;
       case "obj": {
         const text = await main.text();
@@ -114,6 +119,7 @@ export async function loadModel(files: File[]): Promise<LoadedModel> {
           loader.setMaterials(materials);
         }
         object = loader.parse(text);
+        if (objNeedsSmoothNormals(text)) smoothObjNormals(object);
         break;
       }
       case "stl":
@@ -158,19 +164,23 @@ function hasRenderableContent(object: THREE.Object3D): boolean {
 }
 
 /**
- * Honor FBX "Culling: CullingOff" (double-sided) on the meshes it applies to.
- * glTF's doubleSided is already applied by GLTFLoader; OBJ, STL and PLY have
- * no sidedness flag, so those stay as loaded.
+ * Apply FBX per-model settings FBXLoader ignores: "Culling: CullingOff" makes
+ * the model double-sided, and Visibility = 0 / Show = false hide it (removed,
+ * so it doesn't affect framing either). glTF's doubleSided is already applied
+ * by GLTFLoader; OBJ, STL and PLY have no such flags.
  */
-function applyFbxCulling(object: THREE.Object3D, buffer: ArrayBuffer): void {
-  let names: Set<string>;
+function applyFbxModelFlags(object: THREE.Object3D, buffer: ArrayBuffer): void {
+  let flags: ReturnType<typeof readFbxModelFlags>;
   try {
-    names = fbxDoubleSidedModels(buffer);
+    flags = readFbxModelFlags(buffer);
   } catch {
-    return; // Unreadable culling data: keep the loader's defaults.
+    return; // Unreadable: keep the loader's defaults.
   }
-  if (names.size === 0) return;
-  const wanted = new Set([...names].map((name) => THREE.PropertyBinding.sanitizeNodeName(name)));
+  const sanitize = (names: Set<string>) => new Set([...names].map((name) => THREE.PropertyBinding.sanitizeNodeName(name)));
+  const doubleSided = sanitize(flags.doubleSided);
+  const hidden = sanitize(flags.hidden);
+  if (doubleSided.size === 0 && hidden.size === 0) return;
+
   const converted = new Map<THREE.Material, THREE.Material>();
   const toDoubleSided = (material: THREE.Material) => {
     let result = converted.get(material);
@@ -181,10 +191,37 @@ function applyFbxCulling(object: THREE.Object3D, buffer: ArrayBuffer): void {
     }
     return result;
   };
+  const toRemove: THREE.Object3D[] = [];
+  object.traverse((child) => {
+    if (hidden.has(child.name)) {
+      toRemove.push(child);
+      return;
+    }
+    const mesh = child as THREE.Mesh;
+    if (!mesh.isMesh || !doubleSided.has(mesh.name)) return;
+    mesh.material = Array.isArray(mesh.material) ? mesh.material.map(toDoubleSided) : toDoubleSided(mesh.material);
+  });
+  for (const child of toRemove) {
+    child.removeFromParent();
+    disposeObject(child);
+  }
+}
+
+/**
+ * OBJ files without "vn" normals that turn smoothing on ("s 1") should look
+ * smooth, but OBJLoader fills in per-face normals, so they render faceted.
+ * Rebuild normals for those meshes, averaged across edges up to 60 degrees
+ * so hard corners stay crisp (OBJLoader merges all smoothing groups, so the
+ * group boundaries themselves aren't available).
+ */
+function smoothObjNormals(object: THREE.Object3D): void {
   object.traverse((child) => {
     const mesh = child as THREE.Mesh;
-    if (!mesh.isMesh || !wanted.has(mesh.name)) return;
-    mesh.material = Array.isArray(mesh.material) ? mesh.material.map(toDoubleSided) : toDoubleSided(mesh.material);
+    if (!mesh.isMesh) return;
+    const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+    if (materials.some((material) => (material as THREE.MeshPhongMaterial).flatShading)) return;
+    mesh.geometry.deleteAttribute("normal");
+    mesh.geometry = toCreasedNormals(mesh.geometry, Math.PI / 3);
   });
 }
 
