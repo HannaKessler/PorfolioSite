@@ -7,7 +7,6 @@ import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 import { PLYLoader } from "three/examples/jsm/loaders/PLYLoader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
-import { enableTextureTransparency } from "./textureAlpha";
 import { buildFileMap, matchKey, pickMainFile, pickMaterialFile } from "./files";
 
 export interface LoadedModel {
@@ -47,12 +46,7 @@ function meshFromGeometry(geometry: THREE.BufferGeometry): THREE.Mesh {
  * and a LoadingManager URL modifier maps each reference inside the model
  * (textures, .bin buffers) to the supplied file with the same name.
  */
-export interface LoadOptions {
-  /** Called when a material changes after load (texture alpha is detected once images decode). */
-  onChange?: () => void;
-}
-
-export async function loadModel(files: File[], options: LoadOptions = {}): Promise<LoadedModel> {
+export async function loadModel(files: File[]): Promise<LoadedModel> {
   const pick = pickMainFile(files);
   if (!pick.ok) throw new Error(pick.error);
   const { main, format } = pick;
@@ -133,10 +127,6 @@ export async function loadModel(files: File[], options: LoadOptions = {}): Promi
       throw new Error(`${main.name} loaded but contains no visible geometry.`);
     }
     object.name = main.name;
-    // glTF states transparency explicitly (alphaMode); other formats don't.
-    if (format !== "gltf" && format !== "glb") {
-      enableTextureTransparency(object, options.onChange ?? (() => {}));
-    }
     // Textures finish loading after the model itself, so the blob URLs stay
     // alive until the model is replaced.
     return { object, name: main.name, missing: [...missing], release };

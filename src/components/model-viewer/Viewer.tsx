@@ -1,6 +1,6 @@
 import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { Canvas, invalidate, useThree } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import { Grid, OrbitControls } from "@react-three/drei";
 import { disposeObject, loadModel, type LoadedModel } from "../../modelviewer/load";
 import { SAMPLES, type Sample } from "../../modelviewer/samples";
@@ -112,7 +112,7 @@ export default function Viewer() {
       const id = ++request.current;
       setStatus({ kind: "loading", label });
       try {
-        const model = await loadModel(files, { onChange: () => invalidate() });
+        const model = await loadModel(files);
         if (id !== request.current) {
           disposeObject(model.object);
           model.release();
