@@ -295,3 +295,9 @@
     font-size: 0.62rem;
   }
 }
+
+.mv-perf-table td.mv-best {
+  font-weight: 700;
+  background: rgb(40 150 90 / 0.14);
+}
+
