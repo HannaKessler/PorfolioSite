@@ -1,0 +1,336 @@
+/* 3D Model Viewer demo. */
+.mv-app {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.mv-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 0.75rem;
+}
+
+.mv-samples-label {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.mv-samples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.mv-chip {
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.mv-chip:hover {
+  background: var(--bg-hover);
+}
+
+.mv-chip:focus-visible,
+.mv-open:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.mv-stage {
+  position: relative;
+  height: clamp(22rem, 65vh, 44rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-muted);
+  touch-action: none;
+}
+
+.mv-stage.is-dragging {
+  border-color: var(--accent);
+}
+
+.mv-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 0.35rem;
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.mv-overlay p {
+  margin: 0;
+  max-width: 34rem;
+}
+
+.mv-overlay-title {
+  font-family: var(--font-subhead);
+  font-size: 1.2rem;
+  color: var(--text);
+}
+
+.mv-error .mv-overlay-title {
+  color: var(--accent);
+}
+
+.mv-error {
+  background: color-mix(in srgb, var(--bg-muted) 85%, transparent);
+}
+
+.mv-dropzone {
+  position: absolute;
+  inset: 0.75rem;
+  display: grid;
+  place-content: center;
+  border: 2px dashed var(--accent);
+  border-radius: calc(var(--radius) - 4px);
+  background: color-mix(in srgb, var(--accent-soft) 70%, transparent);
+  color: var(--accent);
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.mv-footnote {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.mv-warning {
+  color: var(--accent);
+}
+
+.mv-hint {
+  color: var(--muted);
+}
+
+/* Side-by-side engine comparison: two panes on desktop, stacked on mobile. */
+.mv-stage {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+}
+
+.mv-pane {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  background: #f6f5f3;
+}
+
+.mv-pane > canvas,
+.mv-pane > div:has(> canvas) {
+  position: absolute !important;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.mv-babylon-canvas,
+.mv-custom-canvas {
+  display: block;
+  outline: none;
+  touch-action: none;
+}
+
+.mv-pane-label {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  z-index: 2;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.85);
+  border: 1px solid var(--line);
+  font-size: 0.8rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.mv-pane-note {
+  position: absolute;
+  left: 0.5rem;
+  bottom: 0.5rem;
+  max-width: calc(100% - 1rem);
+  z-index: 2;
+  padding: 0.25rem 0.5rem;
+  border-radius: calc(var(--radius) - 4px);
+  background: rgb(255 255 255 / 0.85);
+  border: 1px solid var(--line);
+  font-size: 0.75rem;
+  line-height: 1.3;
+  text-align: left;
+  pointer-events: none;
+}
+
+/*
+ * Four panes, 2 x 2. Each row's height is set so both rows, the sample
+ * controls above and the footnote below fit in one screen once the viewer is
+ * scrolled into view; it never drops below a usable size or grows past a
+ * comfortable one. Widths come from the page column, so panes stay roughly
+ * no wider than about 1.8:1 instead of stretching on wide monitors.
+ */
+.mv-stage {
+  --mv-chrome: 7.5rem; /* toolbar, footnote and the gaps between them */
+  --mv-pane-height: clamp(220px, calc((100svh - var(--mv-chrome)) / 2), 460px);
+  height: auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, var(--mv-pane-height));
+  width: 100%;
+  max-width: calc(var(--mv-pane-height) * 3.6);
+  margin-inline: auto;
+}
+
+.mv-custom-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Phones: one pane per row, each a little wider than tall. */
+@media (max-width: 720px) {
+  .mv-stage {
+    --mv-pane-height: max(240px, 60vw);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(4, var(--mv-pane-height));
+    max-width: none;
+  }
+}
+
+/* Performance readouts: a quiet corner overlay per pane and a compact table. */
+.mv-stats {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.6rem;
+  z-index: 2;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  background: rgb(255 255 255 / 0.7);
+  color: #4a4741;
+  font: 0.68rem/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  text-align: right;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.mv-perf {
+  display: grid;
+  gap: 0.35rem;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.mv-perf-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.75rem;
+}
+
+.mv-perf-head .mv-chip {
+  padding: 0.2rem 0.7rem;
+  font-size: 0.8rem;
+}
+
+.mv-chip.is-on {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.mv-perf-note {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.mv-perf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font: 0.72rem/1.3 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.mv-perf-table th,
+.mv-perf-table td {
+  padding: 0.12rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.mv-perf-table th[scope="row"],
+.mv-perf-table thead th:first-child {
+  text-align: left;
+  font-weight: 600;
+}
+
+.mv-perf-table thead th {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.mv-perf-dim {
+  color: var(--muted);
+}
+
+/* Room for the table under the grid when sizing panes to one screen. */
+.mv-stage {
+  --mv-chrome: 17rem;
+}
+
+@media (max-width: 720px) {
+  .mv-stats {
+    font-size: 0.62rem;
+  }
+}
+
+.mv-perf-table td.mv-best {
+  font-weight: 700;
+  background: rgb(40 150 90 / 0.14);
+}
+
+
+/* Before a model is chosen the stage is one panel with the same footprint as the 2x2 grid. */
+.mv-stage.is-empty {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: calc(var(--mv-pane-height) * 2 + 1px);
+  background: #f6f5f3;
+}
+
+.mv-empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  pointer-events: auto;
+}
+
+/* Empty state: centre every element horizontally and vertically. */
+.mv-overlay.mv-empty {
+  place-content: center;
+  justify-items: center;
+  align-items: center;
+}
+
+.mv-overlay.mv-empty .mv-empty-actions {
+  flex-direction: column;
+  width: 100%;
+}
+
+.mv-overlay.mv-empty .mv-samples {
+  justify-content: center;
+}
