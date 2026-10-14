@@ -13,6 +13,8 @@ import { uvsWithinUnitSquare } from "./uv";
 import { buildFileMap, matchKey, objNeedsSmoothNormals, pickMainFile, pickMaterialFile } from "./files";
 
 export interface LoadedModel {
+  /** Waits for textures to finish, strips any that failed to load; resolves with their names. */
+  settleTextures: () => Promise<string[]>;
   object: THREE.Object3D;
   name: string;
   /** Files the model referred to that were not supplied. */
@@ -77,6 +79,11 @@ export async function loadModel(files: File[]): Promise<LoadedModel> {
   const missing = new Set<string>();
 
   const manager = new THREE.LoadingManager();
+  let settled = false;
+  manager.onStart = () => (settled = false);
+  manager.onLoad = () => (settled = true);
+  const failedFiles = new Set<string>();
+  manager.onError = (url) => failedFiles.add(decodeSafe(url.split(/[\\/]/).pop() ?? url));
   manager.setURLModifier((url) => {
     // data: and blob: URLs are textures embedded in the model file itself
     // (FBXLoader and GLTFLoader create blob: URLs for them).
@@ -140,7 +147,12 @@ export async function loadModel(files: File[]): Promise<LoadedModel> {
     disableDepthWriteOnTexturedTransparency(object);
     // Textures finish loading after the model itself, so the blob URLs stay
     // alive until the model is replaced.
-    return { object, name: main.name, missing: [...missing], release };
+    // Prefer the referenced file names over three's internal texture names in the note.
+    const settleTextures = async () => {
+      const names = await dropFailedTextures(object, () => settled);
+      return names.length && failedFiles.size ? [...failedFiles] : names;
+    };
+    return { object, name: main.name, missing: [...missing], release, settleTextures };
   } catch (error) {
     release();
     const reason = error instanceof Error ? error.message : String(error);
@@ -296,4 +308,42 @@ export function disposeObject(object: THREE.Object3D): void {
       material.dispose();
     }
   });
+}
+
+function textureLoaded(texture: THREE.Texture): boolean {
+  const image = texture.image as { width?: number; naturalWidth?: number; data?: unknown } | undefined | null;
+  return !!image && ((image.naturalWidth ?? image.width ?? 0) > 0 || !!image.data);
+}
+
+/**
+ * A texture whose file is missing or unreadable stays empty, and three.js then samples it as black.
+ * Once loading settles (or after 10 s), remove such textures from their materials so the surface
+ * shows its plain material colour, like the other panes.
+ */
+async function dropFailedTextures(object: THREE.Object3D, settled: () => boolean): Promise<string[]> {
+  const materials = new Set<THREE.Material>();
+  object.traverse((node) => {
+    const material = (node as THREE.Mesh).material;
+    if (material) for (const m of Array.isArray(material) ? material : [material]) materials.add(m);
+  });
+  const slots = (m: THREE.Material) =>
+    Object.entries(m).filter((entry): entry is [string, THREE.Texture] => (entry[1] as THREE.Texture | null)?.isTexture === true);
+  const all = [...materials].flatMap(slots).map(([, t]) => t);
+  const started = performance.now();
+  while (!all.every(textureLoaded) && !settled() && performance.now() - started < 10000) {
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+  const failed = new Set<THREE.Texture>(all.filter((t) => !textureLoaded(t)));
+  if (!failed.size) return [];
+  for (const material of materials) {
+    let changed = false;
+    for (const [key, texture] of slots(material)) {
+      if (!failed.has(texture)) continue;
+      (material as unknown as Record<string, unknown>)[key] = null;
+      changed = true;
+    }
+    if (changed) material.needsUpdate = true;
+  }
+  for (const texture of failed) texture.dispose();
+  return [...new Set([...failed].map((t) => decodeSafe((t.name || String((t as { sourceFile?: string }).sourceFile ?? "texture")).split(/[\\/]/).pop()!)))];
 }

@@ -213,6 +213,7 @@ export default function Viewer() {
   const [files, setFiles] = useState<File[] | null>(null);
   const request = useRef(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [threeMissing, setThreeMissing] = useState<string[]>([]);
   const benchmark = useBenchmark();
 
   const replaceModel = useCallback((next: LoadedModel | null) => {
@@ -232,6 +233,7 @@ export default function Viewer() {
       setStatus({ kind: "loading", label });
       for (const pane of PANE_IDS) startLoad(pane);
       setFiles(files);
+      setThreeMissing([]);
       try {
         const model = await loadModel(files);
         if (id === request.current) {
@@ -246,6 +248,11 @@ export default function Viewer() {
         }
         replaceModel(model);
         setStatus({ kind: "ready", model });
+        void model.settleTextures().then((names) => {
+          if (id !== request.current || !names.length) return;
+          setThreeMissing(names);
+          setGpuBytes("three", estimateGpuBytes(model.object));
+        });
       } catch (error) {
         if (id !== request.current) return;
         replaceModel(null);
@@ -353,6 +360,9 @@ export default function Viewer() {
           </Suspense>
         </Canvas>
         </PaneBoundary>
+        {threeMissing.length > 0 && (
+          <div className="mv-pane-note">Missing textures, shown untextured: {threeMissing.join(", ")}</div>
+        )}
         </div>
         <div className="mv-pane">
           <span className="mv-pane-label">Babylon.js</span>
