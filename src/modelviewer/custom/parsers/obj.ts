@@ -1,5 +1,6 @@
 // Wavefront OBJ + MTL.
 import { ident } from "./mat";
+import { shininessToRoughness } from "../../lighting";
 import { defaultMaterial, mimeFromName, srgbToLinear, type RawImage, type RawMaterial, type RawPrimitive, type RawScene, type RawTexture } from "./types";
 
 export type FileLookup = (reference: string) => Uint8Array | null;
@@ -8,6 +9,8 @@ interface MtlEntry {
   material: RawMaterial;
   mapName: string | null;
   alphaName: string | null;
+  /** An explicit PBR roughness (Pr) wins over one estimated from Ns. */
+  hasPr: boolean;
 }
 
 /** The file name at the end of a map statement, after any options such as `-bm 1` or `-s 1 1 1`. */
@@ -37,7 +40,7 @@ export function parseMtl(text: string): Map<string, MtlEntry> {
     const key = (space < 0 ? line : line.slice(0, space)).toLowerCase();
     const rest = space < 0 ? "" : line.slice(space + 1).trim();
     if (key === "newmtl") {
-      current = { material: { ...defaultMaterial(rest), color: [1, 1, 1] }, mapName: null, alphaName: null };
+      current = { material: { ...defaultMaterial(rest), color: [1, 1, 1] }, mapName: null, alphaName: null, hasPr: false };
       out.set(rest, current);
       continue;
     }
@@ -52,6 +55,16 @@ export function parseMtl(text: string): Map<string, MtlEntry> {
         break;
       case "tr":
         current.material.opacity = 1 - nums[0]!;
+        break;
+      case "ns":
+        if (!current.hasPr) current.material.roughness = shininessToRoughness(nums[0]!);
+        break;
+      case "pr":
+        current.material.roughness = Math.min(1, Math.max(0, nums[0]!));
+        current.hasPr = true;
+        break;
+      case "pm":
+        current.material.metallic = Math.min(1, Math.max(0, nums[0]!));
         break;
       case "map_kd":
         current.mapName = mapFileName(rest);

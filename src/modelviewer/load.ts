@@ -10,6 +10,7 @@ import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.j
 import { toCreasedNormals } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { readFbxModelFlags } from "./fbxModels";
 import { uvsWithinUnitSquare } from "./uv";
+import { shininessToRoughness, type LightingMode } from "./lighting";
 import { buildFileMap, matchKey, objNeedsSmoothNormals, pickMainFile, pickMaterialFile } from "./files";
 
 export interface LoadedModel {
@@ -295,12 +296,64 @@ function disableDepthWriteOnTexturedTransparency(object: THREE.Object3D): void {
   });
 }
 
+type LightingData = { mvSimple?: THREE.Material | THREE.Material[]; mvPbr?: THREE.Material | THREE.Material[] };
+
+/**
+ * A physically based copy of a loaded material. glTF materials are already
+ * MeshStandardMaterial and are used as they are; Phong/Lambert/Basic materials
+ * (OBJ, FBX) become MeshStandardMaterial with roughness estimated from their
+ * shininess and no metalness. Textures are shared, not copied.
+ */
+export function toPbrMaterial(material: THREE.Material): THREE.Material {
+  if ((material as THREE.MeshStandardMaterial).isMeshStandardMaterial) return material;
+  const m = material as THREE.MeshPhongMaterial;
+  const pbr = new THREE.MeshStandardMaterial({
+    name: m.name,
+    color: m.color ? m.color.clone() : new THREE.Color(0xffffff),
+    map: m.map ?? null,
+    alphaMap: m.alphaMap ?? null,
+    normalMap: m.normalMap ?? null,
+    bumpMap: m.bumpMap ?? null,
+    emissive: m.emissive ? m.emissive.clone() : new THREE.Color(0x000000),
+    emissiveMap: m.emissiveMap ?? null,
+    emissiveIntensity: m.emissiveIntensity ?? 1,
+    vertexColors: m.vertexColors,
+    flatShading: m.flatShading ?? false,
+    roughness: shininessToRoughness(typeof m.shininess === "number" ? m.shininess : 30),
+    metalness: 0,
+  });
+  pbr.transparent = m.transparent;
+  pbr.opacity = m.opacity;
+  pbr.alphaTest = m.alphaTest;
+  pbr.side = m.side;
+  pbr.depthWrite = m.depthWrite;
+  pbr.visible = m.visible;
+  return pbr;
+}
+
+/** Switch a loaded model between its loaded materials ("simple") and physically based copies ("pbr"). */
+export function setModelLighting(root: THREE.Object3D, mode: LightingMode): void {
+  root.traverse((child) => {
+    const mesh = child as THREE.Mesh;
+    if (!mesh.isMesh || !mesh.material) return;
+    const data = mesh.userData as LightingData;
+    data.mvSimple ??= mesh.material;
+    if (mode === "simple") {
+      mesh.material = data.mvSimple;
+      return;
+    }
+    data.mvPbr ??= Array.isArray(data.mvSimple) ? data.mvSimple.map(toPbrMaterial) : toPbrMaterial(data.mvSimple);
+    mesh.material = data.mvPbr;
+  });
+}
+
 /** Free GPU memory held by a model: geometries, materials and their textures. */
 export function disposeObject(object: THREE.Object3D): void {
   object.traverse((child) => {
     const mesh = child as THREE.Mesh;
     mesh.geometry?.dispose();
-    const materials = Array.isArray(mesh.material) ? mesh.material : mesh.material ? [mesh.material] : [];
+    const data = mesh.userData as LightingData;
+    const materials = [...new Set([mesh.material, data.mvSimple, data.mvPbr].flat().filter((m): m is THREE.Material => !!m))];
     for (const material of materials) {
       for (const value of Object.values(material)) {
         if (value instanceof THREE.Texture) value.dispose();

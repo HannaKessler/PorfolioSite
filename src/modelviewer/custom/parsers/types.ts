@@ -34,6 +34,9 @@ export interface RawMaterial {
   /** Greyscale opacity map (green channel used). */
   alphaMap: number | null;
   vertexColors: boolean;
+  /** Metallic-roughness parameters: read from glTF, estimated from shininess for OBJ and FBX. */
+  metallic: number;
+  roughness: number;
 }
 
 export interface RawPrimitive {
@@ -71,7 +74,7 @@ export class UnsupportedError extends Error {
 }
 
 export function defaultMaterial(name = "default"): RawMaterial {
-  return { name, color: [0.8, 0.8, 0.8], opacity: 1, transparent: false, alphaCutoff: 0, side: "front", map: null, alphaMap: null, vertexColors: false };
+  return { name, color: [0.8, 0.8, 0.8], opacity: 1, transparent: false, alphaCutoff: 0, side: "front", map: null, alphaMap: null, vertexColors: false, metallic: 0, roughness: 0.5 };
 }
 
 export function srgbToLinear(c: number): number {

@@ -157,6 +157,8 @@ export function parseGltf(data: Uint8Array, lookup: FileLookup): RawScene {
       alphaCutoff: mode === "MASK" ? (m.alphaCutoff ?? 0.5) : 0,
       side: m.doubleSided ? "double" : "front",
       map: texture(pbr.baseColorTexture),
+      metallic: pbr.metallicFactor ?? 1,
+      roughness: pbr.roughnessFactor ?? 1,
     };
   });
   let fallbackMaterial = -1;

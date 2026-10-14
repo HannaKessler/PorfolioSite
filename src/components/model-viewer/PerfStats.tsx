@@ -77,9 +77,6 @@ export function PerfTable() {
   return (
     <div className="mv-perf">
       <div className="mv-perf-head">
-        <button type="button" className={`mv-bench${benchmark ? " is-on" : ""}`} aria-pressed={benchmark} onClick={() => setBenchmark(!benchmark)}>
-          {benchmark ? "Stop benchmark" : "Benchmark"}
-        </button>
         <span className="mv-perf-note">
           {benchmark ? "All panes render continuously and orbit identically." : "Panes redraw on demand (Babylon.js continuously); press Benchmark to compare frame times."}{" "}
           Best in each column is highlighted.
