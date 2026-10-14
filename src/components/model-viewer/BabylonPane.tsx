@@ -13,6 +13,7 @@ import { CreateGround } from "@babylonjs/core/Meshes/Builders/groundBuilder";
 import { TransformNode } from "@babylonjs/core/Meshes/transformNode";
 import type { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 import type { AssetContainer } from "@babylonjs/core/assetContainer";
+import type { BaseTexture } from "@babylonjs/core/Materials/Textures/baseTexture";
 import { LoadAssetContainerAsync } from "@babylonjs/core/Loading/sceneLoader";
 import { FilesInputStore } from "@babylonjs/core/Misc/filesInputStore";
 import { ImageProcessingConfiguration } from "@babylonjs/core/Materials/imageProcessingConfiguration";
@@ -153,6 +154,27 @@ function placeAndFrame(world: World, root: TransformNode, meshes: AbstractMesh[]
 }
 
 /** Same file-setting fixes as the three.js loader, where Babylon's loaders don't already apply them. */
+// A texture the file references but that can't be loaded (e.g. not supplied alongside it) never becomes
+// ready, which keeps its material - and so the whole mesh - from ever drawing. Drop such textures from
+// their material slots once loading settles, and return their names for an in-pane note.
+async function dropFailedTextures(container: AssetContainer): Promise<string[]> {
+  const settle = (t: BaseTexture) =>
+    new Promise<void>((resolve) => {
+      const started = performance.now();
+      const tick = () => (t.isReady() || t.loadingError || performance.now() - started > 10000 ? resolve() : setTimeout(tick, 50));
+      tick();
+    });
+  await Promise.all(container.textures.map(settle));
+  const failed = container.textures.filter((t) => t.loadingError);
+  if (!failed.length) return [];
+  for (const material of container.materials) {
+    const slots = material as unknown as Record<string, unknown>;
+    for (const key of Object.keys(slots)) if (failed.includes(slots[key] as BaseTexture)) slots[key] = null;
+  }
+  for (const t of failed) t.dispose();
+  return [...new Set(failed.map((t) => t.name))];
+}
+
 function applyFileSettings(format: string, meshes: AbstractMesh[], fbxBuffer: ArrayBuffer | null) {
   if (format === "fbx" && fbxBuffer) {
     try {
@@ -286,7 +308,9 @@ export default function BabylonPane({ files }: { files: File[] | null }) {
       endLoad("babylon", estimateGpuBytes(container), modelTriangles(container));
       // Textures finish decoding after the container loads; count them again shortly.
       setTimeout(() => !cancelled && setGpuBytes("babylon", estimateGpuBytes(container)), 2000);
-      setState({ kind: "ready" });
+      const missing = await dropFailedTextures(container);
+      if (cancelled) return;
+      setState(missing.length ? { kind: "note", text: `Missing textures, shown untextured: ${missing.join(", ")}` } : { kind: "ready" });
     })().catch((error: unknown) => {
       if (cancelled) return;
       setState({ kind: "note", text: `Babylon.js couldn't open this file: ${error instanceof Error ? error.message : String(error)}` });
