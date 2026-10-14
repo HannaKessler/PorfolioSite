@@ -366,7 +366,7 @@ export default function BabylonPane({ files }: { files: File[] | null }) {
     });
     (async () => {
       const fbxBuffer = pick.format === "fbx" ? await pick.main.arrayBuffer() : null;
-      const container = await LoadAssetContainerAsync(pick.main, world.scene, { pluginExtension: `.${pick.format}` });
+      const container = await LoadAssetContainerAsync(pick.main, world.scene, { pluginExtension: `.${pick.format}`, rootUrl: "file:" });
       if (cancelled) {
         container.dispose();
         return;

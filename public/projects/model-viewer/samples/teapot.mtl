@@ -1,0 +1,10 @@
+# Glazed ceramic for the procedural teapot, CC0
+newmtl glazed_ceramic
+Ka 0 0 0
+Kd 0.08 0.42 0.45
+Ks 0.5 0.5 0.5
+Ns 250
+d 1
+illum 2
+Pr 0.18
+Pm 0

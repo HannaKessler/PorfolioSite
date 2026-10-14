@@ -326,10 +326,17 @@ export default function Viewer() {
   const openSample = useCallback(
     async (sample: Sample) => {
       try {
-        const response = await fetch(sample.url);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const blob = await response.blob();
-        await open([new File([blob], sample.file)], sample.title);
+        const base = sample.url.slice(0, sample.url.lastIndexOf("/") + 1);
+        const names = [sample.file, ...(sample.extras ?? [])];
+        // The model and its sidecars go to every pane as one file set, like a multi-file drop.
+        const files = await Promise.all(
+          names.map(async (name, i) => {
+            const response = await fetch(i === 0 ? sample.url : base + name);
+            if (!response.ok) throw new Error(`${name}: HTTP ${response.status}`);
+            return new File([await response.blob()], name);
+          }),
+        );
+        await open(files, sample.title);
       } catch (error) {
         setStatus({ kind: "error", message: `Couldn't fetch the ${sample.title} sample: ${error instanceof Error ? error.message : error}` });
       }
