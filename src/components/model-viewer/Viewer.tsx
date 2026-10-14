@@ -96,6 +96,19 @@ function placeAndFrame(object: THREE.Object3D, camera: THREE.PerspectiveCamera, 
 }
 
 /** Approximate GPU memory for a three.js model: vertex/index buffers plus mipmapped RGBA textures. */
+/** Triangles in the model's visible geometry, each counted once. */
+function modelTriangles(root: THREE.Object3D): number {
+  let triangles = 0;
+  root.traverseVisible((child) => {
+    const mesh = child as THREE.Mesh;
+    if (!mesh.isMesh) return;
+    const g = mesh.geometry;
+    const count = g.index ? g.index.count : (g.getAttribute("position")?.count ?? 0);
+    triangles += Math.floor(Math.min(count, g.drawRange.count) / 3);
+  });
+  return triangles;
+}
+
 function estimateGpuBytes(root: THREE.Object3D): number {
   let bytes = 0;
   const seen = new Set<unknown>();
@@ -222,7 +235,7 @@ export default function Viewer() {
       try {
         const model = await loadModel(files);
         if (id === request.current) {
-          endLoad("three", estimateGpuBytes(model.object));
+          endLoad("three", estimateGpuBytes(model.object), modelTriangles(model.object));
           // Textures decode after the model; count them once they have arrived.
           setTimeout(() => id === request.current && setGpuBytes("three", estimateGpuBytes(model.object)), 2000);
         }

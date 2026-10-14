@@ -28,7 +28,7 @@ export function PaneStats({ id }: { id: PaneId }) {
       {s.fps ?? "–"} fps · cpu {ms(s.cpu?.avg, 2)} ms · gpu {gpuText(s)}
       {s.gpu ? " ms" : ""}
       <br />
-      {count(s.drawCalls)} draws · {count(s.triangles)} tris
+      {count(s.modelTriangles)} tris · {count(s.trianglesDrawn)} drawn · {count(s.drawCalls)} draws
     </div>
   );
 }
@@ -58,7 +58,8 @@ export function PerfTable() {
             <th scope="col">CPU ms avg / p95</th>
             <th scope="col">GPU ms avg / p95</th>
             <th scope="col">Draws</th>
-            <th scope="col">Tris</th>
+            <th scope="col" title="Triangles in the model geometry, each counted once, grid excluded">Triangles</th>
+            <th scope="col" title="Triangles submitted per frame, including the grid and extra passes">Tris drawn</th>
             <th scope="col">GPU mem</th>
           </tr>
         </thead>
@@ -76,7 +77,8 @@ export function PerfTable() {
                 <td>{s.cpu ? `${ms(s.cpu.avg, 2)} / ${ms(s.cpu.p95, 2)}` : "–"}</td>
                 <td>{s.gpu ? `${ms(s.gpu.avg, 2)} / ${ms(s.gpu.p95, 2)}` : s.gpuSupport === "n/a" ? "n/a" : "–"}</td>
                 <td>{count(s.drawCalls)}</td>
-                <td>{count(s.triangles)}</td>
+                <td>{count(s.modelTriangles)}</td>
+                <td>{count(s.trianglesDrawn)}</td>
                 <td>{formatBytes(s.gpuBytes)}</td>
               </tr>
             );

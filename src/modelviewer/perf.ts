@@ -40,12 +40,15 @@ export interface PaneRecord {
   gpuSupport: "yes" | "n/a" | "unknown";
   frameTimes: Ring; // timestamps, for frames per second
   drawCalls: number | null;
-  triangles: number | null;
+  /** Triangles submitted in the last frame, including the grid and extra passes. */
+  trianglesDrawn: number | null;
+  /** Triangles in the model's geometry (no grid, each triangle once). */
+  modelTriangles: number | null;
   gpuBytes: number | null;
 }
 
 function record(parsedOn: PaneRecord["parsedOn"]): PaneRecord {
-  return { parsedOn, loadStart: 0, loadMs: null, firstFrameMs: null, awaitingFirstFrame: false, cpu: new Ring(), gpu: new Ring(), gpuSupport: "unknown", frameTimes: new Ring(), drawCalls: null, triangles: null, gpuBytes: null };
+  return { parsedOn, loadStart: 0, loadMs: null, firstFrameMs: null, awaitingFirstFrame: false, cpu: new Ring(), gpu: new Ring(), gpuSupport: "unknown", frameTimes: new Ring(), drawCalls: null, trianglesDrawn: null, modelTriangles: null, gpuBytes: null };
 }
 
 const panes: Record<PaneId, PaneRecord> = {
@@ -64,12 +67,13 @@ export function startLoad(id: PaneId) {
   p.cpu.clear();
   p.gpu.clear();
   p.frameTimes.clear();
-  p.drawCalls = p.triangles = p.gpuBytes = null;
+  p.drawCalls = p.trianglesDrawn = p.modelTriangles = p.gpuBytes = null;
 }
 
 /** The pane's model is parsed and on the GPU; the next frame recorded is its first. */
-export function endLoad(id: PaneId, gpuBytes: number | null) {
+export function endLoad(id: PaneId, gpuBytes: number | null, modelTriangles: number) {
   const p = panes[id];
+  p.modelTriangles = modelTriangles;
   p.loadMs = performance.now() - p.loadStart;
   p.gpuBytes = gpuBytes;
   p.awaitingFirstFrame = true;
@@ -79,13 +83,13 @@ export function setGpuBytes(id: PaneId, bytes: number) {
   panes[id].gpuBytes = bytes;
 }
 
-export function recordFrame(id: PaneId, cpuMs: number, drawCalls: number, triangles: number) {
+export function recordFrame(id: PaneId, cpuMs: number, drawCalls: number, trianglesDrawn: number) {
   const p = panes[id];
   const now = performance.now();
   p.cpu.push(cpuMs);
   p.frameTimes.push(now);
   p.drawCalls = drawCalls;
-  p.triangles = triangles;
+  p.trianglesDrawn = trianglesDrawn;
   if (p.awaitingFirstFrame) {
     p.awaitingFirstFrame = false;
     p.firstFrameMs = now - p.loadStart;
@@ -110,7 +114,8 @@ export interface PaneSummary {
   gpu: { avg: number; p95: number } | null;
   gpuSupport: PaneRecord["gpuSupport"];
   drawCalls: number | null;
-  triangles: number | null;
+  trianglesDrawn: number | null;
+  modelTriangles: number | null;
   gpuBytes: number | null;
 }
 
@@ -129,7 +134,8 @@ export function summary(id: PaneId): PaneSummary {
     gpu: p.gpu.stats(),
     gpuSupport: p.gpuSupport,
     drawCalls: p.drawCalls,
-    triangles: p.triangles,
+    trianglesDrawn: p.trianglesDrawn,
+    modelTriangles: p.modelTriangles,
     gpuBytes: p.gpuBytes,
   };
 }

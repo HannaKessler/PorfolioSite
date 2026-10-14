@@ -214,6 +214,17 @@ function estimateGpuBytes(container: AssetContainer): number {
   return Math.round(bytes);
 }
 
+/** Triangles in the model's enabled meshes, each counted once. */
+function modelTriangles(container: AssetContainer): number {
+  let triangles = 0;
+  for (const mesh of container.meshes) {
+    if (!mesh.isEnabled()) continue;
+    const indices = mesh.getTotalIndices();
+    triangles += Math.floor((indices > 0 ? indices : mesh.getTotalVertices()) / 3);
+  }
+  return triangles;
+}
+
 export default function BabylonPane({ files }: { files: File[] | null }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const worldRef = useRef<World | null>(null);
@@ -272,7 +283,7 @@ export default function BabylonPane({ files }: { files: File[] | null }) {
       applyFileSettings(pick.format, container.meshes, fbxBuffer);
       world.current = { container, root };
       placeAndFrame(world, root, container.meshes);
-      endLoad("babylon", estimateGpuBytes(container));
+      endLoad("babylon", estimateGpuBytes(container), modelTriangles(container));
       // Textures finish decoding after the container loads; count them again shortly.
       setTimeout(() => !cancelled && setGpuBytes("babylon", estimateGpuBytes(container)), 2000);
       setState({ kind: "ready" });

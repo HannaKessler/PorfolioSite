@@ -165,7 +165,7 @@ export default function CustomPane({ backend, files }: { backend: Backend; files
         renderer.setScene(scene);
         uploaded = true;
         // Load time covers the shared worker parse plus this pane's upload.
-        endLoad(backend, renderer.gpuBytes());
+        endLoad(backend, renderer.gpuBytes(), scene.stats.triangles);
         const { min, max } = scene;
         const orbit = frameBox(min, max, FOV);
         orbitRef.current = orbit;
