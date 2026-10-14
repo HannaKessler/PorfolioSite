@@ -318,3 +318,19 @@
   margin-top: 0.75rem;
   pointer-events: auto;
 }
+
+/* Empty state: centre every element horizontally and vertically. */
+.mv-overlay.mv-empty {
+  place-content: center;
+  justify-items: center;
+  align-items: center;
+}
+
+.mv-overlay.mv-empty .mv-empty-actions {
+  flex-direction: column;
+  width: 100%;
+}
+
+.mv-overlay.mv-empty .mv-samples {
+  justify-content: center;
+}
