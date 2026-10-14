@@ -53,13 +53,6 @@ What it demonstrates:
 - **Texture clamping.** FBX and OBJ textures repeat by default. When a mesh's UVs stay inside the unit square, nothing actually tiles, so textures are clamped to stop filtering from pulling in pixels from the opposite edge.
 - **Transparency and depth.** Alpha-blended textured surfaces, such as grass cards, don't write depth, so overlapping cards blend instead of hiding each other, without falling back to the hard, aliased edges of alpha testing.
 
-## Notable problems solved
-
-- **Transparent foliage hiding itself.** Grass cards in one mesh can't be sorted against each other; transparent parts wrote depth and cut holes in the blades behind them. Fixed by the depth rule above.
-- **Dotted lines along texture edges.** Repeat wrapping blended the opposite edge of the image into the borders of foliage cards. Fixed by clamping when the UVs never leave the unit square.
-- **Missing textures.** A model referencing textures that weren't supplied rendered black in three.js and not at all in Babylon.js, where a texture that never finishes loading keeps the whole mesh from drawing. Both panes now drop textures that failed to load, show the model untextured and list the missing files.
-- **Comparable numbers across engines.** three.js draws double-sided transparent materials in two passes, so raw counts differed. The table reports model triangles separately from submitted work and times every pane at the same points.
-
 ## Results
 
 Measured in Microsoft Edge on a desktop PC with all four panes on screen, in Benchmark mode (60 FPS cap). Load includes downloading the pane's code the first time; the custom panes parse in a worker, the engines on the main thread. Code is the compressed JavaScript each pane downloads.
