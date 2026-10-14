@@ -55,7 +55,7 @@ What it demonstrates:
 
 ## Results
 
-Measured in Microsoft Edge on a desktop PC with all four panes on screen, in Benchmark mode (60 FPS cap). Load includes downloading the pane's code the first time; the custom panes parse in a worker, the engines on the main thread. Code is the compressed JavaScript each pane downloads.
+Measured in Microsoft Edge on a desktop PC with all four panes on screen, in Benchmark mode (redrawing continuously). Load includes downloading the pane's code the first time; the custom panes parse in a worker, the engines on the main thread. Code is the compressed JavaScript each pane downloads.
 
 | Model | Pane | Load (ms) | Frame CPU (ms) | GPU (ms) | Code (KB) |
 | --- | --- | ---: | ---: | ---: | ---: |
