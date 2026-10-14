@@ -26,6 +26,15 @@ import { uvsWithinUnitSquare } from "../../modelviewer/uv";
 import { Texture } from "@babylonjs/core/Materials/Textures/texture";
 import { VertexBuffer } from "@babylonjs/core/Buffers/buffer";
 import { SceneInstrumentation } from "@babylonjs/core/Instrumentation/sceneInstrumentation";
+import { PBRMaterial } from "@babylonjs/core/Materials/PBR/pbrMaterial";
+import { RawCubeTexture } from "@babylonjs/core/Materials/Textures/rawCubeTexture";
+import { HDRFiltering } from "@babylonjs/core/Materials/Textures/Filtering/hdrFiltering";
+import "@babylonjs/core/Materials/Textures/baseTexture.polynomial";
+import type { Material } from "@babylonjs/core/Materials/material";
+import type { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
+import { Constants } from "@babylonjs/core/Engines/constants";
+import { envCubeFaces, getLighting, shininessToRoughness, subscribeLighting, type LightingMode } from "../../modelviewer/lighting";
+import { hasOpenEdges, NO_SIDE_INFO } from "../../modelviewer/openEdges";
 import { benchmarkAngle, createGlTimer, endLoad, isBenchmark, recordFrame, recordGpu, setGpuBytes, setGpuSupport } from "../../modelviewer/perf";
 
 registerBuiltInLoaders();
@@ -46,6 +55,12 @@ interface World {
   camera: ArcRotateCamera;
   grid: GridMaterial;
   current: { container: AssetContainer; root: TransformNode } | null;
+  lights: { hemi: HemisphericLight; key: DirectionalLight; fill: DirectionalLight };
+  /** Procedural environment for image-based lighting, created the first time PBR is chosen. */
+  env: RawCubeTexture | null;
+  /** PBR copies of the loaded Standard materials, and each mesh's loaded material. */
+  pbr: Map<Material, PBRMaterial>;
+  original: Map<AbstractMesh, Material | null>;
 }
 
 function createWorld(canvas: HTMLCanvasElement): World {
@@ -105,7 +120,7 @@ function createWorld(canvas: HTMLCanvasElement): World {
     timer?.end();
     recordFrame("babylon", cpu, sceneStats.drawCallsCounter.current, scene.getActiveIndices() / 3);
   });
-  return { engine, scene, camera, grid, current: null };
+  return { engine, scene, camera, grid, current: null, lights: { hemi, key, fill }, env: null, pbr: new Map(), original: new Map() };
 }
 
 function setGridScale(grid: GridMaterial, radius: number) {
@@ -115,7 +130,62 @@ function setGridScale(grid: GridMaterial, radius: number) {
   grid.minorUnitVisibility = 0.35;
 }
 
+/** A PBRMaterial matching a loaded StandardMaterial (OBJ, STL, FBX); textures are shared. */
+function toPbr(source: StandardMaterial, scene: Scene): PBRMaterial {
+  const pbr = new PBRMaterial(`${source.name} (PBR)`, scene);
+  pbr.albedoColor = source.diffuseColor.clone();
+  pbr.albedoTexture = source.diffuseTexture;
+  pbr.opacityTexture = source.opacityTexture;
+  pbr.bumpTexture = source.bumpTexture;
+  pbr.emissiveColor = source.emissiveColor.clone();
+  pbr.emissiveTexture = source.emissiveTexture;
+  pbr.useAlphaFromAlbedoTexture = source.useAlphaFromDiffuseTexture;
+  pbr.alpha = source.alpha;
+  pbr.alphaCutOff = source.alphaCutOff;
+  pbr.transparencyMode = source.transparencyMode;
+  pbr.backFaceCulling = source.backFaceCulling;
+  pbr.twoSidedLighting = source.twoSidedLighting;
+  pbr.disableDepthWrite = source.disableDepthWrite;
+  pbr.metallic = 0;
+  pbr.roughness = shininessToRoughness(source.specularPower);
+  return pbr;
+}
+
+/** Switch lights, environment and materials between the simple rig and physically based shading. */
+function applyLighting(world: World, mode: LightingMode) {
+  const pbr = mode === "pbr";
+  const { scene, lights } = world;
+  lights.hemi.setEnabled(!pbr);
+  lights.fill.setEnabled(!pbr);
+  lights.key.intensity = pbr ? 2.2 : 1.6;
+  if (pbr && !world.env) {
+    const size = 64;
+    const env = new RawCubeTexture(scene, envCubeFaces(size), size, Constants.TEXTUREFORMAT_RGBA, Constants.TEXTURETYPE_FLOAT, true, false, Constants.TEXTURE_TRILINEAR_SAMPLINGMODE);
+    env.gammaSpace = false;
+    world.env = env;
+    // Prefilter the mip chain for GGX roughness on the GPU, in the browser.
+    new HDRFiltering(world.engine).prefilter(env).catch((error: unknown) => console.warn("Environment prefiltering failed:", error));
+  }
+  scene.environmentTexture = pbr ? world.env : null;
+  if (!world.current) return;
+  for (const mesh of world.current.container.meshes) {
+    if (!world.original.has(mesh)) world.original.set(mesh, mesh.material);
+    const original = world.original.get(mesh) ?? null;
+    if (!pbr || !original || original.getClassName() !== "StandardMaterial") {
+      mesh.material = original; // glTF materials are already PBRMaterial
+      continue;
+    }
+    let copy = world.pbr.get(original);
+    if (!copy) world.pbr.set(original, (copy = toPbr(original as StandardMaterial, scene)));
+    mesh.material = copy;
+  }
+}
+
 function clearModel(world: World) {
+  for (const [mesh, material] of world.original) mesh.material = material;
+  for (const copy of world.pbr.values()) copy.dispose(false, false);
+  world.pbr.clear();
+  world.original.clear();
   if (!world.current) return;
   world.current.container.dispose();
   world.current.root.dispose();
@@ -192,6 +262,16 @@ function applyFileSettings(format: string, meshes: AbstractMesh[], fbxBuffer: Ar
       // Unreadable flags: keep what the loader produced.
     }
   }
+  if (NO_SIDE_INFO.has(format)) {
+    // Open surfaces in formats without a sidedness flag: draw both sides, lighting back faces with the flipped normal.
+    for (const mesh of meshes) {
+      const material = mesh.material as (NonNullable<AbstractMesh["material"]> & { twoSidedLighting?: boolean }) | null;
+      const positions = mesh.getVerticesData(VertexBuffer.PositionKind);
+      if (!material || !positions || !hasOpenEdges(positions, mesh.getIndices())) continue;
+      material.backFaceCulling = false;
+      material.twoSidedLighting = true;
+    }
+  }
   if (format === "fbx" || format === "obj") clampTexturesForUnitUVs(meshes);
   // Alpha-blended, textured surfaces (foliage cards) are one mesh and can't be
   // sorted per face, so don't let them hide each other through depth writes.
@@ -258,12 +338,16 @@ export default function BabylonPane({ files }: { files: File[] | null }) {
     worldRef.current = world;
     const observer = new ResizeObserver(() => world.engine.resize());
     observer.observe(canvas);
+    applyLighting(world, getLighting());
+    const unsubscribeLighting = subscribeLighting(() => applyLighting(world, getLighting()));
     const stopScroll = (event: WheelEvent) => event.preventDefault();
     canvas.addEventListener("wheel", stopScroll, { passive: false });
     return () => {
+      unsubscribeLighting();
       canvas.removeEventListener("wheel", stopScroll);
       observer.disconnect();
       clearModel(world);
+      world.env?.dispose();
       world.scene.dispose();
       world.engine.dispose();
       worldRef.current = null;
@@ -294,7 +378,7 @@ export default function BabylonPane({ files }: { files: File[] | null }) {
     });
     (async () => {
       const fbxBuffer = pick.format === "fbx" ? await pick.main.arrayBuffer() : null;
-      const container = await LoadAssetContainerAsync(pick.main, world.scene, { pluginExtension: `.${pick.format}` });
+      const container = await LoadAssetContainerAsync(pick.main, world.scene, { pluginExtension: `.${pick.format}`, rootUrl: "file:" });
       if (cancelled) {
         container.dispose();
         return;
@@ -305,6 +389,7 @@ export default function BabylonPane({ files }: { files: File[] | null }) {
       applyFileSettings(pick.format, container.meshes, fbxBuffer);
       world.current = { container, root };
       placeAndFrame(world, root, container.meshes);
+      applyLighting(world, getLighting());
       endLoad("babylon", estimateGpuBytes(container), modelTriangles(container));
       // Textures finish decoding after the container loads; count them again shortly.
       setTimeout(() => !cancelled && setGpuBytes("babylon", estimateGpuBytes(container)), 2000);

@@ -131,10 +131,6 @@ export function summary(id: PaneId): PaneSummary {
   };
 }
 
-export function jsHeapBytes(): number | null {
-  const memory = (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory;
-  return memory ? memory.usedJSHeapSize : null;
-}
 
 // Benchmark mode: every pane renders continuously and orbits by the same angle.
 let benchmark = false;
@@ -197,8 +193,3 @@ export function createGlTimer(gl: WebGL2RenderingContext, onResult: (ms: number)
   };
 }
 
-export function formatBytes(bytes: number | null): string {
-  if (bytes === null) return "–";
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
-  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
-}

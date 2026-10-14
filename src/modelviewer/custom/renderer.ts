@@ -1,6 +1,7 @@
 // Shared contract and constants for the two hand-written renderers.
 import type { CustomScene } from "./customScene";
 import type { Mat4, Vec3 } from "../mat4";
+import type { LightingMode } from "../lighting";
 
 export interface FrameParams {
   view: Mat4;
@@ -13,6 +14,8 @@ export interface FrameParams {
   gridFade: number;
   width: number;
   height: number;
+  /** "pbr": Cook-Torrance GGX with the procedural environment; "simple": the original lights. */
+  lighting: LightingMode;
 }
 
 export interface RenderStats {

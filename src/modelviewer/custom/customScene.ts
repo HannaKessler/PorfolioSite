@@ -21,6 +21,9 @@ export interface CustomMaterial {
   /** Greyscale opacity map; the green channel is used, as in three.js. */
   alphaMap: CustomTexture | null;
   vertexColors: boolean;
+  /** glTF metallic-roughness parameters (estimated for other formats). */
+  metallic: number;
+  roughness: number;
 }
 
 export interface CustomPart {

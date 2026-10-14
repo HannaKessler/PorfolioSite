@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { loadCustomScene } from "../../modelviewer/custom/sceneClient";
 import type { CustomRenderer } from "../../modelviewer/custom/renderer";
 import { benchmarkAngle, endLoad, isBenchmark, recordFrame, recordGpu, setGpuSupport, subscribeBenchmark } from "../../modelviewer/perf";
+import { getLighting, subscribeLighting } from "../../modelviewer/lighting";
 import { frameBox, gridCell, lookAt, orbitEye, panOrbit, rotateOrbit, zoomOrbit, type Orbit } from "../../modelviewer/mat4";
 
 export type Backend = "webgpu" | "webgl2";
@@ -67,6 +68,7 @@ export default function CustomPane({ backend, files }: { backend: Backend; files
           gridFade: radius * 12,
           width,
           height,
+          lighting: getLighting(),
         });
         recordFrame(backend, performance.now() - start, stats.drawCalls, stats.triangles);
         if (benchmark) request();
@@ -78,7 +80,12 @@ export default function CustomPane({ backend, files }: { backend: Backend; files
       if (!frameHandle && !disposed) frameHandle = requestAnimationFrame(draw);
     };
     requestRef.current = request;
-    const unsubscribe = subscribeBenchmark(request);
+    const unsubscribeBenchmark = subscribeBenchmark(request);
+    const unsubscribeLighting = subscribeLighting(request);
+    const unsubscribe = () => {
+      unsubscribeBenchmark();
+      unsubscribeLighting();
+    };
 
     createRenderer(backend, canvas).then(
       (renderer) => {

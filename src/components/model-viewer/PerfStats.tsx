@@ -1,7 +1,7 @@
 // Live performance readouts: a small corner overlay per pane and a comparison
 // table under the grid. Both re-render from counters on a 500 ms timer.
 import { useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
-import { formatBytes, isBenchmark, jsHeapBytes, PANE_IDS, PANE_NAMES, setBenchmark, subscribeBenchmark, summary, type PaneId, type PaneSummary } from "../../modelviewer/perf";
+import { isBenchmark, PANE_IDS, PANE_NAMES, setBenchmark, subscribeBenchmark, summary, type PaneId, type PaneSummary } from "../../modelviewer/perf";
 
 function useTick(ms = 500) {
   const [, setTick] = useState(0);
@@ -40,7 +40,6 @@ type Column = {
   value: (s: PaneSummary, id: PaneId) => number | null;
   show: (s: PaneSummary, id: PaneId) => ReactNode;
   better?: "low" | "high";
-  detail?: boolean;
 };
 
 const COLUMNS: Column[] = [
@@ -57,11 +56,7 @@ const COLUMNS: Column[] = [
   },
   { head: "First frame (ms)", title: "From opening the file to the first frame drawn with the model", value: (s) => s.firstFrameMs, show: (s) => ms(s.firstFrameMs, 0), better: "low" },
   { head: "Frame CPU (ms)", title: "JavaScript time inside the render call, average of the last 120 frames", value: (s) => s.cpu?.avg ?? null, show: (s) => ms(s.cpu?.avg, 2), better: "low" },
-  { head: "CPU p95 (ms)", title: "95th percentile CPU frame time", value: (s) => s.cpu?.p95 ?? null, show: (s) => ms(s.cpu?.p95, 2), detail: true },
   { head: "GPU (ms)", title: "GPU time per frame from timer queries; n/a where the browser doesn't expose them", value: (s) => s.gpu?.avg ?? null, show: gpuText, better: "low" },
-  { head: "GPU p95 (ms)", title: "95th percentile GPU frame time", value: (s) => s.gpu?.p95 ?? null, show: (s) => ms(s.gpu?.p95, 2), detail: true },
-  { head: "Tris drawn", title: "Triangles submitted in the last frame, including the grid and extra passes", value: (s) => s.trianglesDrawn, show: (s) => count(s.trianglesDrawn), detail: true },
-  { head: "GPU mem", title: "Estimate: vertex/index buffers plus textures with mipmaps", value: (s) => s.gpuBytes, show: (s) => formatBytes(s.gpuBytes), detail: true },
 ];
 
 function bestIds(column: Column, rows: [PaneId, PaneSummary][]): Set<PaneId> {
@@ -76,23 +71,15 @@ function bestIds(column: Column, rows: [PaneId, PaneSummary][]): Set<PaneId> {
 export function PerfTable() {
   useTick();
   const benchmark = useBenchmark();
-  const [details, setDetails] = useState(false);
-  const heap = jsHeapBytes();
   const rows = PANE_IDS.map((id) => [id, summary(id)] as [PaneId, PaneSummary]);
-  const columns = COLUMNS.filter((c) => details || !c.detail);
+  const columns = COLUMNS;
   const best = columns.map((c) => bestIds(c, rows));
   return (
     <div className="mv-perf">
       <div className="mv-perf-head">
-        <button type="button" className={`mv-chip${benchmark ? " is-on" : ""}`} aria-pressed={benchmark} onClick={() => setBenchmark(!benchmark)}>
-          {benchmark ? "Stop benchmark" : "Benchmark"}
-        </button>
-        <button type="button" className={`mv-chip${details ? " is-on" : ""}`} aria-pressed={details} onClick={() => setDetails(!details)}>
-          Details
-        </button>
         <span className="mv-perf-note">
-          {benchmark ? "All panes render continuously and orbit identically." : "Panes redraw on demand (Babylon.js continuously); press Benchmark to compare frame times."}
-          {details && heap !== null && ` JS heap ${formatBytes(heap)}.`} Best in each column is highlighted.
+          {benchmark ? "All panes render continuously and orbit identically." : "Panes redraw on demand (Babylon.js continuously); press Benchmark to compare frame times."}{" "}
+          Best in each column is highlighted.
         </span>
       </div>
       <table className="mv-perf-table">

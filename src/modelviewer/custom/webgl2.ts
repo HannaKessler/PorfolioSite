@@ -46,7 +46,7 @@ export function createWebGL2Renderer(canvas: HTMLCanvasElement, onGpuTime: GpuTi
   let uploadedBytes = 0;
 
   const meshProgram = compile(gl, MESH_VS, MESH_FS);
-  const meshU = uniforms(gl, meshProgram, ["uViewProj", "uMap", "uAlphaMap", "uColor", "uFlags", "uEye", "uSky", "uGround", "uKey", "uFill"]);
+  const meshU = uniforms(gl, meshProgram, ["uViewProj", "uMap", "uAlphaMap", "uColor", "uFlags", "uEye", "uSky", "uGround", "uKey", "uFill", "uPbr"]);
   const gridProgram = compile(gl, GRID_VS, GRID_FS);
   const gridU = uniforms(gl, gridProgram, ["uViewProj", "uGrid", "uEye"]);
 
@@ -216,6 +216,7 @@ export function createWebGL2Renderer(canvas: HTMLCanvasElement, onGpuTime: GpuTi
         gl.bindTexture(gl.TEXTURE_2D, part.alphaMap ?? white);
         gl.uniform4f(meshU.uColor!, m.color[0], m.color[1], m.color[2], m.opacity);
         gl.uniform4f(meshU.uFlags!, ...materialFlags(m));
+        gl.uniform4f(meshU.uPbr!, m.metallic, m.roughness, frame.lighting === "pbr" ? 1 : 0, 0);
         gl.bindVertexArray(mesh.vao);
         drawCalls++;
         triangles += part.count / 3;

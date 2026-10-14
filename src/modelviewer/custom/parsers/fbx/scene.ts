@@ -1,6 +1,7 @@
 // Interpret an FBX node tree as a RawScene: geometry, materials, textures,
 // transforms (full Autodesk pivot chain), connections, GlobalSettings.
 import { euler, ident, mul, mulAll, scale, translate, transposeRotation, type M4 } from "../mat";
+import { shininessToRoughness } from "../../../lighting";
 import { defaultMaterial, mimeFromName, srgbToLinear, UnsupportedError, type RawImage, type RawMaterial, type RawPrimitive, type RawScene, type RawTexture } from "../types";
 import type { FileLookup } from "../obj";
 import { isBinaryFbx, parseBinaryFbx } from "./binary";
@@ -156,6 +157,12 @@ function materialOpacity(node: FbxNode): number {
   return opacity;
 }
 
+/** Roughness estimated from the Phong shininess exponent, when the file has one. */
+function materialRoughness(node: FbxNode): number {
+  const s = propValue(node, "ShininessExponent") ?? propValue(node, "Shininess");
+  return typeof s === "number" ? shininessToRoughness(s) : 0.5;
+}
+
 function materialColor(node: FbxNode): [number, number, number] {
   const c = propVec3(node, "Diffuse") ?? propVec3(node, "DiffuseColor") ?? [0.8, 0.8, 0.8];
   return [srgbToLinear(c[0]!), srgbToLinear(c[1]!), srgbToLinear(c[2]!)];
@@ -230,6 +237,7 @@ export function buildFbxScene(tree: FbxTree, lookup: FileLookup, flags?: { doubl
     materials.push({
       ...defaultMaterial(mat.attrName ?? `material_${id}`),
       color: materialColor(mat),
+      roughness: materialRoughness(mat),
       opacity,
       transparent: opacity < 1 || alphaMap !== null,
       map,

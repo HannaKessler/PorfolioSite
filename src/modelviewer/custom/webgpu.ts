@@ -228,7 +228,7 @@ export async function createWebGPURenderer(canvas: HTMLCanvasElement, onGpuTime:
           const map = viewFor(m.map, true);
           const alphaMap = viewFor(m.alphaMap, false);
           const uniform = buffer(
-            new Float32Array([m.color[0], m.color[1], m.color[2], m.opacity, ...materialFlags(m)]),
+            new Float32Array([m.color[0], m.color[1], m.color[2], m.opacity, ...materialFlags(m), m.metallic, m.roughness, 0, 0]),
             GPUBufferUsage.UNIFORM,
           );
           const bindGroup = device.createBindGroup({
@@ -269,7 +269,7 @@ export async function createWebGPURenderer(canvas: HTMLCanvasElement, onGpuTime:
       const data = new Float32Array(FRAME_BYTES / 4);
       data.set(multiply(projection, frame.view), 0);
       data.set([...frame.eye, 1], 16);
-      data.set([frame.gridCell, frame.gridFade, frame.gridFade, 0], 20);
+      data.set([frame.gridCell, frame.gridFade, frame.gridFade, frame.lighting === "pbr" ? 1 : 0], 20);
       data.set([...LIGHTING.skyColor, 1], 24);
       data.set([...LIGHTING.groundColor, 1], 28);
       data.set([...key, LIGHTING.key.intensity], 32);

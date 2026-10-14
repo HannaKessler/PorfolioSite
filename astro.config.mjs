@@ -12,7 +12,10 @@ export default defineConfig({
     // Babylon.js is native ES modules imported by deep subpath and loaded lazily;
     // pre-bundling it made Vite re-optimize mid-session whenever a new subpath
     // was first seen, breaking the lazy import with '504 Outdated Optimize Dep'.
-    optimizeDeps: { exclude: ['@electric-sql/pglite', '@babylonjs/core', '@babylonjs/loaders', '@babylonjs/materials'] },
+    optimizeDeps: {
+      // Pre-bundled up front: first discovered when PBR mode loads, which would otherwise force a mid-session re-optimize.
+      include: ['three/examples/jsm/environments/RoomEnvironment.js'],
+      exclude: ['@electric-sql/pglite', '@babylonjs/core', '@babylonjs/loaders', '@babylonjs/materials'] },
     worker: { format: 'es' },
     server: {
       proxy: {

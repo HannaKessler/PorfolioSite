@@ -1,3 +1,66 @@
+import { ENV } from "../lighting";
+
+const v3 = (c: readonly number[]) => `vec3(${c.map((x) => x.toFixed(4)).join(", ")})`;
+
+/** Physically based shading shared by both custom renderers (GLSL flavour). */
+const PBR_GLSL = /* glsl */ `
+const float PI = 3.141592653589793;
+const vec3 ENV_ZENITH = ${v3(ENV.zenith)};
+const vec3 ENV_HORIZON = ${v3(ENV.horizon)};
+const vec3 ENV_FLOOR = ${v3(ENV.floor)};
+const float SOFTBOX_INTENSITY = ${ENV.softbox.intensity.toFixed(4)};
+const float SOFTBOX_EXPONENT = ${ENV.softbox.exponent.toFixed(4)};
+
+vec3 envGradient(vec3 d) {
+  return d.y >= 0.0 ? mix(ENV_HORIZON, ENV_ZENITH, sqrt(d.y)) : mix(ENV_HORIZON, ENV_FLOOR, min(1.0, -d.y * 4.0));
+}
+// Environment radiance pre-blurred for a GGX lobe of this roughness: the
+// gradient fades toward its hemisphere average, and the softbox lobe widens
+// (two Phong lobes convolved) with its energy kept.
+vec3 envSpecular(vec3 r, float roughness, vec3 k) {
+  float a = roughness * roughness;
+  vec3 g = mix(envGradient(r), mix(ENV_FLOOR, ENV_ZENITH, 0.5 * r.y + 0.5) * 0.9, a);
+  float p = max(2.0 / (a * a + 1e-4) - 2.0, 1.0);
+  float pc = 1.0 / (1.0 / SOFTBOX_EXPONENT + 1.0 / p);
+  return g + SOFTBOX_INTENSITY * (pc + 2.0) / (SOFTBOX_EXPONENT + 2.0) * pow(max(dot(r, k), 0.0), pc);
+}
+// Irradiance divided by pi (so diffuse = albedo * envDiffuse).
+vec3 envDiffuse(vec3 n, vec3 k) {
+  vec3 g = mix(ENV_FLOOR, mix(ENV_HORIZON, ENV_ZENITH, 0.6), 0.5 * n.y + 0.5);
+  return g + SOFTBOX_INTENSITY * 2.0 / (SOFTBOX_EXPONENT + 1.0) * max(dot(n, k), 0.0);
+}
+vec2 envBrdfApprox(float roughness, float nDotV) {
+  const vec4 c0 = vec4(-1.0, -0.0275, -0.572, 0.022);
+  const vec4 c1 = vec4(1.0, 0.0425, 1.04, -0.04);
+  vec4 r = roughness * c0 + c1;
+  float a004 = min(r.x * r.x, exp2(-9.28 * nDotV)) * r.x + r.y;
+  return vec2(-1.04, 1.04) * a004 + r.zw;
+}
+// Cook-Torrance: GGX distribution, height-correlated Smith visibility, Schlick Fresnel.
+vec3 shadePbr(vec3 base, float metallic, float roughness, vec3 n, vec3 v, vec4 key) {
+  roughness = clamp(roughness, 0.045, 1.0);
+  float a = roughness * roughness;
+  vec3 f0 = mix(vec3(0.04), base, metallic);
+  vec3 albedo = base * (1.0 - metallic);
+  float nv = max(dot(n, v), 1e-4);
+  vec3 l = key.xyz;
+  vec3 h = normalize(l + v);
+  float nl = max(dot(n, l), 0.0);
+  float nh = max(dot(n, h), 0.0);
+  float vh = max(dot(v, h), 0.0);
+  float a2 = a * a;
+  float d = nh * nh * (a2 - 1.0) + 1.0;
+  float D = a2 / (PI * d * d);
+  float Vis = 0.5 / max(nl * sqrt(nv * nv * (1.0 - a2) + a2) + nv * sqrt(nl * nl * (1.0 - a2) + a2), 1e-5);
+  vec3 F = f0 + (1.0 - f0) * pow(1.0 - vh, 5.0);
+  vec3 direct = ((1.0 - F) * albedo / PI + D * Vis * F) * nl * key.w;
+  vec2 ab = envBrdfApprox(roughness, nv);
+  vec3 r = reflect(-v, n);
+  vec3 ambient = albedo * envDiffuse(n, l) + envSpecular(r, roughness, l) * (f0 * ab.x + ab.y);
+  return direct + ambient;
+}
+`;
+
 export const MESH_VS = /* glsl */ `#version 300 es
 layout(location = 0) in vec3 aPosition;
 layout(location = 1) in vec3 aNormal;
@@ -31,7 +94,9 @@ uniform vec3 uSky;
 uniform vec3 uGround;
 uniform vec4 uKey;       // direction to light (normalized), intensity
 uniform vec4 uFill;
+uniform vec4 uPbr;       // metallic, roughness, mode (1 = PBR), unused
 out vec4 outColor;
+${PBR_GLSL}
 
 const float RECIPROCAL_PI = 0.3183098861837907;
 
@@ -68,6 +133,10 @@ void main() {
     if (dot(n, viewDir) < 0.0) n = -n;
   }
 
+  if (uPbr.z > 0.5) {
+    outColor = vec4(linearToSrgb(acesFilmic(shadePbr(base.rgb, uPbr.x, uPbr.y, n, viewDir, uKey))), uFlags.z > 0.5 ? alpha : 1.0);
+    return;
+  }
   vec3 irradiance = mix(uGround, uSky, 0.5 * n.y + 0.5);
   vec3 diffuse = irradiance;
   float spec = 0.0;

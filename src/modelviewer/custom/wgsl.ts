@@ -1,9 +1,20 @@
+import { ENV } from "../lighting";
+
+const v3 = (c: readonly number[]) => `vec3f(${c.map((x) => x.toFixed(4)).join(", ")})`;
+const ENV_WGSL = `
+const ENV_ZENITH = ${v3(ENV.zenith)};
+const ENV_HORIZON = ${v3(ENV.horizon)};
+const ENV_FLOOR = ${v3(ENV.floor)};
+const SOFTBOX_INTENSITY = ${ENV.softbox.intensity.toFixed(4)};
+const SOFTBOX_EXPONENT = ${ENV.softbox.exponent.toFixed(4)};
+`;
+
 // WGSL counterparts of glsl.ts. Bind group 0: per frame; group 1: per part.
 const COMMON = /* wgsl */ `
 struct Frame {
   viewProj: mat4x4f,
   eye: vec4f,
-  grid: vec4f,   // cell, fade distance, extent, unused
+  grid: vec4f,   // cell, fade distance, extent, lighting mode (1 = PBR)
   sky: vec4f,
   ground: vec4f,
   key: vec4f,    // direction to light, intensity
@@ -16,6 +27,7 @@ export const MESH_WGSL = /* wgsl */ `${COMMON}
 struct Part {
   color: vec4f,  // linear rgb, opacity
   flags: vec4f,  // hasMap, hasAlphaMap, blend (1) or -alphaCutoff, smooth normals
+  pbr: vec4f,    // metallic, roughness, unused, unused
 };
 @group(1) @binding(0) var<uniform> part: Part;
 @group(1) @binding(1) var mapSampler: sampler;
@@ -43,6 +55,50 @@ fn vs(@location(0) position: vec3f, @location(1) normal: vec3f, @location(2) uv:
 }
 
 const RECIPROCAL_PI = 0.3183098861837907;
+${ENV_WGSL}
+const PI = 3.141592653589793;
+fn envGradient(d: vec3f) -> vec3f {
+  return select(mix(ENV_HORIZON, ENV_FLOOR, min(1.0, -d.y * 4.0)), mix(ENV_HORIZON, ENV_ZENITH, sqrt(max(d.y, 0.0))), d.y >= 0.0);
+}
+fn envSpecular(r: vec3f, roughness: f32, k: vec3f) -> vec3f {
+  let a = roughness * roughness;
+  let g = mix(envGradient(r), mix(ENV_FLOOR, ENV_ZENITH, 0.5 * r.y + 0.5) * 0.9, a);
+  let p = max(2.0 / (a * a + 1e-4) - 2.0, 1.0);
+  let pc = 1.0 / (1.0 / SOFTBOX_EXPONENT + 1.0 / p);
+  return g + SOFTBOX_INTENSITY * (pc + 2.0) / (SOFTBOX_EXPONENT + 2.0) * pow(max(dot(r, k), 0.0), pc);
+}
+fn envDiffuse(n: vec3f, k: vec3f) -> vec3f {
+  let g = mix(ENV_FLOOR, mix(ENV_HORIZON, ENV_ZENITH, 0.6), 0.5 * n.y + 0.5);
+  return g + SOFTBOX_INTENSITY * 2.0 / (SOFTBOX_EXPONENT + 1.0) * max(dot(n, k), 0.0);
+}
+fn envBrdfApprox(roughness: f32, nDotV: f32) -> vec2f {
+  let c0 = vec4f(-1.0, -0.0275, -0.572, 0.022);
+  let c1 = vec4f(1.0, 0.0425, 1.04, -0.04);
+  let r = roughness * c0 + c1;
+  let a004 = min(r.x * r.x, exp2(-9.28 * nDotV)) * r.x + r.y;
+  return vec2f(-1.04, 1.04) * a004 + r.zw;
+}
+fn shadePbr(base: vec3f, metallic: f32, roughnessIn: f32, n: vec3f, v: vec3f, key: vec4f) -> vec3f {
+  let roughness = clamp(roughnessIn, 0.045, 1.0);
+  let a = roughness * roughness;
+  let f0 = mix(vec3f(0.04), base, metallic);
+  let albedo = base * (1.0 - metallic);
+  let nv = max(dot(n, v), 1e-4);
+  let l = key.xyz;
+  let h = normalize(l + v);
+  let nl = max(dot(n, l), 0.0);
+  let nh = max(dot(n, h), 0.0);
+  let vh = max(dot(v, h), 0.0);
+  let a2 = a * a;
+  let d = nh * nh * (a2 - 1.0) + 1.0;
+  let D = a2 / (PI * d * d);
+  let Vis = 0.5 / max(nl * sqrt(nv * nv * (1.0 - a2) + a2) + nv * sqrt(nl * nl * (1.0 - a2) + a2), 1e-5);
+  let F = f0 + (1.0 - f0) * pow(1.0 - vh, 5.0);
+  let direct = ((1.0 - F) * albedo / PI + D * Vis * F) * nl * key.w;
+  let ab = envBrdfApprox(roughness, nv);
+  let r = reflect(-v, n);
+  return direct + albedo * envDiffuse(n, l) + envSpecular(r, roughness, l) * (f0 * ab.x + ab.y);
+}
 
 fn rrtAndOdtFit(v: vec3f) -> vec3f {
   let a = v * (v + 0.0245786) - 0.000090537;
@@ -83,6 +139,9 @@ fn fs(in: VertexOut, @builtin(front_facing) frontFacing: bool) -> @location(0) v
     if (dot(n, viewDir) < 0.0) { n = -n; }
   }
 
+  if (frame.grid.w > 0.5) {
+    return vec4f(linearToSrgb(acesFilmic(shadePbr(base.rgb, part.pbr.x, part.pbr.y, n, viewDir, frame.key))), select(1.0, alpha, part.flags.z > 0.5));
+  }
   var diffuse = mix(frame.ground.rgb, frame.sky.rgb, 0.5 * n.y + 0.5);
   var spec = 0.0;
   for (var i = 0; i < 2; i++) {

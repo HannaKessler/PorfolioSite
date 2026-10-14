@@ -334,3 +334,86 @@
 .mv-overlay.mv-empty .mv-samples {
   justify-content: center;
 }
+
+/* Benchmark toggle: solid accent button with square corners. */
+.mv-bench {
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid var(--accent);
+  border-radius: 0;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.mv-bench:hover {
+  background: color-mix(in srgb, var(--accent) 82%, #000);
+  border-color: color-mix(in srgb, var(--accent) 82%, #000);
+}
+
+.mv-bench:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.mv-bench.is-on {
+  background: color-mix(in srgb, var(--accent) 70%, #000);
+  border-color: color-mix(in srgb, var(--accent) 70%, #000);
+}
+
+/* Pane grid plus the button bar attached to its bottom edge. */
+.mv-stage-wrap {
+  display: grid;
+  min-width: 0;
+}
+
+.mv-stage-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.mv-mode {
+  display: flex;
+}
+
+.mv-mode-btn {
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid var(--accent);
+  border-radius: 0;
+  background: var(--bg, #fff);
+  color: var(--accent);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.mv-mode-btn + .mv-mode-btn {
+  margin-left: -1px;
+}
+
+.mv-mode-btn:hover {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.mv-mode-btn.is-active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.mv-mode-btn.is-active:hover {
+  background: color-mix(in srgb, var(--accent) 82%, #000);
+}
+
+.mv-mode-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  position: relative;
+}
