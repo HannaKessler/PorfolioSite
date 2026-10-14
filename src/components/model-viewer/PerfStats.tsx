@@ -24,10 +24,10 @@ const count = (v: number | null) => (v === null ? DASH : v >= 1e6 ? `${(v / 1e6)
 export function PaneStats({ id }: { id: PaneId }) {
   useTick();
   const s = summary(id);
-  if (s.loadMs === null && s.fps === null) return null;
+  if (s.loadMs === null && s.cpu === null) return null;
   return (
     <div className="mv-stats" aria-hidden="true">
-      {s.fps ?? DASH} fps · cpu {ms(s.cpu?.avg, 2)} ms · gpu {gpuText(s)}
+      cpu {ms(s.cpu?.avg, 2)} ms · gpu {gpuText(s)}
       {s.gpu ? " ms" : ""}
       <br />
       {count(s.modelTriangles)} tris · {count(s.drawCalls)} draws
@@ -57,7 +57,6 @@ const COLUMNS: Column[] = [
     better: "low",
   },
   { head: "First frame (ms)", title: "From opening the file to the first frame drawn with the model", value: (s) => s.firstFrameMs, show: (s) => ms(s.firstFrameMs, 0), better: "low" },
-  { head: "FPS", title: "Frames drawn in the last second (on demand unless Benchmark is on)", value: (s) => s.fps, show: (s) => s.fps ?? DASH, better: "high" },
   { head: "Frame CPU (ms)", title: "JavaScript time inside the render call, average of the last 120 frames", value: (s) => s.cpu?.avg ?? null, show: (s) => ms(s.cpu?.avg, 2), better: "low" },
   { head: "CPU p95 (ms)", title: "95th percentile CPU frame time", value: (s) => s.cpu?.p95 ?? null, show: (s) => ms(s.cpu?.p95, 2), detail: true },
   { head: "GPU (ms)", title: "GPU time per frame from timer queries; n/a where the browser doesn't expose them", value: (s) => s.gpu?.avg ?? null, show: gpuText, better: "low" },

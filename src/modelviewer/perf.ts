@@ -38,7 +38,6 @@ export interface PaneRecord {
   gpu: Ring;
   /** "n/a" when the browser exposes no GPU timer for this API. */
   gpuSupport: "yes" | "n/a" | "unknown";
-  frameTimes: Ring; // timestamps, for frames per second
   drawCalls: number | null;
   /** Triangles submitted in the last frame, including the grid and extra passes. */
   trianglesDrawn: number | null;
@@ -48,7 +47,7 @@ export interface PaneRecord {
 }
 
 function record(parsedOn: PaneRecord["parsedOn"]): PaneRecord {
-  return { parsedOn, loadStart: 0, loadMs: null, firstFrameMs: null, awaitingFirstFrame: false, cpu: new Ring(), gpu: new Ring(), gpuSupport: "unknown", frameTimes: new Ring(), drawCalls: null, trianglesDrawn: null, modelTriangles: null, gpuBytes: null };
+  return { parsedOn, loadStart: 0, loadMs: null, firstFrameMs: null, awaitingFirstFrame: false, cpu: new Ring(), gpu: new Ring(), gpuSupport: "unknown", drawCalls: null, trianglesDrawn: null, modelTriangles: null, gpuBytes: null };
 }
 
 const panes: Record<PaneId, PaneRecord> = {
@@ -66,7 +65,6 @@ export function startLoad(id: PaneId) {
   p.awaitingFirstFrame = false;
   p.cpu.clear();
   p.gpu.clear();
-  p.frameTimes.clear();
   p.drawCalls = p.trianglesDrawn = p.modelTriangles = p.gpuBytes = null;
 }
 
@@ -87,7 +85,6 @@ export function recordFrame(id: PaneId, cpuMs: number, drawCalls: number, triang
   const p = panes[id];
   const now = performance.now();
   p.cpu.push(cpuMs);
-  p.frameTimes.push(now);
   p.drawCalls = drawCalls;
   p.trianglesDrawn = trianglesDrawn;
   if (p.awaitingFirstFrame) {
@@ -109,7 +106,6 @@ export interface PaneSummary {
   parsedOn: string;
   loadMs: number | null;
   firstFrameMs: number | null;
-  fps: number | null;
   cpu: { avg: number; p95: number } | null;
   gpu: { avg: number; p95: number } | null;
   gpuSupport: PaneRecord["gpuSupport"];
@@ -121,15 +117,10 @@ export interface PaneSummary {
 
 export function summary(id: PaneId): PaneSummary {
   const p = panes[id];
-  const now = performance.now();
-  // Frames drawn in the last second (on-demand panes show what they actually drew).
-  let fps = 0;
-  for (let i = 0; i < p.frameTimes.count; i++) if (now - p.frameTimes.values[i]! <= 1000) fps++;
   return {
     parsedOn: p.parsedOn,
     loadMs: p.loadMs,
     firstFrameMs: p.firstFrameMs,
-    fps: p.frameTimes.count ? fps : null,
     cpu: p.cpu.stats(),
     gpu: p.gpu.stats(),
     gpuSupport: p.gpuSupport,
@@ -160,7 +151,6 @@ export function setBenchmark(on: boolean) {
   for (const id of PANE_IDS) {
     panes[id].cpu.clear();
     panes[id].gpu.clear();
-    panes[id].frameTimes.clear();
   }
   for (const l of listeners) l();
 }
