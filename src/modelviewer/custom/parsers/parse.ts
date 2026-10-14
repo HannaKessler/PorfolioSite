@@ -8,6 +8,7 @@ import { parseObj, type FileLookup } from "./obj";
 import { parsePly } from "./ply";
 import { parseStl } from "./stl";
 import type { InputFile, RawScene } from "./types";
+import { hasOpenEdges, NO_SIDE_INFO } from "../../openEdges";
 
 export async function parseFiles(files: readonly InputFile[]): Promise<{ scene: RawScene; main: string }> {
   const pick = pickMainFile(files);
@@ -44,6 +45,17 @@ export async function parseFiles(files: readonly InputFile[]): Promise<{ scene: 
       scene = await parseFbx(data, lookup, readFbxModelFlags(main.data));
       break;
   }
+  if (NO_SIDE_INFO.has(format)) doubleSideOpenPrimitives(scene);
   scene.missing = scene.missing.filter((name) => !map.has(matchKey(name)));
   return { scene, main: main.name };
+}
+
+/** Open surfaces in formats without a sidedness flag are drawn double-sided (see openEdges.ts). */
+function doubleSideOpenPrimitives(scene: RawScene): void {
+  const open = new Set<number>();
+  for (const p of scene.primitives) if (!open.has(p.material) && hasOpenEdges(p.positions, p.indices)) open.add(p.material);
+  for (const index of open) {
+    const m = scene.materials[index];
+    if (m && m.side === "front") m.side = "double";
+  }
 }

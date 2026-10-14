@@ -34,6 +34,7 @@ import type { Material } from "@babylonjs/core/Materials/material";
 import type { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 import { Constants } from "@babylonjs/core/Engines/constants";
 import { envCubeFaces, getLighting, shininessToRoughness, subscribeLighting, type LightingMode } from "../../modelviewer/lighting";
+import { hasOpenEdges, NO_SIDE_INFO } from "../../modelviewer/openEdges";
 import { benchmarkAngle, createGlTimer, endLoad, isBenchmark, recordFrame, recordGpu, setGpuBytes, setGpuSupport } from "../../modelviewer/perf";
 
 registerBuiltInLoaders();
@@ -143,6 +144,7 @@ function toPbr(source: StandardMaterial, scene: Scene): PBRMaterial {
   pbr.alphaCutOff = source.alphaCutOff;
   pbr.transparencyMode = source.transparencyMode;
   pbr.backFaceCulling = source.backFaceCulling;
+  pbr.twoSidedLighting = source.twoSidedLighting;
   pbr.disableDepthWrite = source.disableDepthWrite;
   pbr.metallic = 0;
   pbr.roughness = shininessToRoughness(source.specularPower);
@@ -258,6 +260,16 @@ function applyFileSettings(format: string, meshes: AbstractMesh[], fbxBuffer: Ar
       }
     } catch {
       // Unreadable flags: keep what the loader produced.
+    }
+  }
+  if (NO_SIDE_INFO.has(format)) {
+    // Open surfaces in formats without a sidedness flag: draw both sides, lighting back faces with the flipped normal.
+    for (const mesh of meshes) {
+      const material = mesh.material as (NonNullable<AbstractMesh["material"]> & { twoSidedLighting?: boolean }) | null;
+      const positions = mesh.getVerticesData(VertexBuffer.PositionKind);
+      if (!material || !positions || !hasOpenEdges(positions, mesh.getIndices())) continue;
+      material.backFaceCulling = false;
+      material.twoSidedLighting = true;
     }
   }
   if (format === "fbx" || format === "obj") clampTexturesForUnitUVs(meshes);

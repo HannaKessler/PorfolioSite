@@ -11,6 +11,7 @@ import { toCreasedNormals } from "three/examples/jsm/utils/BufferGeometryUtils.j
 import { readFbxModelFlags } from "./fbxModels";
 import { uvsWithinUnitSquare } from "./uv";
 import { shininessToRoughness, type LightingMode } from "./lighting";
+import { hasOpenEdges, NO_SIDE_INFO } from "./openEdges";
 import { buildFileMap, matchKey, objNeedsSmoothNormals, pickMainFile, pickMaterialFile } from "./files";
 
 export interface LoadedModel {
@@ -144,6 +145,7 @@ export async function loadModel(files: File[]): Promise<LoadedModel> {
       throw new Error(`${main.name} loaded but contains no visible geometry.`);
     }
     object.name = main.name;
+    if (NO_SIDE_INFO.has(format)) doubleSideOpenMeshes(object);
     if (format === "fbx" || format === "obj") clampTexturesForUnitUVs(object);
     disableDepthWriteOnTexturedTransparency(object);
     // Textures finish loading after the model itself, so the blob URLs stay
@@ -176,6 +178,28 @@ function hasRenderableContent(object: THREE.Object3D): boolean {
     if (geometry?.getAttribute?.("position")?.count) found = true;
   });
   return found;
+}
+
+/** Open meshes in formats without a sidedness flag are drawn double-sided (see openEdges.ts). */
+function doubleSideOpenMeshes(object: THREE.Object3D): void {
+  const converted = new Map<THREE.Material, THREE.Material>();
+  const toDoubleSided = (material: THREE.Material) => {
+    let result = converted.get(material);
+    if (!result) {
+      result = material.side === THREE.DoubleSide ? material : material.clone();
+      result.side = THREE.DoubleSide;
+      converted.set(material, result);
+    }
+    return result;
+  };
+  object.traverse((child) => {
+    const mesh = child as THREE.Mesh;
+    if (!mesh.isMesh) return;
+    const position = mesh.geometry.getAttribute("position");
+    if (!position || !hasOpenEdges(position.array, mesh.geometry.index?.array ?? null)) return;
+    const old = mesh.material;
+    mesh.material = Array.isArray(old) ? old.map(toDoubleSided) : toDoubleSided(old);
+  });
 }
 
 /**
