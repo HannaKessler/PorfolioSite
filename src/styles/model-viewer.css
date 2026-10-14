@@ -334,3 +334,45 @@
 .mv-overlay.mv-empty .mv-samples {
   justify-content: center;
 }
+
+/* Benchmark toggle: solid accent button with square corners. */
+.mv-bench {
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid var(--accent);
+  border-radius: 0;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.mv-bench:hover {
+  background: color-mix(in srgb, var(--accent) 82%, #000);
+  border-color: color-mix(in srgb, var(--accent) 82%, #000);
+}
+
+.mv-bench:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.mv-bench.is-on {
+  background: color-mix(in srgb, var(--accent) 70%, #000);
+  border-color: color-mix(in srgb, var(--accent) 70%, #000);
+}
+
+/* The Benchmark button hangs directly off the bottom edge of the pane grid. */
+.mv-perf {
+  margin-top: -0.85rem;
+}
+
+.mv-perf-head {
+  align-items: flex-start;
+}
+
+.mv-perf-head .mv-perf-note {
+  padding-top: 0.4rem;
+}
