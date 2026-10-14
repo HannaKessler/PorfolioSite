@@ -2,7 +2,7 @@
 /// <reference types="@webgpu/types" />
 import { materialFlags, type CustomMaterial, type CustomScene, type CustomTexture } from "./customScene";
 import { multiply, normalize, perspective, transformPoint, type Vec3 } from "../mat4";
-import { CLEAR_SRGB, LIGHTING, type CustomRenderer, type FrameParams } from "./renderer";
+import { CLEAR_SRGB, LIGHTING, type CustomRenderer, type FrameParams, type GpuTimeListener } from "./renderer";
 import { GRID_WGSL, MESH_WGSL, MIPMAP_WGSL } from "./wgsl";
 
 export class WebGPUUnsupportedError extends Error {
@@ -33,11 +33,18 @@ function mipLevels(width: number, height: number) {
   return Math.floor(Math.log2(Math.max(width, height))) + 1;
 }
 
-export async function createWebGPURenderer(canvas: HTMLCanvasElement): Promise<CustomRenderer> {
+export async function createWebGPURenderer(canvas: HTMLCanvasElement, onGpuTime: GpuTimeListener = () => {}): Promise<CustomRenderer> {
   if (!("gpu" in navigator) || !navigator.gpu) throw new WebGPUUnsupportedError();
   const adapter = await navigator.gpu.requestAdapter();
   if (!adapter) throw new WebGPUUnsupportedError();
-  const device = await adapter.requestDevice();
+  // GPU frame times need the optional timestamp-query feature.
+  const timing = adapter.features.has("timestamp-query");
+  const device = await adapter.requestDevice(timing ? { requiredFeatures: ["timestamp-query"] } : undefined);
+  const querySet = timing ? device.createQuerySet({ type: "timestamp", count: 2 }) : null;
+  const resolveBuffer = timing ? device.createBuffer({ size: 16, usage: GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.COPY_SRC }) : null;
+  const readBuffer = timing ? device.createBuffer({ size: 16, usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST }) : null;
+  let reading = false;
+  let uploadedBytes = 0;
   const context = canvas.getContext("webgpu");
   if (!context) throw new WebGPUUnsupportedError();
   const format = navigator.gpu.getPreferredCanvasFormat();
@@ -176,6 +183,7 @@ export async function createWebGPURenderer(canvas: HTMLCanvasElement): Promise<C
       device.queue.writeTexture({ texture: gpuTexture }, pixels, { bytesPerRow: width * 4 }, [width, height]);
     }
     generateMips(gpuTexture, textureFormat);
+    uploadedBytes += width * height * 4 * (4 / 3);
     textures.push(gpuTexture);
     return gpuTexture;
   };
@@ -189,12 +197,14 @@ export async function createWebGPURenderer(canvas: HTMLCanvasElement): Promise<C
     for (const texture of textures) texture.destroy();
     meshes = [];
     textures = [];
+    uploadedBytes = 0;
   };
 
   const buffer = (data: Float32Array | Uint32Array, usage: number) => {
     // Buffer sizes must be multiples of 4; all our arrays are 4-byte elements.
     const gpuBuffer = device.createBuffer({ size: Math.max(data.byteLength, 4), usage: usage | GPUBufferUsage.COPY_DST });
     device.queue.writeBuffer(gpuBuffer, 0, data);
+    uploadedBytes += data.byteLength;
     return gpuBuffer;
   };
 
@@ -237,8 +247,14 @@ export async function createWebGPURenderer(canvas: HTMLCanvasElement): Promise<C
       }
     },
 
+    gpuTiming: timing,
+
+    gpuBytes: () => Math.round(uploadedBytes),
+
     render(frame: FrameParams) {
-      if (lost) return;
+      if (lost) return { drawCalls: 0, triangles: 0 };
+      let drawCalls = 1;
+      let triangles = 2;
       if (canvas.width !== frame.width || canvas.height !== frame.height || !colorTarget) {
         canvas.width = frame.width;
         canvas.height = frame.height;
@@ -272,6 +288,7 @@ export async function createWebGPURenderer(canvas: HTMLCanvasElement): Promise<C
           },
         ],
         depthStencilAttachment: { view: depthTarget!.createView(), depthClearValue: 1, depthLoadOp: "clear", depthStoreOp: "discard" },
+        ...(querySet ? { timestampWrites: { querySet, beginningOfPassWriteIndex: 0, endOfPassWriteIndex: 1 } } : {}),
       });
       pass.setBindGroup(0, frameGroup);
       pass.setPipeline(gridPipeline);
@@ -287,6 +304,8 @@ export async function createWebGPURenderer(canvas: HTMLCanvasElement): Promise<C
         pass.setPipeline(meshPipeline(m.side === "double" ? "none" : m.side === "back" ? "front" : "back", m.transparent));
         pass.setBindGroup(1, part.bindGroup);
         mesh.buffers.forEach((b, slot) => pass.setVertexBuffer(slot, b));
+        drawCalls++;
+        triangles += part.count / 3;
         if (mesh.index) {
           pass.setIndexBuffer(mesh.index, "uint32");
           pass.drawIndexed(part.count, 1, part.start);
@@ -295,11 +314,36 @@ export async function createWebGPURenderer(canvas: HTMLCanvasElement): Promise<C
         }
       }
       pass.end();
+      // Read the pass's start/end timestamps back without stalling: skip
+      // frames while the previous readback is still mapping.
+      const measure = querySet && resolveBuffer && readBuffer && !reading;
+      if (measure) {
+        encoder.resolveQuerySet(querySet, 0, 2, resolveBuffer, 0);
+        encoder.copyBufferToBuffer(resolveBuffer, 0, readBuffer, 0, 16);
+      }
       device.queue.submit([encoder.finish()]);
+      if (measure) {
+        reading = true;
+        readBuffer.mapAsync(GPUMapMode.READ).then(
+          () => {
+            const [begin, end] = new BigUint64Array(readBuffer.getMappedRange());
+            readBuffer.unmap();
+            reading = false;
+            if (end! > begin!) onGpuTime(Number(end! - begin!) / 1e6);
+          },
+          () => {
+            reading = false;
+          },
+        );
+      }
+      return { drawCalls, triangles };
     },
 
     dispose() {
       release();
+      querySet?.destroy();
+      resolveBuffer?.destroy();
+      readBuffer?.destroy();
       colorTarget?.destroy();
       depthTarget?.destroy();
       white.destroy();

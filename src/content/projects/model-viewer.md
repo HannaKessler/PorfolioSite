@@ -86,9 +86,24 @@ Missing normals are filled in (smooth across edges under an angle threshold, or 
 
 **Trade-offs and limits.** What the engines provide and these renderers leave out is the clearest result of the comparison: shadows, image-based lighting and reflections, full physically based materials (metalness, roughness, normal, emissive and occlusion maps), skinning, morph targets and animation, instancing, frustum culling and compressed textures. Transparent parts are sorted per mesh part rather than per triangle, the same limitation the engines have. On the file side, the FBX limits above and the glTF compression extensions are the main gaps versus the library panes.
 
+## Measuring performance
+
+Each pane shows a small readout in its corner, and a table under the grid compares all four, refreshed twice a second from counters the panes update as they draw. Every pane is measured the same way:
+
+- **Load** runs from opening the file to the model being ready to draw in that pane. three.js and Babylon.js parse on the main thread; the custom panes share one parse in a Web Worker and add their own GPU upload. The first time a pane is used, its code download is included.
+- **First frame** is the time from opening the file to the first frame drawn with the model.
+- **CPU frame time** is the JavaScript time spent inside the pane's render call (scene traversal, sorting, state changes and command submission), averaged with a 95th percentile over the last 120 frames. It excludes the browser's own compositing.
+- **GPU frame time** comes from timer queries: `EXT_disjoint_timer_query_webgl2` around the render call for the three WebGL panes, and `timestamp-query` around the main render pass for WebGPU. Results arrive a frame or two later and are dropped when the GPU reports a disjoint period. Browsers that expose neither (including Safari and Firefox by default) show "n/a".
+- **Draw calls and triangles** are what each renderer submitted in its last frame, including the ground grid.
+- **GPU memory** is an estimate: vertex and index buffers plus RGBA textures with a full mip chain. Drivers add padding and render targets that aren't counted. The **JS heap** is shown when the browser exposes `performance.memory` (Chromium only).
+
+**Benchmark mode.** Normally the three.js and custom panes draw only when something changes, and Babylon.js draws continuously, so their frame rates can't be compared. The Benchmark button makes every pane render continuously and turn the camera around its target by the same angle at the same rate, then clears the frame counters so the numbers describe only the benchmark. Nothing extra runs until it's pressed.
+
+**Caveats.** All four panes share one GPU and one main thread, so they slow each other down; frame rates are capped by the display's refresh rate, so frame times are the more useful comparison. The first frames after a load include shader compilation and texture uploads, which is why idle averages can look high until the camera moves. The numbers are for comparing renderers on one machine, not absolute benchmarks.
+
 ## Layout
 
-The four panes form a 2 × 2 grid on desktop, library engines on top and hand-written renderers below, each labelled with its renderer. Pane height is derived from the viewport so the grid, the sample controls and the status line fit on one screen at common sizes from 1280 × 720 to 1920 × 1080, with a minimum height for small screens and a maximum for large ones. The grid's width is capped relative to that height so panes stay well proportioned on ultrawide monitors. On phones the panes stack in a single column. Every pane resizes its drawing buffer with its element and renders at the screen's pixel density (capped at 2× in the three.js and custom panes).
+The four panes form a 2 × 2 grid on desktop, library engines on top and hand-written renderers below, each labelled with its renderer, with the performance table beneath. Pane height is derived from the viewport so the grid, the sample controls and the status line fit on one screen at common sizes from 1280 × 720 to 1920 × 1080, with a minimum height for small screens and a maximum for large ones. The grid's width is capped relative to that height so panes stay well proportioned on ultrawide monitors. On phones the panes stack in a single column. Every pane resizes its drawing buffer with its element and renders at the screen's pixel density (capped at 2× in the three.js and custom panes).
 
 A failure in one renderer, whether a download that fails, a loader error or a lost GPU context, is caught at that pane's boundary and shown inside it; the other panes keep working.
 

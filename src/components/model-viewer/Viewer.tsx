@@ -1,9 +1,11 @@
 import { type ReactNode, Component, lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Grid, OrbitControls } from "@react-three/drei";
 import { disposeObject, loadModel, type LoadedModel } from "../../modelviewer/load";
 import { SAMPLES, type Sample } from "../../modelviewer/samples";
+import { benchmarkAngle, createGlTimer, endLoad, PANE_IDS, recordFrame, recordGpu, setGpuBytes, setGpuSupport, startLoad } from "../../modelviewer/perf";
+import { PaneStats, PerfTable, useBenchmark } from "./PerfStats";
 
 // Babylon.js is only fetched once a model is opened, keeping the initial page light.
 // A failed download isn't cached: the next model opened tries again.
@@ -93,6 +95,51 @@ function placeAndFrame(object: THREE.Object3D, camera: THREE.PerspectiveCamera, 
   return radius;
 }
 
+/** Approximate GPU memory for a three.js model: vertex/index buffers plus mipmapped RGBA textures. */
+function estimateGpuBytes(root: THREE.Object3D): number {
+  let bytes = 0;
+  const seen = new Set<unknown>();
+  root.traverse((child) => {
+    const mesh = child as THREE.Mesh;
+    if (!mesh.isMesh) return;
+    if (!seen.has(mesh.geometry)) {
+      seen.add(mesh.geometry);
+      for (const attribute of Object.values(mesh.geometry.attributes)) bytes += (attribute as THREE.BufferAttribute).array?.byteLength ?? 0;
+      bytes += mesh.geometry.index?.array.byteLength ?? 0;
+    }
+    for (const material of Array.isArray(mesh.material) ? mesh.material : [mesh.material]) {
+      for (const value of Object.values(material)) {
+        const texture = value as THREE.Texture | null;
+        if (!texture?.isTexture || seen.has(texture)) continue;
+        seen.add(texture);
+        const image = texture.image as { width?: number; height?: number } | undefined;
+        if (image?.width && image.height) bytes += image.width * image.height * 4 * (4 / 3);
+      }
+    }
+  });
+  return Math.round(bytes);
+}
+
+/** Benchmark mode: orbit the camera by the shared angle around the current target. */
+function BenchmarkOrbit() {
+  const benchmark = useBenchmark();
+  const { camera, controls } = useThree();
+  const base = useRef<{ spherical: THREE.Spherical } | null>(null);
+  useEffect(() => {
+    base.current = null;
+  }, [benchmark]);
+  useFrame(() => {
+    if (!benchmark) return;
+    const target = (controls as unknown as { target?: THREE.Vector3 } | null)?.target ?? new THREE.Vector3();
+    if (!base.current) base.current = { spherical: new THREE.Spherical().setFromVector3(camera.position.clone().sub(target)) };
+    const s = base.current.spherical.clone();
+    s.theta += benchmarkAngle();
+    camera.position.setFromSpherical(s).add(target);
+    camera.lookAt(target);
+  });
+  return null;
+}
+
 function Scene({ model }: { model: LoadedModel | null }) {
   const { camera, controls, invalidate } = useThree();
   const [scale, setScale] = useState(1);
@@ -141,6 +188,7 @@ function Scene({ model }: { model: LoadedModel | null }) {
       />
       {model && <primitive object={model.object} />}
       <OrbitControls makeDefault enableDamping={false} />
+      <BenchmarkOrbit />
     </>
   );
 }
@@ -152,6 +200,7 @@ export default function Viewer() {
   const [files, setFiles] = useState<File[] | null>(null);
   const request = useRef(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const benchmark = useBenchmark();
 
   const replaceModel = useCallback((next: LoadedModel | null) => {
     const previous = current.current;
@@ -168,9 +217,15 @@ export default function Viewer() {
     async (files: File[], label: string) => {
       const id = ++request.current;
       setStatus({ kind: "loading", label });
+      for (const pane of PANE_IDS) startLoad(pane);
       setFiles(files);
       try {
         const model = await loadModel(files);
+        if (id === request.current) {
+          endLoad("three", estimateGpuBytes(model.object));
+          // Textures decode after the model; count them once they have arrived.
+          setTimeout(() => id === request.current && setGpuBytes("three", estimateGpuBytes(model.object)), 2000);
+        }
         if (id !== request.current) {
           disposeObject(model.object);
           model.release();
@@ -252,15 +307,32 @@ export default function Viewer() {
       >
         <div className="mv-pane">
         <span className="mv-pane-label">three.js</span>
+        <PaneStats id="three" />
         <PaneBoundary engine="three.js" resetKey={files}>
         <Canvas
-          frameloop="demand"
+          frameloop={benchmark ? "always" : "demand"}
           dpr={[1, 2]}
           camera={{ fov: 40, position: [3, 2.2, 3.6], near: 0.01, far: 1000 }}
           gl={{ antialias: true, preserveDrawingBuffer: false }}
           onCreated={({ gl }) => {
             gl.setClearColor("#f6f5f3");
             gl.toneMapping = THREE.ACESFilmicToneMapping;
+            // Time every frame the same way as the other panes: CPU time inside
+            // the render call, GPU time from a timer query around it.
+            const timer = createGlTimer(gl.getContext() as WebGL2RenderingContext, (ms) => recordGpu("three", ms));
+            setGpuSupport("three", timer.supported);
+            gl.info.autoReset = false;
+            const render = gl.render.bind(gl);
+            gl.render = (scene, camera) => {
+              timer.poll();
+              gl.info.reset();
+              timer.begin();
+              const start = performance.now();
+              render(scene, camera);
+              const cpu = performance.now() - start;
+              timer.end();
+              recordFrame("three", cpu, gl.info.render.calls, gl.info.render.triangles);
+            };
           }}
         >
           <Suspense fallback={null}>
@@ -271,6 +343,7 @@ export default function Viewer() {
         </div>
         <div className="mv-pane">
           <span className="mv-pane-label">Babylon.js</span>
+          <PaneStats id="babylon" />
           {files && (
             <PaneBoundary engine="Babylon.js" resetKey={files}>
               <Suspense fallback={<div className="mv-pane-note">Loading Babylon.js…</div>}>
@@ -282,6 +355,7 @@ export default function Viewer() {
         {CUSTOM_PANES.map(({ backend, label }) => (
           <div className="mv-pane" key={backend}>
             <span className="mv-pane-label">{label}</span>
+            <PaneStats id={backend} />
             {files && (
               <PaneBoundary engine={label} resetKey={files}>
                 <Suspense fallback={<div className="mv-pane-note">Loading renderer…</div>}>
@@ -311,6 +385,8 @@ export default function Viewer() {
         )}
         {dragging && <div className="mv-dropzone">Drop to open</div>}
       </div>
+
+      {files && <PerfTable />}
 
       <p className="mv-footnote" aria-live="polite">
         {model ? (

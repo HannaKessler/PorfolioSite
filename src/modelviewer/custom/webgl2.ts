@@ -1,7 +1,8 @@
 // Hand-written WebGL2 renderer for the custom panes. No rendering library.
 import { materialFlags, type CustomMaterial, type CustomScene, type CustomTexture } from "./customScene";
 import { multiply, normalize, perspective, transformPoint, type Vec3 } from "../mat4";
-import { CLEAR_SRGB, LIGHTING, type CustomRenderer, type FrameParams } from "./renderer";
+import { CLEAR_SRGB, LIGHTING, type CustomRenderer, type FrameParams, type GpuTimeListener } from "./renderer";
+import { createGlTimer } from "../perf";
 import { GRID_FS, GRID_VS, MESH_FS, MESH_VS } from "./glsl";
 
 interface GpuPart {
@@ -38,9 +39,11 @@ function uniforms(gl: WebGL2RenderingContext, program: WebGLProgram, names: stri
   return Object.fromEntries(names.map((name) => [name, gl.getUniformLocation(program, name)])) as Record<string, WebGLUniformLocation | null>;
 }
 
-export function createWebGL2Renderer(canvas: HTMLCanvasElement): CustomRenderer {
+export function createWebGL2Renderer(canvas: HTMLCanvasElement, onGpuTime: GpuTimeListener = () => {}): CustomRenderer {
   const gl = canvas.getContext("webgl2", { antialias: true, alpha: false, premultipliedAlpha: false, preserveDrawingBuffer: false });
   if (!gl) throw new Error("WebGL2 isn't available in this browser.");
+  const timer = createGlTimer(gl, onGpuTime);
+  let uploadedBytes = 0;
 
   const meshProgram = compile(gl, MESH_VS, MESH_FS);
   const meshU = uniforms(gl, meshProgram, ["uViewProj", "uMap", "uAlphaMap", "uColor", "uFlags", "uEye", "uSky", "uGround", "uKey", "uFill"]);
@@ -70,6 +73,7 @@ export function createWebGL2Renderer(canvas: HTMLCanvasElement): CustomRenderer 
     gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
     gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
     gl.texImage2D(gl.TEXTURE_2D, 0, srgb ? gl.SRGB8_ALPHA8 : gl.RGBA8, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
+    uploadedBytes += texture.image.width * texture.image.height * 4 * (4 / 3);
     gl.generateMipmap(gl.TEXTURE_2D);
     const wrap = texture.repeat ? gl.REPEAT : gl.CLAMP_TO_EDGE;
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap);
@@ -88,6 +92,7 @@ export function createWebGL2Renderer(canvas: HTMLCanvasElement): CustomRenderer 
     for (const texture of textures) gl.deleteTexture(texture);
     meshes = [];
     textures = [];
+    uploadedBytes = 0;
   };
 
   return {
@@ -111,6 +116,7 @@ export function createWebGL2Renderer(canvas: HTMLCanvasElement): CustomRenderer 
           const buffer = gl.createBuffer()!;
           gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
           gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+          uploadedBytes += data.byteLength;
           gl.enableVertexAttribArray(location);
           gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0);
           buffers.push(buffer);
@@ -119,6 +125,7 @@ export function createWebGL2Renderer(canvas: HTMLCanvasElement): CustomRenderer 
           const buffer = gl.createBuffer()!;
           gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffer);
           gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, mesh.indices, gl.STATIC_DRAW);
+          uploadedBytes += mesh.indices.byteLength;
           buffers.push(buffer);
         }
         gl.bindVertexArray(null);
@@ -135,7 +142,15 @@ export function createWebGL2Renderer(canvas: HTMLCanvasElement): CustomRenderer 
       }
     },
 
+    gpuTiming: timer.supported,
+
+    gpuBytes: () => Math.round(uploadedBytes),
+
     render(frame: FrameParams) {
+      timer.poll();
+      timer.begin();
+      let drawCalls = 1;
+      let triangles = 2;
       if (canvas.width !== frame.width || canvas.height !== frame.height) {
         canvas.width = frame.width;
         canvas.height = frame.height;
@@ -202,14 +217,19 @@ export function createWebGL2Renderer(canvas: HTMLCanvasElement): CustomRenderer 
         gl.uniform4f(meshU.uColor!, m.color[0], m.color[1], m.color[2], m.opacity);
         gl.uniform4f(meshU.uFlags!, ...materialFlags(m));
         gl.bindVertexArray(mesh.vao);
+        drawCalls++;
+        triangles += part.count / 3;
         if (mesh.indexed) gl.drawElements(gl.TRIANGLES, part.count, gl.UNSIGNED_INT, part.start * 4);
         else gl.drawArrays(gl.TRIANGLES, part.start, part.count);
       }
       gl.bindVertexArray(null);
       gl.depthMask(true);
+      timer.end();
+      return { drawCalls, triangles };
     },
 
     dispose() {
+      timer.dispose();
       release();
       gl.deleteProgram(meshProgram);
       gl.deleteProgram(gridProgram);

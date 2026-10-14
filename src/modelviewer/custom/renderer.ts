@@ -15,12 +15,24 @@ export interface FrameParams {
   height: number;
 }
 
+export interface RenderStats {
+  drawCalls: number;
+  triangles: number;
+}
+
 export interface CustomRenderer {
   /** Upload a scene, releasing whatever was uploaded before. Pass null to clear. */
   setScene(scene: CustomScene | null): void;
-  render(frame: FrameParams): void;
+  render(frame: FrameParams): RenderStats;
+  /** Bytes of vertex, index and texture data (with mips) currently uploaded. */
+  gpuBytes(): number;
+  /** Whether GPU frame times will be reported through the onGpuTime callback. */
+  readonly gpuTiming: boolean;
   dispose(): void;
 }
+
+/** Called with GPU frame time in milliseconds, a frame or two after the frame ran. */
+export type GpuTimeListener = (ms: number) => void;
 
 /** Background, matching the three.js and Babylon.js panes (sRGB, not tone mapped). */
 export const CLEAR_SRGB = [0xf6 / 255, 0xf5 / 255, 0xf3 / 255] as const;

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { loadCustomScene } from "../../modelviewer/custom/sceneClient";
 import type { CustomRenderer } from "../../modelviewer/custom/renderer";
+import { benchmarkAngle, endLoad, isBenchmark, recordFrame, recordGpu, setGpuSupport, subscribeBenchmark } from "../../modelviewer/perf";
 import { frameBox, gridCell, lookAt, orbitEye, panOrbit, rotateOrbit, zoomOrbit, type Orbit } from "../../modelviewer/mat4";
 
 export type Backend = "webgpu" | "webgl2";
@@ -12,12 +13,13 @@ const FOV = (40 * Math.PI) / 180;
 type PaneState = { kind: "starting" } | { kind: "loading" } | { kind: "ready" } | { kind: "note"; text: string };
 
 async function createRenderer(backend: Backend, canvas: HTMLCanvasElement): Promise<CustomRenderer> {
+  const onGpuTime = (ms: number) => recordGpu(backend, ms);
   if (backend === "webgpu") {
     const { createWebGPURenderer } = await import("../../modelviewer/custom/webgpu");
-    return createWebGPURenderer(canvas);
+    return createWebGPURenderer(canvas, onGpuTime);
   }
   const { createWebGL2Renderer } = await import("../../modelviewer/custom/webgl2");
-  return createWebGL2Renderer(canvas);
+  return createWebGL2Renderer(canvas, onGpuTime);
 }
 
 export default function CustomPane({ backend, files }: { backend: Backend; files: readonly File[] | null }) {
@@ -34,12 +36,19 @@ export default function CustomPane({ backend, files }: { backend: Backend; files
     const canvas = canvasRef.current!;
     let disposed = false;
     let frameHandle = 0;
+    let benchBase: Orbit | null = null;
 
     const draw = () => {
       frameHandle = 0;
       const renderer = rendererRef.current;
-      const orbit = orbitRef.current;
       if (!renderer || disposed) return;
+      // Benchmark mode: draw every frame, turning by the angle shared with the other panes.
+      const benchmark = isBenchmark();
+      if (benchmark && orbitRef.current) {
+        benchBase ??= orbitRef.current;
+        orbitRef.current = { ...benchBase, azimuth: benchBase.azimuth + benchmarkAngle() };
+      } else if (!benchmark) benchBase = null;
+      const orbit = orbitRef.current;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const width = Math.max(1, Math.round(canvas.clientWidth * dpr));
       const height = Math.max(1, Math.round(canvas.clientHeight * dpr));
@@ -47,7 +56,8 @@ export default function CustomPane({ backend, files }: { backend: Backend; files
       const eye = orbitEye(view);
       const { radius, distance } = sizeRef.current;
       try {
-        renderer.render({
+        const start = performance.now();
+        const stats = renderer.render({
           view: lookAt(eye, view.target),
           eye,
           fovY: FOV,
@@ -58,6 +68,8 @@ export default function CustomPane({ backend, files }: { backend: Backend; files
           width,
           height,
         });
+        recordFrame(backend, performance.now() - start, stats.drawCalls, stats.triangles);
+        if (benchmark) request();
       } catch (error) {
         setState({ kind: "note", text: `Rendering failed: ${error instanceof Error ? error.message : String(error)}` });
       }
@@ -66,11 +78,13 @@ export default function CustomPane({ backend, files }: { backend: Backend; files
       if (!frameHandle && !disposed) frameHandle = requestAnimationFrame(draw);
     };
     requestRef.current = request;
+    const unsubscribe = subscribeBenchmark(request);
 
     createRenderer(backend, canvas).then(
       (renderer) => {
         if (disposed) return renderer.dispose();
         rendererRef.current = renderer;
+        setGpuSupport(backend, renderer.gpuTiming);
         setRendererReady(true);
         request();
       },
@@ -120,6 +134,7 @@ export default function CustomPane({ backend, files }: { backend: Backend; files
 
     return () => {
       disposed = true;
+      unsubscribe();
       if (frameHandle) cancelAnimationFrame(frameHandle);
       observer.disconnect();
       canvas.removeEventListener("pointerdown", onPointerDown);
@@ -149,6 +164,8 @@ export default function CustomPane({ backend, files }: { backend: Backend; files
         if (cancelled) return;
         renderer.setScene(scene);
         uploaded = true;
+        // Load time covers the shared worker parse plus this pane's upload.
+        endLoad(backend, renderer.gpuBytes());
         const { min, max } = scene;
         const orbit = frameBox(min, max, FOV);
         orbitRef.current = orbit;

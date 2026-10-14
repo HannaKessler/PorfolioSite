@@ -24,6 +24,8 @@ import { readFbxModelFlags } from "../../modelviewer/fbxModels";
 import { uvsWithinUnitSquare } from "../../modelviewer/uv";
 import { Texture } from "@babylonjs/core/Materials/Textures/texture";
 import { VertexBuffer } from "@babylonjs/core/Buffers/buffer";
+import { SceneInstrumentation } from "@babylonjs/core/Instrumentation/sceneInstrumentation";
+import { benchmarkAngle, createGlTimer, endLoad, isBenchmark, recordFrame, recordGpu, setGpuBytes, setGpuSupport } from "../../modelviewer/perf";
 
 registerBuiltInLoaders();
 
@@ -81,7 +83,27 @@ function createWorld(canvas: HTMLCanvasElement): World {
   ground.scaling.set(GROUND_SIZE, 1, GROUND_SIZE);
   setGridScale(grid, 1);
 
-  engine.runRenderLoop(() => scene.render());
+  // Measured like the other panes: CPU time inside the render call, GPU time
+  // from a timer query (EXT_disjoint_timer_query_webgl2) on the canvas's own context.
+  const context = canvas.getContext("webgl2");
+  const timer = context ? createGlTimer(context, (ms) => recordGpu("babylon", ms)) : null;
+  setGpuSupport("babylon", !!timer?.supported);
+  const sceneStats = new SceneInstrumentation(scene);
+  let benchBase: number | null = null;
+  engine.runRenderLoop(() => {
+    if (isBenchmark()) {
+      benchBase ??= camera.alpha;
+      // Babylon's alpha turns the opposite way to the three.js azimuth.
+      camera.alpha = benchBase - benchmarkAngle();
+    } else benchBase = null;
+    timer?.poll();
+    timer?.begin();
+    const start = performance.now();
+    scene.render();
+    const cpu = performance.now() - start;
+    timer?.end();
+    recordFrame("babylon", cpu, sceneStats.drawCallsCounter.current, scene.getActiveIndices() / 3);
+  });
   return { engine, scene, camera, grid, current: null };
 }
 
@@ -178,6 +200,20 @@ function clampTexturesForUnitUVs(meshes: AbstractMesh[]) {
   }
 }
 
+/** Approximate GPU memory: vertex/index data plus mipmapped RGBA textures. */
+function estimateGpuBytes(container: AssetContainer): number {
+  let bytes = 0;
+  for (const mesh of container.meshes) {
+    for (const kind of [VertexBuffer.PositionKind, VertexBuffer.NormalKind, VertexBuffer.UVKind, VertexBuffer.UV2Kind, VertexBuffer.ColorKind, VertexBuffer.TangentKind]) bytes += (mesh.getVerticesData(kind)?.length ?? 0) * 4;
+    bytes += (mesh.getIndices()?.length ?? 0) * 4;
+  }
+  for (const texture of container.textures) {
+    const size = texture.getSize();
+    bytes += size.width * size.height * 4 * (4 / 3);
+  }
+  return Math.round(bytes);
+}
+
 export default function BabylonPane({ files }: { files: File[] | null }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const worldRef = useRef<World | null>(null);
@@ -236,6 +272,9 @@ export default function BabylonPane({ files }: { files: File[] | null }) {
       applyFileSettings(pick.format, container.meshes, fbxBuffer);
       world.current = { container, root };
       placeAndFrame(world, root, container.meshes);
+      endLoad("babylon", estimateGpuBytes(container));
+      // Textures finish decoding after the container loads; count them again shortly.
+      setTimeout(() => !cancelled && setGpuBytes("babylon", estimateGpuBytes(container)), 2000);
       setState({ kind: "ready" });
     })().catch((error: unknown) => {
       if (cancelled) return;
@@ -249,7 +288,7 @@ export default function BabylonPane({ files }: { files: File[] | null }) {
   return (
     <>
       <canvas ref={canvasRef} className="mv-babylon-canvas" />
-      {state.kind === "loading" && <div className="mv-pane-note">Loading…</div>}
+      {state.kind === "loading" && <div className="mv-pane-note">LoadingÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦</div>}
       {state.kind === "note" && <div className="mv-pane-note">{state.text}</div>}
     </>
   );
