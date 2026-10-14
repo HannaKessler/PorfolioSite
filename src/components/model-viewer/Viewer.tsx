@@ -282,10 +282,10 @@ export default function Viewer() {
         {CUSTOM_PANES.map(({ backend, label }) => (
           <div className="mv-pane" key={backend}>
             <span className="mv-pane-label">{label}</span>
-            {model && (
-              <PaneBoundary engine={label} resetKey={model}>
+            {files && (
+              <PaneBoundary engine={label} resetKey={files}>
                 <Suspense fallback={<div className="mv-pane-note">Loading renderer…</div>}>
-                  <CustomPane backend={backend} model={model} />
+                  <CustomPane backend={backend} files={files} />
                 </Suspense>
               </PaneBoundary>
             )}

@@ -1,5 +1,5 @@
 // Hand-written WebGL2 renderer for the custom panes. No rendering library.
-import type { CustomMaterial, CustomScene, CustomTexture } from "./customScene";
+import { materialFlags, type CustomMaterial, type CustomScene, type CustomTexture } from "./customScene";
 import { multiply, normalize, perspective, transformPoint, type Vec3 } from "../mat4";
 import { CLEAR_SRGB, LIGHTING, type CustomRenderer, type FrameParams } from "./renderer";
 import { GRID_FS, GRID_VS, MESH_FS, MESH_VS } from "./glsl";
@@ -16,7 +16,6 @@ interface GpuMesh {
   vao: WebGLVertexArrayObject;
   buffers: WebGLBuffer[];
   indexed: boolean;
-  smooth: boolean;
   parts: GpuPart[];
 }
 
@@ -127,7 +126,6 @@ export function createWebGL2Renderer(canvas: HTMLCanvasElement): CustomRenderer 
           vao,
           buffers,
           indexed: !!mesh.indices,
-          smooth: mesh.hasNormals,
           parts: mesh.parts.map((part) => ({
             ...part,
             map: textureFor(part.material.map, true),
@@ -202,7 +200,7 @@ export function createWebGL2Renderer(canvas: HTMLCanvasElement): CustomRenderer 
         gl.activeTexture(gl.TEXTURE1);
         gl.bindTexture(gl.TEXTURE_2D, part.alphaMap ?? white);
         gl.uniform4f(meshU.uColor!, m.color[0], m.color[1], m.color[2], m.opacity);
-        gl.uniform4f(meshU.uFlags!, part.map ? 1 : 0, part.alphaMap ? 1 : 0, m.transparent ? 1 : 0, mesh.smooth && !m.flatShading ? 1 : 0);
+        gl.uniform4f(meshU.uFlags!, ...materialFlags(m));
         gl.bindVertexArray(mesh.vao);
         if (mesh.indexed) gl.drawElements(gl.TRIANGLES, part.count, gl.UNSIGNED_INT, part.start * 4);
         else gl.drawArrays(gl.TRIANGLES, part.start, part.count);

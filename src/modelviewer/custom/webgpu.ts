@@ -1,6 +1,6 @@
 // Hand-written WebGPU renderer for the custom panes. No rendering library.
 /// <reference types="@webgpu/types" />
-import type { CustomMaterial, CustomScene, CustomTexture } from "./customScene";
+import { materialFlags, type CustomMaterial, type CustomScene, type CustomTexture } from "./customScene";
 import { multiply, normalize, perspective, transformPoint, type Vec3 } from "../mat4";
 import { CLEAR_SRGB, LIGHTING, type CustomRenderer, type FrameParams } from "./renderer";
 import { GRID_WGSL, MESH_WGSL, MIPMAP_WGSL } from "./wgsl";
@@ -218,7 +218,7 @@ export async function createWebGPURenderer(canvas: HTMLCanvasElement): Promise<C
           const map = viewFor(m.map, true);
           const alphaMap = viewFor(m.alphaMap, false);
           const uniform = buffer(
-            new Float32Array([m.color[0], m.color[1], m.color[2], m.opacity, map ? 1 : 0, alphaMap ? 1 : 0, m.transparent ? 1 : 0, mesh.hasNormals && !m.flatShading ? 1 : 0]),
+            new Float32Array([m.color[0], m.color[1], m.color[2], m.opacity, ...materialFlags(m)]),
             GPUBufferUsage.UNIFORM,
           );
           const bindGroup = device.createBindGroup({

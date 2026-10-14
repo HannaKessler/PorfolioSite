@@ -1,8 +1,7 @@
 // A pane driven by one of the hand-written renderers (WebGPU or WebGL2).
 // Loaded lazily; each backend module is only fetched by the pane that uses it.
 import { useEffect, useRef, useState } from "react";
-import type { LoadedModel } from "../../modelviewer/load";
-import { disposeCustomScene, extractScene, type CustomScene } from "../../modelviewer/custom/customScene";
+import { loadCustomScene } from "../../modelviewer/custom/sceneClient";
 import type { CustomRenderer } from "../../modelviewer/custom/renderer";
 import { frameBox, gridCell, lookAt, orbitEye, panOrbit, rotateOrbit, zoomOrbit, type Orbit } from "../../modelviewer/mat4";
 
@@ -21,7 +20,7 @@ async function createRenderer(backend: Backend, canvas: HTMLCanvasElement): Prom
   return createWebGL2Renderer(canvas);
 }
 
-export default function CustomPane({ backend, model }: { backend: Backend; model: LoadedModel | null }) {
+export default function CustomPane({ backend, files }: { backend: Backend; files: readonly File[] | null }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<CustomRenderer | null>(null);
   const orbitRef = useRef<Orbit | null>(null);
@@ -134,26 +133,23 @@ export default function CustomPane({ backend, model }: { backend: Backend; model
     };
   }, [backend]);
 
-  // Scene: reuse what three.js parsed, as plain arrays and images.
+  // Scene: parsed by our own parsers in a worker (shared with the other custom pane).
   useEffect(() => {
     const renderer = rendererRef.current;
     if (!rendererReady || !renderer) return;
-    if (!model) {
+    if (!files) {
       renderer.setScene(null);
       return;
     }
-    const signal = { cancelled: false };
-    let scene: CustomScene | null = null;
+    let cancelled = false;
+    let uploaded = false;
     setState({ kind: "loading" });
-    extractScene(model.object, signal)
-      .then((extracted) => {
-        if (signal.cancelled) return;
-        scene = extracted;
-        renderer.setScene(extracted);
-        // The scene is uploaded; the decoded images are no longer needed on the CPU.
-        disposeCustomScene(extracted);
-        const { min, max } = extracted;
-        if (!Number.isFinite(min[0])) throw new Error("The model has no triangles to draw.");
+    loadCustomScene(files)
+      .then((scene) => {
+        if (cancelled) return;
+        renderer.setScene(scene);
+        uploaded = true;
+        const { min, max } = scene;
         const orbit = frameBox(min, max, FOV);
         orbitRef.current = orbit;
         sizeRef.current = { radius: Math.hypot(max[0] - min[0], max[1] - min[1], max[2] - min[2]) / 2, distance: orbit.radius };
@@ -161,14 +157,14 @@ export default function CustomPane({ backend, model }: { backend: Backend; model
         requestRef.current();
       })
       .catch((error: unknown) => {
-        if (signal.cancelled) return;
+        if (cancelled) return;
         setState({ kind: "note", text: `Couldn't draw this model: ${error instanceof Error ? error.message : String(error)}` });
       });
     return () => {
-      signal.cancelled = true;
-      if (scene) renderer.setScene(null);
+      cancelled = true;
+      if (uploaded) renderer.setScene(null);
     };
-  }, [model, rendererReady]);
+  }, [files, rendererReady]);
 
   return (
     <>

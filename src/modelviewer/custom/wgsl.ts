@@ -15,7 +15,7 @@ struct Frame {
 export const MESH_WGSL = /* wgsl */ `${COMMON}
 struct Part {
   color: vec4f,  // linear rgb, opacity
-  flags: vec4f,  // hasMap, hasAlphaMap, transparent, smooth normals
+  flags: vec4f,  // hasMap, hasAlphaMap, blend (1) or -alphaCutoff, smooth normals
 };
 @group(1) @binding(0) var<uniform> part: Part;
 @group(1) @binding(1) var mapSampler: sampler;
@@ -71,6 +71,7 @@ fn fs(in: VertexOut, @builtin(front_facing) frontFacing: bool) -> @location(0) v
   if (part.flags.x > 0.5) { base *= mapSample; }
   var alpha = base.a * part.color.a;
   if (part.flags.y > 0.5) { alpha *= alphaSample.g; }
+  if (part.flags.z < 0.0 && alpha < -part.flags.z) { discard; }
 
   let viewDir = normalize(frame.eye.xyz - in.position);
   var n: vec3f;

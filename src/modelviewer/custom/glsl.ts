@@ -25,7 +25,7 @@ in vec3 vColor;
 uniform sampler2D uMap;
 uniform sampler2D uAlphaMap;
 uniform vec4 uColor;     // linear rgb, opacity
-uniform vec4 uFlags;     // hasMap, hasAlphaMap, transparent, smooth normals
+uniform vec4 uFlags;     // hasMap, hasAlphaMap, blend (1) or -alphaCutoff, smooth normals
 uniform vec3 uEye;
 uniform vec3 uSky;
 uniform vec3 uGround;
@@ -56,6 +56,7 @@ void main() {
   if (uFlags.x > 0.5) base *= texture(uMap, vUv);
   float alpha = base.a * uColor.a;
   if (uFlags.y > 0.5) alpha *= texture(uAlphaMap, vUv).g;
+  if (uFlags.z < 0.0 && alpha < -uFlags.z) discard;
 
   vec3 viewDir = normalize(uEye - vPosition);
   vec3 n;

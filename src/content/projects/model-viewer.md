@@ -44,7 +44,7 @@ Model files carry settings that change how a model looks but that loaders don't 
 
 **How it's built.** three.js through React Three Fiber, with orbit controls and an infinite ground grid from drei. Each format uses three.js's own loader; Draco decoding uses decoder files served from the site rather than a third-party CDN. Lighting is a hemisphere light plus a key and a fill directional light, with ACES filmic tone mapping. When a model loads it is centred on the grid with its base at ground level, and the camera is placed to fit its bounding sphere whatever its scale, from millimetre CAD parts to large scenes; grid spacing and clipping planes follow the model's size.
 
-**What it handles.** All five formats, multi-file models, vertex colours, and the import settings above. It is also the source of the geometry and textures for the two hand-written renderers.
+**What it handles.** All five formats, multi-file models, vertex colours, and the import settings above.
 
 **Trade-offs and limits.** Parsing runs on the main thread, so a very large file can briefly pause the page; a Web Worker would avoid that at the cost of considerably more code. glTF files using KTX2 compressed textures aren't supported, because that needs an additional transcoder.
 
@@ -62,17 +62,29 @@ Model files carry settings that change how a model looks but that loaders don't 
 
 ## The hand-written renderers: WebGPU and WebGL2
 
-**How they're built.** The custom panes don't parse files. They take the model three.js has loaded and copy it into plain arrays (positions, normals, texture coordinates, vertex colours and indices, baked into world space) plus each material's base colour, colour texture, opacity map, opacity, side and transparency. Everything after that is written from scratch for each API:
+**Own parsers, shared scene, two backends.** The custom panes are fully independent of three.js. Dropped files are parsed in a Web Worker by our own format readers into a plain scene (meshes with positions, normals, UVs, colours and indices; materials with base colour or texture, opacity or opacity map, side, transparency and optional alpha cutoff; node transforms baked to world space). Both panes upload that same scene. Parsing runs once per file set and is shared; array buffers and ImageBitmaps cross the worker boundary as transferables. Sidecar textures, `.bin` buffers and `.mtl` files are matched by case-insensitive base name, the same way the engine loaders resolve them.
+
+**Formats.**
+
+- **glTF / GLB:** JSON and binary chunks; accessors including optional sparse; node TRS / matrix hierarchy; PBR base colour and texture; `OPAQUE` / `MASK` / `BLEND` and double-sided; embedded and external images. Draco, Meshopt and KTX2 are refused with a clear in-pane message rather than silently ignored.
+- **OBJ + MTL:** faces with negative indices, n-gon fan triangulation, smoothing groups (crease when no `vn`), `map_Kd` / `map_d`, `d` / `Tr`.
+- **STL:** binary and ASCII, including Materialise Magics header colour with alpha and 15-bit per-face colours.
+- **PLY:** ASCII and binary little- and big-endian, with vertex colours and polygon faces.
+- **FBX (binary and ASCII):** geometry with negative polygon end markers and n-gon triangulation; `LayerElementNormal` / `UV` with `ByPolygonVertex` / `ByVertice` and `Direct` / `IndexToDirect`; the full Autodesk local transform (`Lcl` T/R/S, rotation order, pre/post rotation, pivots and offsets) plus geometric translation; Connections; materials (`DiffuseColor`, opacity via `TransparencyFactor` / `Opacity`); textures and Video content (embedded or external); Culling / Visibility flags; GlobalSettings up-axis (Z-up → Y-up, matching three.js). Binary 7.x includes 64-bit offsets (7500+) and zlib-compressed arrays (inflated with `DecompressionStream`). Skinning, animation, NURBS, texture transforms and UV sets beyond the first are not supported.
+
+Missing normals are filled in (smooth across edges under an angle threshold, or flat). When UVs stay in the unit square, repeating textures are clamped so filtered samples don't wrap across the seam.
+
+**How the backends are built.** Everything after the shared scene is written from scratch for each API:
 
 - buffer and texture upload, with colour textures stored as sRGB and opacity maps as linear data;
 - mipmap generation: WebGL2 has a built-in call, WebGPU doesn't, so a small render pass downsamples each level;
-- shaders in GLSL and WGSL, pipelines, blend and depth state, multisampled anti-aliasing and the draw loop;
+- shaders in GLSL and WGSL (including alpha-test discard for glTF `MASK`), pipelines, blend and depth state, 4× MSAA and the draw loop;
 - a procedural ground grid: one quad whose fragment shader draws the lines and fades them with distance;
 - an orbit camera with drag to rotate, right-drag to pan and wheel to zoom, plus framing by bounding box, in a small matrix module of its own.
 
-**What they handle.** Everything three.js can load, drawn with lighting matched to the three.js pane: the same hemisphere, key and fill light values, Lambert diffuse with a small specular highlight, ACES filmic tone mapping and sRGB output. Opaque parts are drawn first, then transparent parts sorted back to front with depth writes off. Double-sided materials disable culling and flip the normal on back faces so both sides are lit. Textures clamp or repeat exactly as the loader decided. If the browser has no WebGPU, that pane says so instead of falling back to WebGL.
+**Shading.** Lighting is matched to the three.js pane: the same hemisphere, key and fill light values, Lambert diffuse with a small specular highlight, ACES filmic tone mapping and sRGB output. Opaque parts are drawn first, then transparent parts sorted back to front with depth writes off. Double-sided materials disable culling and flip the normal on back faces so both sides are lit. If the browser has no WebGPU, that pane says so instead of falling back to WebGL.
 
-**Trade-offs and limits.** What the engines provide and these renderers leave out is the clearest result of the comparison: shadows, image-based lighting and reflections, full physically based materials (metalness, roughness, normal, emissive and occlusion maps), skinning, morph targets and animation, instancing, frustum culling, compressed textures and the long tail of file-format quirks. Each is a substantial piece of work, which is why the custom panes reuse three.js's parsing. Transparent parts are sorted per mesh part rather than per triangle, the same limitation the engines have.
+**Trade-offs and limits.** What the engines provide and these renderers leave out is the clearest result of the comparison: shadows, image-based lighting and reflections, full physically based materials (metalness, roughness, normal, emissive and occlusion maps), skinning, morph targets and animation, instancing, frustum culling and compressed textures. Transparent parts are sorted per mesh part rather than per triangle, the same limitation the engines have. On the file side, the FBX limits above and the glTF compression extensions are the main gaps versus the library panes.
 
 ## Layout
 
@@ -82,16 +94,17 @@ A failure in one renderer, whether a download that fails, a loader error or a lo
 
 ## Performance and resource handling
 
-- **Lazy loading.** Only the three.js viewer loads with the page (about 200 KB compressed, including three.js, React Three Fiber, drei and the loaders). Babylon.js (about 60 KB compressed for the core chunk, plus each format's loader when first used) and the custom renderers (about 4 KB compressed each, with the WebGPU and WebGL2 code in separate chunks) are fetched only once a model is opened.
+- **Lazy loading.** Only the three.js viewer loads with the page (about 200 KB compressed, including three.js, React Three Fiber, drei and the loaders). Babylon.js (about 60 KB compressed for the core chunk, plus each format's loader when first used) and the custom renderers (parsers plus WebGPU / WebGL2 backends in separate chunks) are fetched only once a model is opened.
 - **Drawing on demand.** The three.js and custom panes draw only while the camera moves or a new model arrives, so an idle viewer uses no GPU time. The Babylon pane is the exception noted above.
 - **Clean replacement.** When a model is replaced, every pane releases its geometry, materials, textures and GPU buffers, and the temporary `blob:` URLs are revoked, so opening many files in a row doesn't leak memory. If a newer file is opened while an older one is still loading, the older result is discarded.
 - **Costs.** Drawing every model four times needs four GPU contexts and more memory than a single viewer would. For a comparison demo that's acceptable; a production viewer would pick one renderer. Everything is held in browser memory, so the practical size limit is set by the visitor's device.
 
 ## Testing
 
-Logic that doesn't need a GPU is covered by 24 Vitest unit tests in four files:
+Logic that doesn't need a GPU is covered by Vitest unit tests:
 
 - **File handling (10 tests):** choosing the main model file, matching `.mtl` files and references to supplied files, and detecting OBJ files that need smooth normals.
 - **FBX flags (2 tests):** reading double-sided and hidden flags from synthetic binary and ASCII FBX files.
 - **Texture coordinates (2 tests):** deciding when a mesh's UVs stay within the unit square.
 - **Camera and matrix maths (10 tests):** projection for both depth conventions, view matrices, orbit rotation, zoom and pan, and framing.
+- **Custom parsers (50 tests):** OBJ/MTL (n-gons, relative indices, smoothing, maps, vertex colours); STL ASCII/binary with header and per-face colour; PLY ASCII and binary LE/BE with colours and UVs; glTF JSON with data URIs and external buffers, GLB, sparse accessors, node hierarchy, strided normalised attributes, strip/fan modes, MASK and Draco refusal; FBX ASCII and binary (including zlib arrays and 64-bit 7500+), transforms, materials, textures and GlobalSettings; matrix helpers, crease normals and the scene builder; the multi-file entry point.
