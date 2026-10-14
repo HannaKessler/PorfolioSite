@@ -285,10 +285,6 @@ export default function Viewer() {
 
   return (
     <div className="mv-app">
-      <div className="mv-toolbar">
-        <button type="button" className="button mv-open" onClick={() => inputRef.current?.click()}>
-          Open files
-        </button>
         <input
           ref={inputRef}
           type="file"
@@ -300,18 +296,25 @@ export default function Viewer() {
             event.currentTarget.value = "";
           }}
         />
-        <span className="mv-samples-label">or try a sample:</span>
-        <div className="mv-samples">
-          {SAMPLES.map((sample) => (
-            <button key={sample.url} type="button" className="mv-chip" onClick={() => void openSample(sample)}>
-              {sample.title}
-            </button>
-          ))}
+      {files && (
+        <div className="mv-toolbar">
+          <button type="button" className="button mv-open" onClick={() => inputRef.current?.click()}>
+            Open files
+          </button>
+          <span className="mv-samples-label">or try a sample:</span>
+          <div className="mv-samples">
+            {SAMPLES.map((sample) => (
+              <button key={sample.url} type="button" className="mv-chip" onClick={() => void openSample(sample)}>
+                {sample.title}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+
+      )}
 
       <div
-        className={`mv-stage${dragging ? " is-dragging" : ""}`}
+        className={`mv-stage${files ? "" : " is-empty"}${dragging ? " is-dragging" : ""}`}
         onDragOver={(event) => {
           event.preventDefault();
           setDragging(true);
@@ -325,6 +328,8 @@ export default function Viewer() {
           onFiles(event.dataTransfer.files);
         }}
       >
+        {files && (
+        <>
         <div className="mv-pane">
         <span className="mv-pane-label">three.js</span>
         <PaneStats id="three" />
@@ -389,12 +394,29 @@ export default function Viewer() {
           </div>
         ))}
 
+        </>
+        )}
+
         {status.kind !== "ready" && (
           <div className={`mv-overlay mv-${status.kind}`} role={status.kind === "error" ? "alert" : "status"}>
             {status.kind === "empty" && (
               <>
                 <p className="mv-overlay-title">Drop a 3D model here</p>
                 <p>glTF/GLB, OBJ + MTL, STL, FBX or PLY. Drop textures and other referenced files together with the model.</p>
+                <p>It opens in three.js, Babylon.js and two hand-written renderers side by side.</p>
+                <div className="mv-empty-actions">
+                  <button type="button" className="button mv-open" onClick={() => inputRef.current?.click()}>
+                    Open files
+                  </button>
+                  <span className="mv-samples-label">or try a sample:</span>
+                  <div className="mv-samples">
+                    {SAMPLES.map((sample) => (
+                      <button key={sample.url} type="button" className="mv-chip" onClick={() => void openSample(sample)}>
+                        {sample.title}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </>
             )}
             {status.kind === "loading" && <p className="mv-overlay-title">Loading {status.label}…</p>}

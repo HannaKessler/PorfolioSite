@@ -301,3 +301,20 @@
   background: rgb(40 150 90 / 0.14);
 }
 
+
+/* Before a model is chosen the stage is one panel with the same footprint as the 2x2 grid. */
+.mv-stage.is-empty {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: calc(var(--mv-pane-height) * 2 + 1px);
+  background: #f6f5f3;
+}
+
+.mv-empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  pointer-events: auto;
+}

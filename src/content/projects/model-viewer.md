@@ -70,7 +70,7 @@ Measured in Microsoft Edge on a desktop PC with all four panes on screen, in Ben
 | | Babylon.js | 521 | 0.22 | 0.45 | 281 |
 | | Custom WebGPU | 556 | 0.18 | 0.07 | 22 |
 | | Custom WebGL2 | 555 | 0.08 | 0.30 | 21 |
-| Frog (FBX, 28.7k triangles, skinned) | three.js | 204 | 0.23 | 0.08 | 295 |
+| Frog (FBX, 28.7k triangles) | three.js | 204 | 0.23 | 0.08 | 295 |
 | | Babylon.js | 955 | 0.26 | 0.06 | 281 |
 | | Custom WebGPU | 588 | 0.17 | 0.05 | 22 |
 | | Custom WebGL2 | 585 | 0.06 | 0.06 | 21 |
