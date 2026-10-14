@@ -2,7 +2,6 @@
 // table under the grid. Both re-render from counters on a 500 ms timer.
 import { useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
 import { formatBytes, isBenchmark, jsHeapBytes, PANE_IDS, PANE_NAMES, setBenchmark, subscribeBenchmark, summary, type PaneId, type PaneSummary } from "../../modelviewer/perf";
-import bundleSizes from "../../modelviewer/bundleSizes.json";
 
 function useTick(ms = 500) {
   const [, setTick] = useState(0);
@@ -61,17 +60,8 @@ const COLUMNS: Column[] = [
   { head: "CPU p95 (ms)", title: "95th percentile CPU frame time", value: (s) => s.cpu?.p95 ?? null, show: (s) => ms(s.cpu?.p95, 2), detail: true },
   { head: "GPU (ms)", title: "GPU time per frame from timer queries; n/a where the browser doesn't expose them", value: (s) => s.gpu?.avg ?? null, show: gpuText, better: "low" },
   { head: "GPU p95 (ms)", title: "95th percentile GPU frame time", value: (s) => s.gpu?.p95 ?? null, show: (s) => ms(s.gpu?.p95, 2), detail: true },
-  { head: "Triangles", title: "Triangles in the model, each counted once, grid excluded", value: (s) => s.modelTriangles, show: (s) => count(s.modelTriangles) },
   { head: "Tris drawn", title: "Triangles submitted in the last frame, including the grid and extra passes", value: (s) => s.trianglesDrawn, show: (s) => count(s.trianglesDrawn), detail: true },
-  { head: "Draw calls", title: "Draw calls in the last frame, including the grid", value: (s) => s.drawCalls, show: (s) => count(s.drawCalls) },
   { head: "GPU mem", title: "Estimate: vertex/index buffers plus textures with mipmaps", value: (s) => s.gpuBytes, show: (s) => formatBytes(s.gpuBytes), detail: true },
-  {
-    head: "Code (KB)",
-    title: "Compressed JavaScript the pane downloads, measured from the production build (three.js includes the viewer UI)",
-    value: (_, id) => bundleSizes[id],
-    show: (_, id) => bundleSizes[id],
-    better: "low",
-  },
 ];
 
 function bestIds(column: Column, rows: [PaneId, PaneSummary][]): Set<PaneId> {
