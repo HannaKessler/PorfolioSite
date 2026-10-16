@@ -31,7 +31,7 @@ githubUrl: https://github.com/HannaKessler/BlenderAssetTransformer
 
 An asset pipeline, still in development, for reworking and eventually kitbashing Unity Asset Store assets in Blender. It is a Blender 5.1+ extension that takes assets from a Unity library project into Blender and exports them to a Unity 6 project with their textures, materials, animation clip settings and attribution.
 
-The project is in **Stage 1**: making the end-to-end pipeline (Unity library to Blender import, rework, export back to Unity 6) reliable before building features that change assets. Kitbashing and Look Transfer are later stages.
+The goal is a toolkit for combining assets from different packs into a consistent look: retargeting animations onto new meshes, matching materials across packs, and re-unwrapping UVs to fit a target texture layout. None of that is built yet. The project is in **Stage 1**: making the end-to-end pipeline (Unity library to Blender import, rework, export back to Unity 6) reliable first.
 
 What it demonstrates:
 
@@ -78,6 +78,7 @@ The tool lives in an **Asset Transformer** panel in the 3D Viewport sidebar. The
 - **No guessing.** There is no automatic content categorisation and no guessed licences. Unknown licences are marked "License unknown" and every unresolved item is reported. This is slower to use than a tool that guesses, but it never produces wrong attribution silently.
 - **Read-only source library.** Assets come from Asset Store packs imported through Unity and are never modified; the target is Unity 6 LTS.
 - **Standard library only.** No third-party packages keeps installation simple and the extension self-contained, at the cost of hand-writing the Unity file handling instead of using a YAML library.
+- **Pipeline before features.** Stage 1 makes the round-trip from Unity to Blender and back reliable before any feature that changes assets is built. Retargeting, material matching and re-unwrapping all depend on assets arriving intact, with their clips, materials and references preserved, so any loss in the round-trip would undermine them.
 - **Blender conventions:** ImportHelper with a FileHandler for import, a single classes tuple for registration, and warnings reported to the user through Blender's own reporting.
 
 ## Challenges so far
@@ -137,9 +138,11 @@ Items marked *in progress* are implemented and checked by hand but not yet on Gi
 
 - **On GitHub now:** library browser and search, Open in Unity, single and batch import with Principled BSDF wiring, foliage material preview, collection-based export staging, and FBX export with textures and attribution.
 - **In progress (Stage 1, implemented but not yet published):** Unity animation loop and frame-range settings carried both ways, one action per clip, unit-scale correction, URP Lit material generation and remapping with stable GUIDs, shipping URP-compatible pack shaders with the export, rig import fixes, and per-asset export isolation.
-- **Planned:**
-  - **Kitbashing:** tools for combining parts of different assets, built once the Stage 1 pipeline is reliable.
-  - **Phase 2, Look Transfer** (not started): bake a source asset's look onto a target mesh's UVs, with a preview and saved presets.
+- **Planned, after Stage 1 (not built):**
+  - **Animation retargeting:** take animations from one asset and apply them to a new mesh.
+  - **Cross-pack material matching:** make an asset fit another pack's style, for example swapping a tree's trunk material to match trees from a different pack. When the packs use different texture designs (tiling, repeating textures versus fully hand-painted unique textures), the material is reworked rather than simply swapped.
+  - **UV detection and re-unwrapping:** detect a mesh's existing UV layout and re-unwrap it to fit the target texture layout (tiling, or an atlas or hand-painted texture). This supports material matching across packs.
+  - **Look Transfer (Phase 2):** bake a source asset's look onto a target mesh's UVs, with a preview and saved presets. This builds on material matching and re-unwrapping: once a mesh has UVs that fit the target layout, the source look can be baked onto it.
 
 ## Testing
 
@@ -148,7 +151,7 @@ Testing is manual for now: changes are checked by importing and exporting real l
 ## Limitations
 
 - Version 0.1.0 and unreleased; much of the Stage 1 work above is not yet on GitHub.
-- No kitbashing or look-transfer features yet.
+- No retargeting, material-matching, re-unwrapping or look-transfer features yet; these are planned.
 - Child objects can keep the source FBX's 0.01 scale after export.
 - Shaders that don't compile in URP are converted to URP Lit, so some original shading is approximated.
 - Requires Blender 5.1 or later and targets Unity 6 LTS with URP.
