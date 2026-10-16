@@ -14,6 +14,8 @@ const projects = defineCollection({
     githubUrl: z.string().url().optional(),
     liveUrl: z.string().url().optional(),
     demoUrl: z.string().optional(),
+    /** Development status, e.g. "Work in progress"; adds a WIP marker to the project card. */
+    status: z.string().optional(),
     image: z
       .object({
         src: z.string(),
