@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import { site } from "../site";
 
 const demos = (await getCollection("projects"))
-  .filter((project) => project.data.listed)
+  .filter((project) => project.data.listed && project.data.kind === "demo")
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 const pathname = Astro.url.pathname;
 const isHome = pathname === "/";
@@ -32,7 +32,7 @@ function demoCurrent(id: string) {
               aria-expanded="false"
               aria-haspopup="true"
               aria-controls="demo-menu"
-              aria-current={pathname.startsWith("/projects/") ? "page" : undefined}
+              aria-current={demos.some((demo) => demoCurrent(demo.id)) ? "page" : undefined}
             >
               Demos
             </button>

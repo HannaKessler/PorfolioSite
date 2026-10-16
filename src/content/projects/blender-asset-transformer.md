@@ -3,6 +3,7 @@ title: Blender Asset Transformer
 description: A Blender extension that brings assets from a Unity Asset Store library into Blender for rework, then exports them to a Unity 6 project with textures, materials, animation clip settings and attribution.
 pubDate: 2026-10-16
 featured: true
+kind: project
 listed: true
 status: Work in progress · Stage 1 prototype
 tags:
