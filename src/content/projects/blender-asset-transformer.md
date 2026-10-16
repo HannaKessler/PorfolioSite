@@ -4,7 +4,7 @@ description: A Blender extension that brings assets from a Unity Asset Store lib
 pubDate: 2026-10-16
 featured: true
 listed: true
-status: Work in progress · Stage 1
+status: Work in progress · Stage 1 prototype
 tags:
   - Blender
   - Python
@@ -23,7 +23,7 @@ githubUrl: https://github.com/HannaKessler/BlenderAssetTransformer
 ---
 
 <div class="wip-callout">
-  <span class="wip-badge">Work in progress · Stage 1</span>
+  <span class="wip-badge">Work in progress · Stage 1 prototype</span>
   <a class="button" href="https://github.com/HannaKessler/BlenderAssetTransformer" rel="noreferrer">View the code on GitHub</a>
 </div>
 
@@ -138,6 +138,7 @@ Items marked *in progress* are implemented and checked by hand but not yet on Gi
 
 - **On GitHub now:** library browser and search, Open in Unity, single and batch import with Principled BSDF wiring, foliage material preview, collection-based export staging, and FBX export with textures and attribution.
 - **In progress (Stage 1, implemented but not yet published):** Unity animation loop and frame-range settings carried both ways, one action per clip, unit-scale correction, URP Lit material generation and remapping with stable GUIDs, shipping URP-compatible pack shaders with the export, rig import fixes, and per-asset export isolation.
+- **Planned next:** an extensive code review of the Stage 1 prototype before work on the feature stages begins.
 - **Planned, after Stage 1 (not built):**
   - **Animation retargeting:** take animations from one asset and apply them to a new mesh.
   - **Cross-pack material matching:** make an asset fit another pack's style, for example swapping a tree's trunk material to match trees from a different pack. When the packs use different texture designs (tiling, repeating textures versus fully hand-painted unique textures), the material is reworked rather than simply swapped.
@@ -150,7 +151,7 @@ Testing is manual for now: changes are checked by importing and exporting real l
 
 ## Limitations
 
-- Version 0.1.0 and unreleased; much of the Stage 1 work above is not yet on GitHub.
+- A prototype: version 0.1.0, unreleased and not yet code-reviewed; much of the Stage 1 work above is not yet on GitHub.
 - No retargeting, material-matching, re-unwrapping or look-transfer features yet; these are planned.
 - Child objects can keep the source FBX's 0.01 scale after export.
 - Shaders that don't compile in URP are converted to URP Lit, so some original shading is approximated.
