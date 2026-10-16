@@ -21,6 +21,7 @@ const isSecretNotes = project.id === "secret-notes";
 const isCatalog = project.id === "catalog";
 const isFilmGraph = project.id === "film-graph";
 const isModelViewer = project.id === "model-viewer";
+const showAllWork = project.id !== "blender-asset-transformer";
 // Full-width demos: intro header, the demo in a frame, then the write-up.
 const isWideDemo = isCatalog || isFilmGraph || isModelViewer;
 ---
@@ -96,7 +97,7 @@ const isWideDemo = isCatalog || isFilmGraph || isModelViewer;
               {liveUrl && (
                 <a class="button button-ghost" href={liveUrl} rel="noreferrer">Live site</a>
               )}
-              <a class="button button-ghost" href="/projects">All work</a>
+              {showAllWork && <a class="button button-ghost" href="/projects">All work</a>}
             </div>
           </div>
           {image && (
