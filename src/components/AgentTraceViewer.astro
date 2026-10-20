@@ -1,0 +1,14 @@
+---
+import "../styles/demo-layout.css";
+import "../styles/agent-trace.css";
+import AgentTraceDemo from "../demos/agent-trace/app/AgentTraceDemo.tsx";
+---
+
+<section class="atv" id="agent-trace-viewer" aria-label="LLM agent trace viewer">
+  <AgentTraceDemo client:only="react">
+    <p slot="fallback" class="atv-muted">Loading the trace viewer…</p>
+  </AgentTraceDemo>
+  <noscript>
+    <p class="atv-muted">The agent, its tests and the trace pipeline all run in your browser, so this demo needs JavaScript.</p>
+  </noscript>
+</section>

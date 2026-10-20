@@ -5,6 +5,7 @@ import SecretNotesDemo from "../../components/SecretNotesDemo.astro";
 import CatalogShop from "../../components/CatalogShop.astro";
 import FilmGraphExplorer from "../../components/FilmGraphExplorer.astro";
 import ModelViewer from "../../components/ModelViewer.astro";
+import AgentTraceViewer from "../../components/AgentTraceViewer.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -21,9 +22,10 @@ const isSecretNotes = project.id === "secret-notes";
 const isCatalog = project.id === "catalog";
 const isFilmGraph = project.id === "film-graph";
 const isModelViewer = project.id === "model-viewer";
+const isAgentTrace = project.id === "agent-trace-viewer";
 const showAllWork = project.id !== "blender-asset-transformer";
 // Full-width demos: intro header, the demo in a frame, then the write-up.
-const isWideDemo = isCatalog || isFilmGraph || isModelViewer;
+const isWideDemo = isCatalog || isFilmGraph || isModelViewer || isAgentTrace;
 ---
 
 <BaseLayout title={title} description={description}>
@@ -41,7 +43,7 @@ const isWideDemo = isCatalog || isFilmGraph || isModelViewer;
           </div>
         </header>
         <div class="os-frame">
-          {isCatalog ? <CatalogShop /> : isModelViewer ? <ModelViewer /> : <FilmGraphExplorer />}
+          {isCatalog ? <CatalogShop /> : isModelViewer ? <ModelViewer /> : isAgentTrace ? <AgentTraceViewer /> : <FilmGraphExplorer />}
         </div>
       </>
     )}

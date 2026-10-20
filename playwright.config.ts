@@ -1,12 +1,13 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// End-to-end tests for Film Graph. They run against the built site (npm run build)
+// End-to-end tests (Film Graph, Agent Trace Viewer). They run against the built site (npm run build)
 // served by `astro preview` on localhost, where service workers are allowed.
 // Set FILM_GRAPH_BASE_URL to test a site that is already running.
 const baseURL = process.env.FILM_GRAPH_BASE_URL ?? "http://localhost:4321";
 
 export default defineConfig({
-  testDir: "tests/film-graph/e2e",
+  testDir: "tests",
+  testMatch: /e2e[\\/].*\.spec\.ts$/,
   timeout: 90_000,
   expect: { timeout: 30_000 },
   fullyParallel: false,
