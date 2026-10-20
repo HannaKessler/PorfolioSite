@@ -25,7 +25,7 @@ What it demonstrates:
 
 - **Agent design:** a tool-calling loop with schema validation, retries for invalid model output, wall-clock timeouts on tools and a step cap.
 - **Observability engineering:** the real OpenTelemetry JavaScript SDK, the GenAI semantic conventions, a custom live span processor, a collector, a trace store and OTLP-JSON import and export.
-- **Data visualisation:** a virtualized waterfall timeline drawn on canvas, a span inspector, run summaries, filters, run comparison and playback.
+- **Data visualisation:** a virtualized waterfall timeline drawn on canvas, a span inspector, a step-by-step activity feed, a file view with diffs, a prompt view, run summaries, filters, run comparison and playback.
 - **Browser engineering:** three Web Workers (agent, tests, model), MessagePort transport, IndexedDB persistence and lazy loading of a large model runtime.
 - **Testing:** unit tests for every layer, golden traces, determinism checks, a schema test that holds both brains to the same contract, and a Playwright end-to-end test.
 
@@ -36,6 +36,9 @@ What it demonstrates:
 - Inject faults: a flaky test, a tool that blocks past its deadline, or a model reply that is cut off mid-JSON. Each one really happens in the run, and the affected spans are marked as injected faults.
 - Step through a run one agent step at a time.
 - Inspect any span: its prompt and response, tool arguments and results, events, status and attributes.
+- Follow the run step by step in the activity feed: the real model's reasoning in its own words, or the rule the simulated brain applied, then the tool call with its arguments, the result (including test failures and tool errors) and the outcome. Selecting an item selects the same span in the timeline and inspector, and the other way round.
+- Browse the agent's project as it was at any point in the run, and see a diff for every `edit_file` call. A failed edit shows the text it tried to find and replace, the file as it was at the time, and how many times the text occurred.
+- Read the full message list sent for every model call and the raw reply before parsing, including replies the validator rejected, with copy buttons.
 - Filter by errors, slow spans (slower than the run's 90th percentile), tool, operation or text; compare two runs step by step; replay a run at 0.01× to 8× speed.
 - Export a run as standard OTLP-JSON, or import one by file picker or drag and drop. The current view, including the selected span, filters and playback position, is kept in the URL.
 
@@ -52,23 +55,27 @@ What it demonstrates:
 
 - **One monitor for both brains.** Both brains return raw text that must contain a JSON tool call, so the simulated brain goes through the same parser, validator and retry path as the real model. An architecture test fails if the tracing, collector, store or viewer code imports anything from the brains.
 - **Only measured data.** Spans hold real durations, real tool inputs and outputs and real test results. Token counts and model statistics (time to first token, prefill and decode speed) are copied from what the WebLLM runtime reports, field by field. When a value is not reported, the attribute is left out rather than estimated, and the viewer says "Not reported by this brain". The simulated brain reports no usage at all and adds no artificial delay.
-- **The real OpenTelemetry SDK instead of a hand-written tracer.** It provides standard span IDs, context, processors and serialization; the whole agent worker, SDK included, is about 18 KB gzip. Context is passed explicitly, because there is no zone.js-style async context in a worker.
+- **The real OpenTelemetry SDK instead of a hand-written tracer.** It provides standard span IDs, context, processors and serialization; the whole agent worker, SDK included, is about 19 KB gzip. Context is passed explicitly, because there is no zone.js-style async context in a worker.
 - **GenAI semantic conventions.** Spans follow the OpenTelemetry GenAI conventions (`invoke_agent`, `chat`, `execute_tool`, `gen_ai.*` attributes). The conventions are still in Development status, so all names are pinned in one module.
-- **Prompts and responses are recorded.** The conventions treat message content as opt-in. Here it is on by default because the project is synthetic; each payload is capped at 8 KB, and the export dialog warns that exported files contain it.
+- **Prompts and responses are recorded.** The conventions treat message content as opt-in. Here it is on by default because the project is synthetic; each payload is capped at 64 KB, enough for a full prompt at the default step cap, and the export dialog warns that exported files contain it.
+- **Reasoning is shown only when it is real.** The reply schema has an optional `thought` field, and the activity feed shows what the real model wrote there, verbatim. The simulated brain writes no reasoning: each reply records the rule that fired and the values it matched, and the feed labels it as a fixed rule rather than model reasoning.
+- **Views rebuilt from spans.** The activity feed, the file view and the prompt view read only span attributes: the project's files at the start of the run, each edit's file contents before and after, and the full message list of each model call. They therefore work the same for live runs, bundled samples and imported files, and follow the playback position. Prompts and tool arguments are set when a span starts, so they are visible while the call is still running.
 - **Schema-constrained JSON instead of native tool calling.** WebLLM's native tool calling is still marked as work in progress and limited to a few larger models, so the real model is asked for a JSON object constrained by a JSON Schema, and the shared validator checks it.
 - **Full prompt on every request.** WebLLM counts only the new part of the prompt when it detects a multi-turn chat, so the brain resets the chat before each request and sends the full conversation, so that the reported prompt tokens and prefill timings cover the whole prompt.
 - **Cost as a what-if.** A model running in the browser has no price, so there is no cost figure. For real-model runs, a collapsed panel multiplies the run's reported token counts by prices the visitor enters; there are no default prices, and every figure is labelled as a what-if.
-- **Lazy loading.** The page loads the viewer (about 27 KB gzip, plus React, which the site's other demos share). The agent worker starts on the first run. The WebLLM runtime and the model weights are fetched only on opt-in. The runtime is about 4.3 MB gzip in total, because the engine's client in the agent worker and the engine's own worker each include the library.
+- **Lazy loading.** The page loads the viewer (about 35 KB gzip, plus React, which the site's other demos share). The agent worker starts on the first run. The WebLLM runtime and the model weights are fetched only on opt-in. The runtime is about 4.3 MB gzip in total, because the engine's client in the agent worker and the engine's own worker each include the library.
 
 ## Trace schema
 
 ```
-invoke_agent trace-fixer        run config, brain, outcome, final test result
+invoke_agent trace-fixer        run config, brain, outcome, final test result, project files at the start
 ├─ pause                        step mode: time spent waiting for the visitor
 └─ step N
    ├─ chat <model>              prompt, response, finish reason, events: retry, validation_error
    │                            reported only: gen_ai.usage.*, app.llm.* runtime statistics
+   │                            brain-reported: app.policy.* (simulated), app.llm.request (WebLLM)
    └─ execute_tool <tool>       arguments, result, deadline, test counts
+                                edit_file: file before and after, match count
 ```
 
 Failures set the span status to Error with an `error.type` (`timeout`, `malformed_output`, `tool_error`, `test_failure`). Injected faults carry `app.fault.injected`.
@@ -83,9 +90,10 @@ Vitest unit tests cover each layer without a browser:
 - **Identical pipeline:** recorded WebLLM-style completions are replayed through the same loop, and the test checks that their spans and the simulated brain's share the same names, kinds, hierarchy, required attributes and events.
 - **Transport and storage:** spans arrive open and then ended, an ended span is never replaced by an older open copy, and export → import → export reproduces the same document.
 - **Viewer logic:** filters, sequence alignment for compare, URL state, playback clipping and the what-if arithmetic.
+- **Detail views:** the activity feed, the rebuilt project at any point and in playback, line diffs, failed edits, full untruncated prompts, the WebLLM request body, and prompts present on spans that are still open.
 - **Bundled samples:** every sample passes the span schema, the simulated-brain samples carry no usage attributes, and in the real-model sample usage appears only on `chat` spans.
 
-A Playwright test loads the page, runs the agent in a real browser and checks that the trace reaches the timeline and the inspector.
+Playwright tests load the page, run the agent in a real browser, check that the trace reaches the timeline and the inspector, and check that the activity, file and prompt views follow the selection.
 
 ## Limitations
 
