@@ -1,0 +1,1304 @@
+{
+ "resourceSpans": [
+  {
+   "resource": {
+    "attributes": [
+     {
+      "key": "service.name",
+      "value": {
+       "stringValue": "agent-trace-viewer"
+      }
+     },
+     {
+      "key": "app.host",
+      "value": {
+       "stringValue": "node"
+      }
+     }
+    ],
+    "droppedAttributesCount": 0
+   },
+   "scopeSpans": [
+    {
+     "scope": {
+      "name": "agent-trace-viewer/agent",
+      "version": "1.0.0",
+      "attributes": [],
+      "droppedAttributesCount": 0
+     },
+     "spans": [
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "b4504937a5481461",
+       "name": "invoke_agent trace-fixer",
+       "kind": 1,
+       "startTimeUnixNano": "1792513408179711426",
+       "endTimeUnixNano": "1792513408183824707",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "invoke_agent"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "invoke_agent"
+         }
+        },
+        {
+         "key": "gen_ai.agent.name",
+         "value": {
+          "stringValue": "trace-fixer"
+         }
+        },
+        {
+         "key": "gen_ai.conversation.id",
+         "value": {
+          "stringValue": "0178d996-bbe3-43de-aad9-28e61de8e5bc"
+         }
+        },
+        {
+         "key": "gen_ai.provider.name",
+         "value": {
+          "stringValue": "simulated"
+         }
+        },
+        {
+         "key": "gen_ai.request.model",
+         "value": {
+          "stringValue": "scripted-v1"
+         }
+        },
+        {
+         "key": "app.brain.label",
+         "value": {
+          "stringValue": "Simulated brain"
+         }
+        },
+        {
+         "key": "app.task.id",
+         "value": {
+          "stringValue": "format-duration"
+         }
+        },
+        {
+         "key": "app.task.variant",
+         "value": {
+          "stringValue": "rounding"
+         }
+        },
+        {
+         "key": "app.run.max_steps",
+         "value": {
+          "intValue": "12"
+         }
+        },
+        {
+         "key": "app.run.seed",
+         "value": {
+          "intValue": "3"
+         }
+        },
+        {
+         "key": "app.run.faults",
+         "value": {
+          "arrayValue": {
+           "values": [
+            {
+             "stringValue": "malformed_output"
+            }
+           ]
+          }
+         }
+        },
+        {
+         "key": "app.run.step_mode",
+         "value": {
+          "boolValue": false
+         }
+        },
+        {
+         "key": "app.run.outcome",
+         "value": {
+          "stringValue": "finished"
+         }
+        },
+        {
+         "key": "app.test.passed",
+         "value": {
+          "intValue": "6"
+         }
+        },
+        {
+         "key": "app.test.failed",
+         "value": {
+          "intValue": "0"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 0
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      },
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "33c79c0883a981b8",
+       "parentSpanId": "b4504937a5481461",
+       "name": "step 1",
+       "kind": 1,
+       "startTimeUnixNano": "1792513408179847168",
+       "endTimeUnixNano": "1792513408181550049",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "step"
+         }
+        },
+        {
+         "key": "app.step.index",
+         "value": {
+          "intValue": "1"
+         }
+        },
+        {
+         "key": "app.step.outcome",
+         "value": {
+          "stringValue": "test_failure"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 0
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      },
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "07dd1f6fb8c8c279",
+       "parentSpanId": "33c79c0883a981b8",
+       "name": "chat scripted-v1",
+       "kind": 3,
+       "startTimeUnixNano": "1792513408179875732",
+       "endTimeUnixNano": "1792513408180039307",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.provider.name",
+         "value": {
+          "stringValue": "simulated"
+         }
+        },
+        {
+         "key": "gen_ai.request.model",
+         "value": {
+          "stringValue": "scripted-v1"
+         }
+        },
+        {
+         "key": "app.step.index",
+         "value": {
+          "intValue": "1"
+         }
+        },
+        {
+         "key": "app.attempt",
+         "value": {
+          "intValue": "1"
+         }
+        },
+        {
+         "key": "gen_ai.input.messages",
+         "value": {
+          "stringValue": "[{\"role\":\"system\",\"parts\":[{\"type\":\"text\",\"content\":\"You are a careful software agent working in a small JavaScript project.\\nReply with exactly one JSON object and nothing else, in this shape:\\n{\\\"thought\\\": \\\"<one short sentence>\\\", \\\"tool\\\": \\\"<tool name>\\\", \\\"args\\\": { ... }}\\nTools:\\n- read_file: Read a file from the project. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"path\\\"]}\\n- edit_file: Replace the only occurrence of `find` in a file with `replace`. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"},\\\"find\\\":{\\\"type\\\":\\\"string\\\"},\\\"replace\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"path\\\",\\\"find\\\",\\\"replace\\\"]}\\n- run_tests: Run the project's test suite and report passes and failures. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{}}\\n- finish: End the run with a one-sentence summary of the fix. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"summary\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"summary\\\"]}\\nWork one tool call at a time. Run the tests first, read the failing module, make the smallest edit that fixes it, run the tests again, and call finish when they all pass.\\nReply schema: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"thought\\\":{\\\"type\\\":\\\"string\\\"},\\\"tool\\\":{\\\"type\\\":\\\"string\\\",\\\"enum\\\":[\\\"read_file\\\",\\\"edit_file\\\",\\\"run_tests\\\",\\\"finish\\\"]},\\\"args\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"},\\\"find\\\":{\\\"type\\\":\\\"string\\\"},\\\"replace\\\":{\\\"type\\\":\\\"string\\\"},\\\"summary\\\":{\\\"type\\\":\\\"string\\\"}}}},\\\"required\\\":[\\\"tool\\\",\\\"args\\\"]}\"}]},{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"content\":\"The test suite for `formatDuration` in `src/formatDuration.js` is failing. Find the bug, fix it with the smallest possible edit, make sure every test passes, then finish with a one-sentence summary of the fix.\"}]}]"
+         }
+        },
+        {
+         "key": "gen_ai.response.finish_reasons",
+         "value": {
+          "arrayValue": {
+           "values": [
+            {
+             "stringValue": "stop"
+            }
+           ]
+          }
+         }
+        },
+        {
+         "key": "gen_ai.output.messages",
+         "value": {
+          "stringValue": "[{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Run the tests to see what fails.\\\",\\\"tool\\\":\\\"run_tests\\\",\\\"args\\\":{}}\"}],\"finish_reason\":\"stop\"}]"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 0
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      },
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "b283321be18467d7",
+       "parentSpanId": "33c79c0883a981b8",
+       "name": "execute_tool run_tests",
+       "kind": 1,
+       "startTimeUnixNano": "1792513408180054443",
+       "endTimeUnixNano": "1792513408181535645",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "execute_tool"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "execute_tool"
+         }
+        },
+        {
+         "key": "gen_ai.tool.name",
+         "value": {
+          "stringValue": "run_tests"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.id",
+         "value": {
+          "stringValue": "call_1"
+         }
+        },
+        {
+         "key": "gen_ai.tool.type",
+         "value": {
+          "stringValue": "function"
+         }
+        },
+        {
+         "key": "app.step.index",
+         "value": {
+          "intValue": "1"
+         }
+        },
+        {
+         "key": "app.attempt",
+         "value": {
+          "intValue": "1"
+         }
+        },
+        {
+         "key": "app.tool.deadline_ms",
+         "value": {
+          "intValue": "3000"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.arguments",
+         "value": {
+          "stringValue": "{}"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.result",
+         "value": {
+          "stringValue": "{\"passed\":5,\"failed\":1,\"failures\":[{\"name\":\"formatDuration > rounds fractional seconds into the next minute\",\"message\":\"expected \\\"1:60\\\" to be \\\"1:00\\\"\"}]}"
+         }
+        },
+        {
+         "key": "app.test.passed",
+         "value": {
+          "intValue": "5"
+         }
+        },
+        {
+         "key": "app.test.failed",
+         "value": {
+          "intValue": "1"
+         }
+        },
+        {
+         "key": "error.type",
+         "value": {
+          "stringValue": "test_failure"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 2,
+        "message": "1 test(s) failed"
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      },
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "f2cc8f433c4d925e",
+       "parentSpanId": "b4504937a5481461",
+       "name": "step 2",
+       "kind": 1,
+       "startTimeUnixNano": "1792513408181568359",
+       "endTimeUnixNano": "1792513408182119629",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "step"
+         }
+        },
+        {
+         "key": "app.step.index",
+         "value": {
+          "intValue": "2"
+         }
+        },
+        {
+         "key": "app.step.outcome",
+         "value": {
+          "stringValue": "ok"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 0
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      },
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "b70c5cf32f4add48",
+       "parentSpanId": "f2cc8f433c4d925e",
+       "name": "chat scripted-v1",
+       "kind": 3,
+       "startTimeUnixNano": "1792513408181608398",
+       "endTimeUnixNano": "1792513408181897217",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.provider.name",
+         "value": {
+          "stringValue": "simulated"
+         }
+        },
+        {
+         "key": "gen_ai.request.model",
+         "value": {
+          "stringValue": "scripted-v1"
+         }
+        },
+        {
+         "key": "app.step.index",
+         "value": {
+          "intValue": "2"
+         }
+        },
+        {
+         "key": "app.attempt",
+         "value": {
+          "intValue": "1"
+         }
+        },
+        {
+         "key": "gen_ai.input.messages",
+         "value": {
+          "stringValue": "[{\"role\":\"system\",\"parts\":[{\"type\":\"text\",\"content\":\"You are a careful software agent working in a small JavaScript project.\\nReply with exactly one JSON object and nothing else, in this shape:\\n{\\\"thought\\\": \\\"<one short sentence>\\\", \\\"tool\\\": \\\"<tool name>\\\", \\\"args\\\": { ... }}\\nTools:\\n- read_file: Read a file from the project. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"path\\\"]}\\n- edit_file: Replace the only occurrence of `find` in a file with `replace`. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"},\\\"find\\\":{\\\"type\\\":\\\"string\\\"},\\\"replace\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"path\\\",\\\"find\\\",\\\"replace\\\"]}\\n- run_tests: Run the project's test suite and report passes and failures. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{}}\\n- finish: End the run with a one-sentence summary of the fix. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"summary\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"summary\\\"]}\\nWork one tool call at a time. Run the tests first, read the failing module, make the smallest edit that fixes it, run the tests again, and call finish when they all pass.\\nReply schema: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"thought\\\":{\\\"type\\\":\\\"string\\\"},\\\"tool\\\":{\\\"type\\\":\\\"string\\\",\\\"enum\\\":[\\\"read_file\\\",\\\"edit_file\\\",\\\"run_tests\\\",\\\"finish\\\"]},\\\"args\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"},\\\"find\\\":{\\\"type\\\":\\\"string\\\"},\\\"replace\\\":{\\\"type\\\":\\\"string\\\"},\\\"summary\\\":{\\\"type\\\":\\\"string\\\"}}}},\\\"required\\\":[\\\"tool\\\",\\\"args\\\"]}\"}]},{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"content\":\"The test suite for `formatDuration` in `src/formatDuration.js` is failing. Find the bug, fix it with the smallest possible edit, make sure every test passes, then finish with a one-sentence summary of the fix.\"}]},{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Run the tests to see what fails.\\\",\\\"tool\\\":\\\"run_tests\\\",\\\"args\\\":{}}\"}]},{\"role\":\"tool\",\"parts\":[{\"type\":\"tool_call_response\",\"id\":\"call_1\",\"response\":\"{\\\"passed\\\":5,\\\"failed\\\":1,\\\"failures\\\":[{\\\"name\\\":\\\"formatDuration > rounds fractional seconds into the next minute\\\",\\\"message\\\":\\\"expected \\\\\\\"1:60\\\\\\\" to be \\\\\\\"1:00\\\\\\\"\\\"}]}\"}]}]"
+         }
+        },
+        {
+         "key": "gen_ai.response.finish_reasons",
+         "value": {
+          "arrayValue": {
+           "values": [
+            {
+             "stringValue": "stop"
+            }
+           ]
+          }
+         }
+        },
+        {
+         "key": "gen_ai.output.messages",
+         "value": {
+          "stringValue": "[{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Read src/formatDuration.js, the module the failing tests\"}],\"finish_reason\":\"stop\"}]"
+         }
+        },
+        {
+         "key": "app.fault.injected",
+         "value": {
+          "stringValue": "malformed_output"
+         }
+        },
+        {
+         "key": "error.type",
+         "value": {
+          "stringValue": "malformed_output"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [
+        {
+         "timeUnixNano": "1792513408181750000",
+         "name": "validation_error",
+         "attributes": [
+          {
+           "key": "exception.message",
+           "value": {
+            "stringValue": "Reply is not valid JSON (Unterminated string in JSON at position 68 (line 1 column 69))"
+           }
+          },
+          {
+           "key": "app.attempt",
+           "value": {
+            "intValue": "1"
+           }
+          }
+         ],
+         "droppedAttributesCount": 0
+        }
+       ],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 2,
+        "message": "Reply is not valid JSON (Unterminated string in JSON at position 68 (line 1 column 69))"
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      },
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "969cc21dc210e4f7",
+       "parentSpanId": "f2cc8f433c4d925e",
+       "name": "chat scripted-v1",
+       "kind": 3,
+       "startTimeUnixNano": "1792513408181910645",
+       "endTimeUnixNano": "1792513408181999023",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.provider.name",
+         "value": {
+          "stringValue": "simulated"
+         }
+        },
+        {
+         "key": "gen_ai.request.model",
+         "value": {
+          "stringValue": "scripted-v1"
+         }
+        },
+        {
+         "key": "app.step.index",
+         "value": {
+          "intValue": "2"
+         }
+        },
+        {
+         "key": "app.attempt",
+         "value": {
+          "intValue": "2"
+         }
+        },
+        {
+         "key": "gen_ai.input.messages",
+         "value": {
+          "stringValue": "[{\"role\":\"system\",\"parts\":[{\"type\":\"text\",\"content\":\"You are a careful software agent working in a small JavaScript project.\\nReply with exactly one JSON object and nothing else, in this shape:\\n{\\\"thought\\\": \\\"<one short sentence>\\\", \\\"tool\\\": \\\"<tool name>\\\", \\\"args\\\": { ... }}\\nTools:\\n- read_file: Read a file from the project. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"path\\\"]}\\n- edit_file: Replace the only occurrence of `find` in a file with `replace`. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"},\\\"find\\\":{\\\"type\\\":\\\"string\\\"},\\\"replace\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"path\\\",\\\"find\\\",\\\"replace\\\"]}\\n- run_tests: Run the project's test suite and report passes and failures. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{}}\\n- finish: End the run with a one-sentence summary of the fix. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"summary\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"summary\\\"]}\\nWork one tool call at a time. Run the tests first, read the failing module, make the smallest edit that fixes it, run the tests again, and call finish when they all pass.\\nReply schema: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"thought\\\":{\\\"type\\\":\\\"string\\\"},\\\"tool\\\":{\\\"type\\\":\\\"string\\\",\\\"enum\\\":[\\\"read_file\\\",\\\"edit_file\\\",\\\"run_tests\\\",\\\"finish\\\"]},\\\"args\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"},\\\"find\\\":{\\\"type\\\":\\\"string\\\"},\\\"replace\\\":{\\\"type\\\":\\\"string\\\"},\\\"summary\\\":{\\\"type\\\":\\\"string\\\"}}}},\\\"required\\\":[\\\"tool\\\",\\\"args\\\"]}\"}]},{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"content\":\"The test suite for `formatDuration` in `src/formatDuration.js` is failing. Find the bug, fix it with the smallest possible edit, make sure every test passes, then finish with a one-sentence summary of the fix.\"}]},{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Run the tests to see what fails.\\\",\\\"tool\\\":\\\"run_tests\\\",\\\"args\\\":{}}\"}]},{\"role\":\"tool\",\"parts\":[{\"type\":\"tool_call_response\",\"id\":\"call_1\",\"response\":\"{\\\"passed\\\":5,\\\"failed\\\":1,\\\"failures\\\":[{\\\"name\\\":\\\"formatDuration > rounds fractional seconds into the next minute\\\",\\\"message\\\":\\\"expected \\\\\\\"1:60\\\\\\\" to be \\\\\\\"1:00\\\\\\\"\\\"}]}\"}]},{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Read src/formatDuration.js, the module the failing tests\"}]},{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"content\":\"Your reply was not a valid tool call: Reply is not valid JSON (Unterminated string in JSON at position 68 (line 1 column 69)). Reply with only one JSON object in the required shape.\"}]}]"
+         }
+        },
+        {
+         "key": "gen_ai.response.finish_reasons",
+         "value": {
+          "arrayValue": {
+           "values": [
+            {
+             "stringValue": "stop"
+            }
+           ]
+          }
+         }
+        },
+        {
+         "key": "gen_ai.output.messages",
+         "value": {
+          "stringValue": "[{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Read src/formatDuration.js, the module the failing tests cover.\\\",\\\"tool\\\":\\\"read_file\\\",\\\"args\\\":{\\\"path\\\":\\\"src/formatDuration.js\\\"}}\"}],\"finish_reason\":\"stop\"}]"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [
+        {
+         "timeUnixNano": "1792513408181944580",
+         "name": "retry",
+         "attributes": [
+          {
+           "key": "app.attempt",
+           "value": {
+            "intValue": "2"
+           }
+          }
+         ],
+         "droppedAttributesCount": 0
+        }
+       ],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 0
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      },
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "b39f5fce2a8ba8b6",
+       "parentSpanId": "f2cc8f433c4d925e",
+       "name": "execute_tool read_file",
+       "kind": 1,
+       "startTimeUnixNano": "1792513408182006836",
+       "endTimeUnixNano": "1792513408182111816",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "execute_tool"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "execute_tool"
+         }
+        },
+        {
+         "key": "gen_ai.tool.name",
+         "value": {
+          "stringValue": "read_file"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.id",
+         "value": {
+          "stringValue": "call_2"
+         }
+        },
+        {
+         "key": "gen_ai.tool.type",
+         "value": {
+          "stringValue": "function"
+         }
+        },
+        {
+         "key": "app.step.index",
+         "value": {
+          "intValue": "2"
+         }
+        },
+        {
+         "key": "app.attempt",
+         "value": {
+          "intValue": "1"
+         }
+        },
+        {
+         "key": "app.tool.deadline_ms",
+         "value": {
+          "intValue": "1000"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.arguments",
+         "value": {
+          "stringValue": "{\"path\":\"src/formatDuration.js\"}"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.result",
+         "value": {
+          "stringValue": "{\"path\":\"src/formatDuration.js\",\"contents\":\"/**\\n * Formats a duration in seconds as m:ss, or h:mm:ss from one hour up.\\n * Fractional seconds are rounded to the nearest whole second.\\n */\\nexport function formatDuration(totalSeconds) {\\n  if (typeof totalSeconds !== \\\"number\\\" || !Number.isFinite(totalSeconds) || totalSeconds < 0) {\\n    throw new RangeError(\\\"totalSeconds must be a non-negative finite number\\\");\\n  }\\n  const rounded = Math.round(totalSeconds);\\n  const hours = Math.floor(rounded / 3600);\\n  const minutes = Math.floor((rounded % 3600) / 60);\\n  const seconds = Math.round(totalSeconds % 60);\\n  const ss = String(seconds).padStart(2, \\\"0\\\");\\n  if (hours > 0) {\\n    return `${hours}:${String(minutes).padStart(2, \\\"0\\\")}:${ss}`;\\n  }\\n  return `${minutes}:${ss}`;\\n}\\n\"}"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 0
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      },
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "ef2c08ec6036b74b",
+       "parentSpanId": "b4504937a5481461",
+       "name": "step 3",
+       "kind": 1,
+       "startTimeUnixNano": "1792513408182125977",
+       "endTimeUnixNano": "1792513408182306885",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "step"
+         }
+        },
+        {
+         "key": "app.step.index",
+         "value": {
+          "intValue": "3"
+         }
+        },
+        {
+         "key": "app.step.outcome",
+         "value": {
+          "stringValue": "ok"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 0
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      },
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "d01664be86adda6d",
+       "parentSpanId": "ef2c08ec6036b74b",
+       "name": "chat scripted-v1",
+       "kind": 3,
+       "startTimeUnixNano": "1792513408182155273",
+       "endTimeUnixNano": "1792513408182216553",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.provider.name",
+         "value": {
+          "stringValue": "simulated"
+         }
+        },
+        {
+         "key": "gen_ai.request.model",
+         "value": {
+          "stringValue": "scripted-v1"
+         }
+        },
+        {
+         "key": "app.step.index",
+         "value": {
+          "intValue": "3"
+         }
+        },
+        {
+         "key": "app.attempt",
+         "value": {
+          "intValue": "1"
+         }
+        },
+        {
+         "key": "gen_ai.input.messages",
+         "value": {
+          "stringValue": "[{\"role\":\"system\",\"parts\":[{\"type\":\"text\",\"content\":\"You are a careful software agent working in a small JavaScript project.\\nReply with exactly one JSON object and nothing else, in this shape:\\n{\\\"thought\\\": \\\"<one short sentence>\\\", \\\"tool\\\": \\\"<tool name>\\\", \\\"args\\\": { ... }}\\nTools:\\n- read_file: Read a file from the project. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"path\\\"]}\\n- edit_file: Replace the only occurrence of `find` in a file with `replace`. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"},\\\"find\\\":{\\\"type\\\":\\\"string\\\"},\\\"replace\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"path\\\",\\\"find\\\",\\\"replace\\\"]}\\n- run_tests: Run the project's test suite and report passes and failures. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{}}\\n- finish: End the run with a one-sentence summary of the fix. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"summary\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"summary\\\"]}\\nWork one tool call at a time. Run the tests first, read the failing module, make the smallest edit that fixes it, run the tests again, and call finish when they all pass.\\nReply schema: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"thought\\\":{\\\"type\\\":\\\"string\\\"},\\\"tool\\\":{\\\"type\\\":\\\"string\\\",\\\"enum\\\":[\\\"read_file\\\",\\\"edit_file\\\",\\\"run_tests\\\",\\\"finish\\\"]},\\\"args\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"},\\\"find\\\":{\\\"type\\\":\\\"string\\\"},\\\"replace\\\":{\\\"type\\\":\\\"string\\\"},\\\"summary\\\":{\\\"type\\\":\\\"string\\\"}}}},\\\"required\\\":[\\\"tool\\\",\\\"args\\\"]}\"}]},{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"content\":\"The test suite for `formatDuration` in `src/formatDuration.js` is failing. Find the bug, fix it with the smallest possible edit, make sure every test passes, then finish with a one-sentence summary of the fix.\"}]},{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Run the tests to see what fails.\\\",\\\"tool\\\":\\\"run_tests\\\",\\\"args\\\":{}}\"}]},{\"role\":\"tool\",\"parts\":[{\"type\":\"tool_call_response\",\"id\":\"call_1\",\"response\":\"{\\\"passed\\\":5,\\\"failed\\\":1,\\\"failures\\\":[{\\\"name\\\":\\\"formatDuration > rounds fractional seconds into the next minute\\\",\\\"message\\\":\\\"expected \\\\\\\"1:60\\\\\\\" to be \\\\\\\"1:00\\\\\\\"\\\"}]}\"}]},{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Read src/formatDuration.js, the module the failing tests\"}]},{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"content\":\"Your reply was not a valid tool call: Reply is not valid JSON (Unterminated string in JSON at position 68 (line 1 column 69)). Reply with only one JSON object in the required shape.\"}]},{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Read src/formatDuration.js, the module the failing tests cover.\\\",\\\"tool\\\":\\\"read_file\\\",\\\"args\\\":{\\\"path\\\":\\\"src/formatDuration.js\\\"}}\"}]},{\"role\":\"tool\",\"parts\":[{\"type\":\"tool_call_response\",\"id\":\"call_2\",\"response\":\"{\\\"path\\\":\\\"src/formatDuration.js\\\",\\\"contents\\\":\\\"/**\\\\n * Formats a duration in seconds as m:ss, or h:mm:ss from one hour up.\\\\n * Fractional seconds are rounded to the nearest whole second.\\\\n */\\\\nexport function formatDuration(totalSeconds) {\\\\n  if (typeof totalSeconds !== \\\\\\\"number\\\\\\\" || !Number.isFinite(totalSeconds) || totalSeconds < 0) {\\\\n    throw new RangeError(\\\\\\\"totalSeconds must be a non-negative finite number\\\\\\\");\\\\n  }\\\\n  const rounded = Math.round(totalSeconds);\\\\n  const hours = Math.floor(rounded / 3600);\\\\n  const minutes = Math.floor((rounded % 3600) / 60);\\\\n  const seconds = Math.round(totalSeconds % 60);\\\\n  const ss = String(seconds).padStart(2, \\\\\\\"0\\\\\\\");\\\\n  if (hours > 0) {\\\\n    return `${hours}:${String(minutes).padStart(2, \\\\\\\"0\\\\\\\")}:${ss}`;\\\\n  }\\\\n  return `${minutes}:${ss}`;\\\\n}\\\\n\\\"}\"}]}]"
+         }
+        },
+        {
+         "key": "gen_ai.response.finish_reasons",
+         "value": {
+          "arrayValue": {
+           "values": [
+            {
+             "stringValue": "stop"
+            }
+           ]
+          }
+         }
+        },
+        {
+         "key": "gen_ai.output.messages",
+         "value": {
+          "stringValue": "[{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Replace the buggy line with the corrected one.\\\",\\\"tool\\\":\\\"edit_file\\\",\\\"args\\\":{\\\"path\\\":\\\"src/formatDuration.js\\\",\\\"find\\\":\\\"  const seconds = Math.round(totalSeconds % 60);\\\",\\\"replace\\\":\\\"  const seconds = rounded % 60;\\\"}}\"}],\"finish_reason\":\"stop\"}]"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 0
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      },
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "53b1480a941fe282",
+       "parentSpanId": "ef2c08ec6036b74b",
+       "name": "execute_tool edit_file",
+       "kind": 1,
+       "startTimeUnixNano": "1792513408182222412",
+       "endTimeUnixNano": "1792513408182302734",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "execute_tool"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "execute_tool"
+         }
+        },
+        {
+         "key": "gen_ai.tool.name",
+         "value": {
+          "stringValue": "edit_file"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.id",
+         "value": {
+          "stringValue": "call_3"
+         }
+        },
+        {
+         "key": "gen_ai.tool.type",
+         "value": {
+          "stringValue": "function"
+         }
+        },
+        {
+         "key": "app.step.index",
+         "value": {
+          "intValue": "3"
+         }
+        },
+        {
+         "key": "app.attempt",
+         "value": {
+          "intValue": "1"
+         }
+        },
+        {
+         "key": "app.tool.deadline_ms",
+         "value": {
+          "intValue": "1000"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.arguments",
+         "value": {
+          "stringValue": "{\"path\":\"src/formatDuration.js\",\"find\":\"  const seconds = Math.round(totalSeconds % 60);\",\"replace\":\"  const seconds = rounded % 60;\"}"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.result",
+         "value": {
+          "stringValue": "{\"ok\":true,\"path\":\"src/formatDuration.js\"}"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 0
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      },
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "f1d8ec6c2f419295",
+       "parentSpanId": "b4504937a5481461",
+       "name": "step 4",
+       "kind": 1,
+       "startTimeUnixNano": "1792513408182311768",
+       "endTimeUnixNano": "1792513408183571289",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "step"
+         }
+        },
+        {
+         "key": "app.step.index",
+         "value": {
+          "intValue": "4"
+         }
+        },
+        {
+         "key": "app.step.outcome",
+         "value": {
+          "stringValue": "ok"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 0
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      },
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "26e947f0d87defa3",
+       "parentSpanId": "f1d8ec6c2f419295",
+       "name": "chat scripted-v1",
+       "kind": 3,
+       "startTimeUnixNano": "1792513408182330078",
+       "endTimeUnixNano": "1792513408182374268",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.provider.name",
+         "value": {
+          "stringValue": "simulated"
+         }
+        },
+        {
+         "key": "gen_ai.request.model",
+         "value": {
+          "stringValue": "scripted-v1"
+         }
+        },
+        {
+         "key": "app.step.index",
+         "value": {
+          "intValue": "4"
+         }
+        },
+        {
+         "key": "app.attempt",
+         "value": {
+          "intValue": "1"
+         }
+        },
+        {
+         "key": "gen_ai.input.messages",
+         "value": {
+          "stringValue": "[{\"role\":\"system\",\"parts\":[{\"type\":\"text\",\"content\":\"You are a careful software agent working in a small JavaScript project.\\nReply with exactly one JSON object and nothing else, in this shape:\\n{\\\"thought\\\": \\\"<one short sentence>\\\", \\\"tool\\\": \\\"<tool name>\\\", \\\"args\\\": { ... }}\\nTools:\\n- read_file: Read a file from the project. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"path\\\"]}\\n- edit_file: Replace the only occurrence of `find` in a file with `replace`. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"},\\\"find\\\":{\\\"type\\\":\\\"string\\\"},\\\"replace\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"path\\\",\\\"find\\\",\\\"replace\\\"]}\\n- run_tests: Run the project's test suite and report passes and failures. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{}}\\n- finish: End the run with a one-sentence summary of the fix. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"summary\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"summary\\\"]}\\nWork one tool call at a time. Run the tests first, read the failing module, make the smallest edit that fixes it, run the tests again, and call finish when they all pass.\\nReply schema: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"thought\\\":{\\\"type\\\":\\\"string\\\"},\\\"tool\\\":{\\\"type\\\":\\\"string\\\",\\\"enum\\\":[\\\"read_file\\\",\\\"edit_file\\\",\\\"run_tests\\\",\\\"finish\\\"]},\\\"args\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"},\\\"find\\\":{\\\"type\\\":\\\"string\\\"},\\\"replace\\\":{\\\"type\\\":\\\"string\\\"},\\\"summary\\\":{\\\"type\\\":\\\"string\\\"}}}},\\\"required\\\":[\\\"tool\\\",\\\"args\\\"]}\"}]},{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"content\":\"The test suite for `formatDuration` in `src/formatDuration.js` is failing. Find the bug, fix it with the smallest possible edit, make sure every test passes, then finish with a one-sentence summary of the fix.\"}]},{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Run the tests to see what fails.\\\",\\\"tool\\\":\\\"run_tests\\\",\\\"args\\\":{}}\"}]},{\"role\":\"tool\",\"parts\":[{\"type\":\"tool_call_response\",\"id\":\"call_1\",\"response\":\"{\\\"passed\\\":5,\\\"failed\\\":1,\\\"failures\\\":[{\\\"name\\\":\\\"formatDuration > rounds fractional seconds into the next minute\\\",\\\"message\\\":\\\"expected \\\\\\\"1:60\\\\\\\" to be \\\\\\\"1:00\\\\\\\"\\\"}]}\"}]},{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Read src/formatDuration.js, the module the failing tests\"}]},{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"content\":\"Your reply was not a valid tool call: Reply is not valid JSON (Unterminated string in JSON at position 68 (line 1 column 69)). Reply with only one JSON object in the required shape.\"}]},{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Read src/formatDuration.js, the module the failing tests cover.\\\",\\\"tool\\\":\\\"read_file\\\",\\\"args\\\":{\\\"path\\\":\\\"src/formatDuration.js\\\"}}\"}]},{\"role\":\"tool\",\"parts\":[{\"type\":\"tool_call_response\",\"id\":\"call_2\",\"response\":\"{\\\"path\\\":\\\"src/formatDuration.js\\\",\\\"contents\\\":\\\"/**\\\\n * Formats a duration in seconds as m:ss, or h:mm:ss from one hour up.\\\\n * Fractional seconds are rounded to the nearest whole second.\\\\n */\\\\nexport function formatDuration(totalSeconds) {\\\\n  if (typeof totalSeconds !== \\\\\\\"number\\\\\\\" || !Number.isFinite(totalSeconds) || totalSeconds < 0) {\\\\n    throw new RangeError(\\\\\\\"totalSeconds must be a non-negative finite number\\\\\\\");\\\\n  }\\\\n  const rounded = Math.round(totalSeconds);\\\\n  const hours = Math.floor(rounded / 3600);\\\\n  const minutes = Math.floor((rounded % 3600) / 60);\\\\n  const seconds = Math.round(totalSeconds % 60);\\\\n  const ss = String(seconds).padStart(2, \\\\\\\"0\\\\\\\");\\\\n  if (hours > 0) {\\\\n    return `${hours}:${String(minutes).padStart(2, \\\\\\\"0\\\\\\\")}:${ss}`;\\\\n  }\\\\n  return `${minutes}:${ss}`;\\\\n}\\\\n\\\"}\"}]},{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Replace the buggy line with the corrected one.\\\",\\\"tool\\\":\\\"edit_file\\\",\\\"args\\\":{\\\"path\\\":\\\"src/formatDuration.js\\\",\\\"find\\\":\\\"  const seconds = Math.round(totalSeconds % 60);\\\",\\\"replace\\\":\\\"  const seconds = rounded % 60;\\\"}}\"}]},{\"role\":\"tool\",\"parts\":[{\"type\":\"tool_call_response\",\"id\":\"call_3\",\"response\":\"{\\\"ok\\\":true,\\\"path\\\":\\\"src/formatDuration.js\\\"}\"}]}]"
+         }
+        },
+        {
+         "key": "gen_ai.response.finish_reasons",
+         "value": {
+          "arrayValue": {
+           "values": [
+            {
+             "stringValue": "stop"
+            }
+           ]
+          }
+         }
+        },
+        {
+         "key": "gen_ai.output.messages",
+         "value": {
+          "stringValue": "[{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Re-run the tests to confirm the fix.\\\",\\\"tool\\\":\\\"run_tests\\\",\\\"args\\\":{}}\"}],\"finish_reason\":\"stop\"}]"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 0
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      },
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "5e10c941bbf46c7b",
+       "parentSpanId": "f1d8ec6c2f419295",
+       "name": "execute_tool run_tests",
+       "kind": 1,
+       "startTimeUnixNano": "1792513408182379639",
+       "endTimeUnixNano": "1792513408183557129",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "execute_tool"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "execute_tool"
+         }
+        },
+        {
+         "key": "gen_ai.tool.name",
+         "value": {
+          "stringValue": "run_tests"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.id",
+         "value": {
+          "stringValue": "call_4"
+         }
+        },
+        {
+         "key": "gen_ai.tool.type",
+         "value": {
+          "stringValue": "function"
+         }
+        },
+        {
+         "key": "app.step.index",
+         "value": {
+          "intValue": "4"
+         }
+        },
+        {
+         "key": "app.attempt",
+         "value": {
+          "intValue": "1"
+         }
+        },
+        {
+         "key": "app.tool.deadline_ms",
+         "value": {
+          "intValue": "3000"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.arguments",
+         "value": {
+          "stringValue": "{}"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.result",
+         "value": {
+          "stringValue": "{\"passed\":6,\"failed\":0,\"failures\":[]}"
+         }
+        },
+        {
+         "key": "app.test.passed",
+         "value": {
+          "intValue": "6"
+         }
+        },
+        {
+         "key": "app.test.failed",
+         "value": {
+          "intValue": "0"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 0
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      },
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "efd13414d1ce2f0b",
+       "parentSpanId": "b4504937a5481461",
+       "name": "step 5",
+       "kind": 1,
+       "startTimeUnixNano": "1792513408183581787",
+       "endTimeUnixNano": "1792513408183820801",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "step"
+         }
+        },
+        {
+         "key": "app.step.index",
+         "value": {
+          "intValue": "5"
+         }
+        },
+        {
+         "key": "app.step.outcome",
+         "value": {
+          "stringValue": "finished"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 0
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      },
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "0a9a366910a06f97",
+       "parentSpanId": "efd13414d1ce2f0b",
+       "name": "chat scripted-v1",
+       "kind": 3,
+       "startTimeUnixNano": "1792513408183620361",
+       "endTimeUnixNano": "1792513408183727539",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "chat"
+         }
+        },
+        {
+         "key": "gen_ai.provider.name",
+         "value": {
+          "stringValue": "simulated"
+         }
+        },
+        {
+         "key": "gen_ai.request.model",
+         "value": {
+          "stringValue": "scripted-v1"
+         }
+        },
+        {
+         "key": "app.step.index",
+         "value": {
+          "intValue": "5"
+         }
+        },
+        {
+         "key": "app.attempt",
+         "value": {
+          "intValue": "1"
+         }
+        },
+        {
+         "key": "gen_ai.input.messages",
+         "value": {
+          "stringValue": "[{\"role\":\"system\",\"parts\":[{\"type\":\"text\",\"content\":\"You are a careful software agent working in a small JavaScript project.\\nReply with exactly one JSON object and nothing else, in this shape:\\n{\\\"thought\\\": \\\"<one short sentence>\\\", \\\"tool\\\": \\\"<tool name>\\\", \\\"args\\\": { ... }}\\nTools:\\n- read_file: Read a file from the project. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"path\\\"]}\\n- edit_file: Replace the only occurrence of `find` in a file with `replace`. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"},\\\"find\\\":{\\\"type\\\":\\\"string\\\"},\\\"replace\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"path\\\",\\\"find\\\",\\\"replace\\\"]}\\n- run_tests: Run the project's test suite and report passes and failures. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{}}\\n- finish: End the run with a one-sentence summary of the fix. Args: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"summary\\\":{\\\"type\\\":\\\"string\\\"}},\\\"required\\\":[\\\"summary\\\"]}\\nWork one tool call at a time. Run the tests first, read the failing module, make the smallest edit that fixes it, run the tests again, and call finish when they all pass.\\nReply schema: {\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"thought\\\":{\\\"type\\\":\\\"string\\\"},\\\"tool\\\":{\\\"type\\\":\\\"string\\\",\\\"enum\\\":[\\\"read_file\\\",\\\"edit_file\\\",\\\"run_tests\\\",\\\"finish\\\"]},\\\"args\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"path\\\":{\\\"type\\\":\\\"string\\\"},\\\"find\\\":{\\\"type\\\":\\\"string\\\"},\\\"replace\\\":{\\\"type\\\":\\\"string\\\"},\\\"summary\\\":{\\\"type\\\":\\\"string\\\"}}}},\\\"required\\\":[\\\"tool\\\",\\\"args\\\"]}\"}]},{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"content\":\"The test suite for `formatDuration` in `src/formatDuration.js` is failing. Find the bug, fix it with the smallest possible edit, make sure every test passes, then finish with a one-sentence summary of the fix.\"}]},{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Run the tests to see what fails.\\\",\\\"tool\\\":\\\"run_tests\\\",\\\"args\\\":{}}\"}]},{\"role\":\"tool\",\"parts\":[{\"type\":\"tool_call_response\",\"id\":\"call_1\",\"response\":\"{\\\"passed\\\":5,\\\"failed\\\":1,\\\"failures\\\":[{\\\"name\\\":\\\"formatDuration > rounds fractional seconds into the next minute\\\",\\\"message\\\":\\\"expected \\\\\\\"1:60\\\\\\\" to be \\\\\\\"1:00\\\\\\\"\\\"}]}\"}]},{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Read src/formatDuration.js, the module the failing tests\"}]},{\"role\":\"user\",\"parts\":[{\"type\":\"text\",\"content\":\"Your reply was not a valid tool call: Reply is not valid JSON (Unterminated string in JSON at position 68 (line 1 column 69)). Reply with only one JSON object in the required shape.\"}]},{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Read src/formatDuration.js, the module the failing tests cover.\\\",\\\"tool\\\":\\\"read_file\\\",\\\"args\\\":{\\\"path\\\":\\\"src/formatDuration.js\\\"}}\"}]},{\"role\":\"tool\",\"parts\":[{\"type\":\"tool_call_response\",\"id\":\"call_2\",\"response\":\"{\\\"path\\\":\\\"src/formatDuration.js\\\",\\\"contents\\\":\\\"/**\\\\n * Formats a duration in seconds as m:ss, or h:mm:ss from one hour up.\\\\n * Fractional seconds are rounded to the nearest whole second.\\\\n */\\\\nexport function formatDuration(totalSeconds) {\\\\n  if (typeof totalSeconds !== \\\\\\\"number\\\\\\\" || !Number.isFinite(totalSeconds) || totalSeconds < 0) {\\\\n    throw new RangeError(\\\\\\\"totalSeconds must be a non-negative finite number\\\\\\\");\\\\n  }\\\\n  const rounded = Math.round(totalSeconds);\\\\n  const hours = Math.floor(rounded / 3600);\\\\n  const minutes = Math.floor((rounded % 3600) / 60);\\\\n  const seconds = Math.round(totalSeconds % 60);\\\\n  const ss = String(seconds).padStart(2, \\\\\\\"0\\\\\\\");\\\\n  if (hours > 0) {\\\\n    return `${hours}:${String(minutes).padStart(2, \\\\\\\"0\\\\\\\")}:${ss}`;\\\\n  }\\\\n  return `${minutes}:${ss}`;\\\\n}\\\\n\\\"}\"}]},{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Replace the buggy line with the corrected one.\\\",\\\"tool\\\":\\\"edit_file\\\",\\\"args\\\":{\\\"path\\\":\\\"src/formatDuration.js\\\",\\\"find\\\":\\\"  const seconds = Math.round(totalSeconds % 60);\\\",\\\"replace\\\":\\\"  const seconds = rounded % 60;\\\"}}\"}]},{\"role\":\"tool\",\"parts\":[{\"type\":\"tool_call_response\",\"id\":\"call_3\",\"response\":\"{\\\"ok\\\":true,\\\"path\\\":\\\"src/formatDuration.js\\\"}\"}]},{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"Re-run the tests to confirm the fix.\\\",\\\"tool\\\":\\\"run_tests\\\",\\\"args\\\":{}}\"}]},{\"role\":\"tool\",\"parts\":[{\"type\":\"tool_call_response\",\"id\":\"call_4\",\"response\":\"{\\\"passed\\\":6,\\\"failed\\\":0,\\\"failures\\\":[]}\"}]}]"
+         }
+        },
+        {
+         "key": "gen_ai.response.finish_reasons",
+         "value": {
+          "arrayValue": {
+           "values": [
+            {
+             "stringValue": "stop"
+            }
+           ]
+          }
+         }
+        },
+        {
+         "key": "gen_ai.output.messages",
+         "value": {
+          "stringValue": "[{\"role\":\"assistant\",\"parts\":[{\"type\":\"text\",\"content\":\"{\\\"thought\\\":\\\"All tests pass.\\\",\\\"tool\\\":\\\"finish\\\",\\\"args\\\":{\\\"summary\\\":\\\"Seconds were rounded separately from minutes, so 59.6 s formatted as 1:60.\\\"}}\"}],\"finish_reason\":\"stop\"}]"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 0
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      },
+      {
+       "traceId": "5508a288442fed685bcb76956c53eee7",
+       "spanId": "e4c4c9fd51855b4b",
+       "parentSpanId": "efd13414d1ce2f0b",
+       "name": "execute_tool finish",
+       "kind": 1,
+       "startTimeUnixNano": "1792513408183735840",
+       "endTimeUnixNano": "1792513408183816162",
+       "attributes": [
+        {
+         "key": "app.span.type",
+         "value": {
+          "stringValue": "execute_tool"
+         }
+        },
+        {
+         "key": "gen_ai.operation.name",
+         "value": {
+          "stringValue": "execute_tool"
+         }
+        },
+        {
+         "key": "gen_ai.tool.name",
+         "value": {
+          "stringValue": "finish"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.id",
+         "value": {
+          "stringValue": "call_5"
+         }
+        },
+        {
+         "key": "gen_ai.tool.type",
+         "value": {
+          "stringValue": "function"
+         }
+        },
+        {
+         "key": "app.step.index",
+         "value": {
+          "intValue": "5"
+         }
+        },
+        {
+         "key": "app.attempt",
+         "value": {
+          "intValue": "1"
+         }
+        },
+        {
+         "key": "app.tool.deadline_ms",
+         "value": {
+          "intValue": "1000"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.arguments",
+         "value": {
+          "stringValue": "{\"summary\":\"Seconds were rounded separately from minutes, so 59.6 s formatted as 1:60.\"}"
+         }
+        },
+        {
+         "key": "gen_ai.tool.call.result",
+         "value": {
+          "stringValue": "{\"ok\":true}"
+         }
+        }
+       ],
+       "droppedAttributesCount": 0,
+       "events": [],
+       "droppedEventsCount": 0,
+       "status": {
+        "code": 0
+       },
+       "links": [],
+       "droppedLinksCount": 0,
+       "flags": 257
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
