@@ -9,6 +9,8 @@ const projects = defineCollection({
     description: z.string(),
     pubDate: z.coerce.date(),
     featured: z.boolean().default(false),
+    /** "demo" for small interactive demos, "project" for real tools; picks the home page section. */
+    kind: z.enum(["demo", "project"]).default("demo"),
     listed: z.boolean().default(true),
     tags: z.array(z.string()).default([]),
     githubUrl: z.string().url().optional(),
