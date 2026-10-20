@@ -1,0 +1,1 @@
+The test suite for `formatDuration` in `src/formatDuration.js` is failing. Find the bug, fix it with the smallest possible edit, make sure every test passes, then finish with a one-sentence summary of the fix.
