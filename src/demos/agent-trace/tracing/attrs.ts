@@ -42,6 +42,19 @@ export const APP = {
   testsPassed: "app.test.passed",
   testsFailed: "app.test.failed",
   toolDeadlineMs: "app.tool.deadline_ms",
+  // The virtual project: every file at the start of the run (JSON object of path → contents).
+  vfsFiles: "app.vfs.files",
+  // edit_file: the file as it was before the call, as it is after (only when the edit applied),
+  // and how many times `find` occurred in it.
+  filePath: "app.file.path",
+  fileBefore: "app.file.before",
+  fileAfter: "app.file.after",
+  editMatches: "app.edit.matches",
+  // The scripted brain's decision: which rule fired and the condition it matched.
+  policyRule: "app.policy.rule",
+  policyCondition: "app.policy.condition",
+  // The exact request body a model runtime received (WebLLM), as JSON.
+  llmRequest: "app.llm.request",
   // Runtime statistics reported by WebLLM in usage.extra. Only set when reported.
   llmTimeToFirstTokenS: "app.llm.time_to_first_token_s",
   llmTimePerOutputTokenS: "app.llm.time_per_output_token_s",
@@ -62,8 +75,11 @@ export const EVENT_NAMES = ["retry", "validation_error"] as const;
 export const FAULT_TYPES = ["flaky_test", "tool_timeout", "malformed_output"] as const;
 export type FaultType = (typeof FAULT_TYPES)[number];
 
-/** Maximum recorded size of a message or tool payload, in characters. */
-export const PAYLOAD_LIMIT = 8 * 1024;
+/**
+ * Maximum recorded size of a message, tool or file payload, in characters. Large
+ * enough for a full prompt at the default step cap, so prompts are recorded whole.
+ */
+export const PAYLOAD_LIMIT = 64 * 1024;
 
 /**
  * Usage and runtime statistics exactly as a model runtime reported them.
@@ -93,6 +109,9 @@ const USAGE_KEYS: [keyof ReportedUsage, string][] = [
 
 /** Attribute keys that exist only when a runtime reported them. */
 export const REPORTED_ONLY_KEYS: readonly string[] = USAGE_KEYS.map(([, k]) => k);
+
+/** Attribute keys a brain adds about itself: present for one brain, absent for the other. */
+export const BRAIN_REPORTED_KEYS: readonly string[] = [APP.policyRule, APP.policyCondition, APP.llmRequest];
 
 /** Copies reported fields to attributes. Missing or non-finite fields stay absent. */
 export function usageToAttributes(usage: ReportedUsage | undefined): Record<string, number> {

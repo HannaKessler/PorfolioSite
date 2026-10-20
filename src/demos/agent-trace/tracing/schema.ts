@@ -1,5 +1,5 @@
 import type { NormSpan } from "../collector/normalize";
-import { APP, ERROR_TYPE, ERROR_TYPES, EVENT_NAMES, GEN_AI, REPORTED_ONLY_KEYS, type SpanType } from "./attrs";
+import { APP, BRAIN_REPORTED_KEYS, ERROR_TYPE, ERROR_TYPES, EVENT_NAMES, GEN_AI, REPORTED_ONLY_KEYS, type SpanType } from "./attrs";
 
 /**
  * The span schema shared by every brain: names, kinds, required and optional
@@ -25,7 +25,7 @@ export const SPAN_SCHEMA: Record<SpanType, SpanRule> = {
     parent: null,
     required: [
       APP.spanType, GEN_AI.operationName, GEN_AI.agentName, GEN_AI.conversationId, GEN_AI.providerName, GEN_AI.requestModel,
-      APP.brainLabel, APP.taskId, APP.taskVariant, APP.maxSteps, APP.seed, APP.faults, APP.stepMode, APP.runOutcome,
+      APP.brainLabel, APP.taskId, APP.taskVariant, APP.maxSteps, APP.seed, APP.faults, APP.stepMode, APP.runOutcome, APP.vfsFiles,
     ],
     optional: [...COMMON_OPTIONAL, APP.testsPassed, APP.testsFailed],
     events: ["exception"],
@@ -38,7 +38,7 @@ export const SPAN_SCHEMA: Record<SpanType, SpanRule> = {
     parent: "step",
     required: [APP.spanType, GEN_AI.operationName, GEN_AI.providerName, GEN_AI.requestModel, APP.stepIndex, APP.attempt, GEN_AI.inputMessages],
     // Response attributes are absent only if the request was aborted.
-    optional: [...COMMON_OPTIONAL, GEN_AI.responseFinishReasons, GEN_AI.outputMessages, ...REPORTED_ONLY_KEYS],
+    optional: [...COMMON_OPTIONAL, GEN_AI.responseFinishReasons, GEN_AI.outputMessages, ...REPORTED_ONLY_KEYS, ...BRAIN_REPORTED_KEYS],
     events: [...EVENT_NAMES],
   },
   execute_tool: {
@@ -49,7 +49,7 @@ export const SPAN_SCHEMA: Record<SpanType, SpanRule> = {
       APP.spanType, GEN_AI.operationName, GEN_AI.toolName, GEN_AI.toolCallId, GEN_AI.toolType, APP.stepIndex, APP.attempt,
       APP.toolDeadlineMs, GEN_AI.toolCallArguments,
     ],
-    optional: [...COMMON_OPTIONAL, GEN_AI.toolCallResult, APP.testsPassed, APP.testsFailed],
+    optional: [...COMMON_OPTIONAL, GEN_AI.toolCallResult, APP.testsPassed, APP.testsFailed, APP.filePath, APP.fileBefore, APP.fileAfter, APP.editMatches],
     events: ["retry"],
   },
 };
@@ -86,13 +86,13 @@ export function validateSpans(spans: NormSpan[]): string[] {
   return errors;
 }
 
-/** Attribute keys per span type, excluding keys that exist only when a runtime reports them. */
+/** Attribute keys per span type, excluding keys that exist only when a runtime or brain reports them. */
 export function structuralKeys(spans: NormSpan[]): Record<string, string[]> {
   const out: Record<string, Set<string>> = {};
   for (const s of spans) {
     const type = spanType(s) ?? "unknown";
     out[type] ??= new Set();
-    for (const k of Object.keys(s.attrs)) if (!REPORTED_ONLY_KEYS.includes(k)) out[type].add(k);
+    for (const k of Object.keys(s.attrs)) if (!REPORTED_ONLY_KEYS.includes(k) && !BRAIN_REPORTED_KEYS.includes(k)) out[type].add(k);
   }
   return Object.fromEntries(Object.entries(out).map(([k, v]) => [k, [...v].sort()]));
 }

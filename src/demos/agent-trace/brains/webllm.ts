@@ -75,20 +75,22 @@ export class WebLLMBrain implements ChatModel {
     await this.engine.resetChat();
     const onAbort = () => this.engine.interruptGenerate();
     request.signal.addEventListener("abort", onAbort, { once: true });
+    const body = {
+      messages: toWebLLMMessages(request.messages),
+      stream: false,
+      temperature: 0,
+      max_tokens: 512,
+      response_format: { type: "json_object", schema: JSON.stringify(TOOL_CALL_SCHEMA) },
+    };
     try {
-      const reply = (await this.engine.chat.completions.create({
-        messages: toWebLLMMessages(request.messages),
-        stream: false,
-        temperature: 0,
-        max_tokens: 512,
-        response_format: { type: "json_object", schema: JSON.stringify(TOOL_CALL_SCHEMA) },
-      })) as ChatCompletion;
+      const reply = (await this.engine.chat.completions.create(body)) as ChatCompletion;
       if (request.signal.aborted) throw request.signal.reason;
       const choice = reply.choices[0];
       return {
         text: choice?.message?.content ?? "",
         finishReason: choice?.finish_reason ?? "stop",
         usage: mapReportedUsage(reply.usage),
+        request: JSON.stringify(body),
       };
     } finally {
       request.signal.removeEventListener("abort", onAbort);

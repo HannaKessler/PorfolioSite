@@ -96,9 +96,13 @@ class Spans {
 }
 
 function payload(span: Span, key: string, value: string): void {
+  span.setAttributes(payloadAttrs(key, value));
+}
+
+/** A capped payload as start attributes, so the open copy of a span already carries it. */
+function payloadAttrs(key: string, value: string): Attributes {
   const capped = capPayload(value);
-  span.setAttribute(key, capped.text);
-  if (capped.truncated) span.setAttribute(APP.truncated, true);
+  return capped.truncated ? { [key]: capped.text, [APP.truncated]: true } : { [key]: capped.text };
 }
 
 const isAbort = (signal: AbortSignal) => signal.aborted;
@@ -129,6 +133,7 @@ export async function runAgent(task: AgentTask, config: RunConfig, deps: AgentDe
     [APP.seed]: config.seed,
     [APP.faults]: faultList(config.faults),
     [APP.stepMode]: config.stepMode,
+    ...payloadAttrs(APP.vfsFiles, JSON.stringify(vfs.snapshot())),
   });
 
   const messages: Msg[] = [
@@ -172,12 +177,17 @@ export async function runAgent(task: AgentTask, config: RunConfig, deps: AgentDe
             [GEN_AI.requestModel]: model.id,
             [APP.stepIndex]: step,
             [APP.attempt]: attempt,
+            ...payloadAttrs(GEN_AI.inputMessages, JSON.stringify(toSemconvMessages(messages))),
           }, stepSpan);
           try {
             if (attempt > 1) spans.event(chat, "retry", { [APP.attempt]: attempt });
-            payload(chat, GEN_AI.inputMessages, JSON.stringify(toSemconvMessages(messages)));
             const completion = await model.complete({ messages: [...messages], tools: TOOL_DEFS, signal: deps.signal });
             chat.setAttributes(usageToAttributes(completion.usage));
+            if (completion.decision) {
+              chat.setAttribute(APP.policyRule, completion.decision.rule);
+              chat.setAttribute(APP.policyCondition, completion.decision.condition);
+            }
+            if (completion.request !== undefined) payload(chat, APP.llmRequest, completion.request);
             chat.setAttribute(GEN_AI.responseFinishReasons, [completion.finishReason]);
             payload(chat, GEN_AI.outputMessages, JSON.stringify([
               { role: "assistant", parts: [{ type: "text", content: completion.text }], finish_reason: completion.finishReason },
@@ -218,10 +228,10 @@ export async function runAgent(task: AgentTask, config: RunConfig, deps: AgentDe
             [APP.stepIndex]: step,
             [APP.attempt]: attempt,
             [APP.toolDeadlineMs]: deadlines[call.tool],
+            ...payloadAttrs(GEN_AI.toolCallArguments, JSON.stringify(call.args)),
           }, stepSpan);
           try {
             if (attempt > 1) spans.event(tool, "retry", { [APP.attempt]: attempt });
-            payload(tool, GEN_AI.toolCallArguments, JSON.stringify(call.args));
             const fault: { hang?: boolean; forceFailPick?: number } = {};
             if (config.faults.toolTimeout === call.tool && !faultsUsed.timeout) {
               faultsUsed.timeout = true;
@@ -241,6 +251,12 @@ export async function runAgent(task: AgentTask, config: RunConfig, deps: AgentDe
               fault,
             });
             payload(tool, GEN_AI.toolCallResult, JSON.stringify(toolOutcome.result));
+            if (toolOutcome.file) {
+              tool.setAttribute(APP.filePath, toolOutcome.file.path);
+              if (toolOutcome.file.before !== undefined) payload(tool, APP.fileBefore, toolOutcome.file.before);
+              if (toolOutcome.file.after !== undefined) payload(tool, APP.fileAfter, toolOutcome.file.after);
+              if (toolOutcome.file.matches !== undefined) tool.setAttribute(APP.editMatches, toolOutcome.file.matches);
+            }
             if (toolOutcome.tests) {
               lastTests = toolOutcome.tests;
               tool.setAttribute(APP.testsPassed, toolOutcome.tests.passed);

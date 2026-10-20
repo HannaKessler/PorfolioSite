@@ -1,4 +1,4 @@
-import type { ChatModel, Completion, CompletionRequest, Msg } from "./types";
+import type { ChatModel, Completion, CompletionRequest, Msg, PolicyDecision } from "./types";
 import { FORMAT_DURATION_FIXES } from "./scripts/format-duration";
 
 export const SCRIPTED_MODEL_ID = "scripted-v1";
@@ -44,39 +44,73 @@ function appliedReplacements(messages: Msg[]): string[] {
   return out;
 }
 
-const call = (thought: string, tool: string, args: Record<string, string> = {}) => JSON.stringify({ thought, tool, args });
+export interface ScriptedReply {
+  text: string;
+  decision: PolicyDecision;
+}
+
+const reply = (rule: string, condition: string, tool: string, args: Record<string, string> = {}): ScriptedReply => ({
+  text: JSON.stringify({ tool, args }),
+  decision: { rule, condition },
+});
+
+const quote = (v: unknown) => JSON.stringify(v);
 
 /**
  * A deterministic rule set over the conversation history. It returns raw text
  * like a model would, so its replies go through the same parser, validator and
- * retry path. It reports no usage: no tokens, no runtime statistics, and it adds
- * no artificial latency.
+ * retry path. Alongside the text it reports which rule fired and the values it
+ * matched; it writes no reasoning of its own. It reports no usage (no tokens or
+ * runtime statistics) and adds no artificial latency.
  */
-export function decide(messages: Msg[]): string {
+export function decide(messages: Msg[]): ScriptedReply {
   const last = lastToolResult(messages);
-  if (!last) return call("Run the tests to see what fails.", "run_tests");
+  if (!last) return reply("no tool result yet → run_tests", "The conversation has no tool result yet.", "run_tests");
   const v = last.value;
   switch (last.name) {
     case "run_tests": {
-      if (typeof v.error === "string" && /did not finish/.test(v.error)) return call("The test run timed out; run it again.", "run_tests");
+      if (typeof v.error === "string" && /did not finish/.test(v.error)) {
+        return reply("run_tests timed out → run_tests again", `Last result: run_tests error ${quote(v.error)}.`, "run_tests");
+      }
       if (v.failed === 0 && !v.error) {
         const fix = FORMAT_DURATION_FIXES.find((f) => appliedReplacements(messages).includes(f.replace));
-        return call("All tests pass.", "finish", { summary: fix?.summary ?? "All tests pass without changes." });
+        return reply(
+          "all tests pass → finish",
+          `Last result: run_tests passed=${quote(v.passed)}, failed=0. ${fix ? "An earlier edit_file applied a known fix; its description is the summary." : "No known fix was applied earlier."}`,
+          "finish",
+          { summary: fix?.summary ?? "All tests pass without changes." },
+        );
       }
-      const path = moduleFromFailure(v.failures) ?? "src/formatDuration.js";
-      return call(`Read ${path}, the module the failing tests cover.`, "read_file", { path });
+      const failures = Array.isArray(v.failures) ? (v.failures as { name?: string }[]) : [];
+      const fromFailure = moduleFromFailure(v.failures);
+      const path = fromFailure ?? "src/formatDuration.js";
+      return reply(
+        "tests fail → read the module of the first failing suite",
+        `Last result: run_tests failed=${quote(v.failed)}${failures[0]?.name ? `, first failure ${quote(failures[0].name)}` : ""}${v.error ? `, error ${quote(v.error)}` : ""}. ${fromFailure ? `Suite name maps to ${path}.` : `No suite name; default path ${path}.`}`,
+        "read_file",
+        { path },
+      );
     }
     case "read_file": {
-      if (typeof v.contents !== "string") return call("Run the tests again to find the module.", "run_tests");
+      if (typeof v.contents !== "string") {
+        return reply("read_file returned no contents → run_tests", `Last result: read_file ${v.error ? `error ${quote(v.error)}` : "without contents"}.`, "run_tests");
+      }
       const fix = FORMAT_DURATION_FIXES.find((f) => (v.contents as string).includes(f.find));
-      if (!fix) return call("The tests fail but no known bug pattern is present; re-run the tests.", "run_tests");
-      return call("Replace the buggy line with the corrected one.", "edit_file", { path: String(v.path), find: fix.find, replace: fix.replace });
+      if (!fix) {
+        return reply("no known buggy line in the file → run_tests", `Last result: ${quote(v.path)} contains none of the ${FORMAT_DURATION_FIXES.length} known buggy lines.`, "run_tests");
+      }
+      return reply(
+        "known buggy line found → edit_file with its known fix",
+        `Last result: ${quote(v.path)} contains the known buggy line ${quote(fix.find)}.`,
+        "edit_file",
+        { path: String(v.path), find: fix.find, replace: fix.replace },
+      );
     }
     case "edit_file":
-      if (v.ok) return call("Re-run the tests to confirm the fix.", "run_tests");
-      return call("The edit did not apply; read the file again.", "read_file", { path: "src/formatDuration.js" });
+      if (v.ok) return reply("edit applied → run_tests", `Last result: edit_file ok for ${quote(v.path)}.`, "run_tests");
+      return reply("edit failed → read_file again", `Last result: edit_file error ${quote(v.error)}.`, "read_file", { path: "src/formatDuration.js" });
     default:
-      return call("Run the tests.", "run_tests");
+      return reply("any other tool result → run_tests", `Last result came from ${quote(last.name)}.`, "run_tests");
   }
 }
 
@@ -88,6 +122,7 @@ export class ScriptedBrain implements ChatModel {
   async complete(request: CompletionRequest): Promise<Completion> {
     if (request.signal.aborted) throw request.signal.reason;
     // No usage field: the scripted brain has no tokens or runtime statistics to report.
-    return { text: decide(request.messages), finishReason: "stop" };
+    const { text, decision } = decide(request.messages);
+    return { text, finishReason: "stop", decision };
   }
 }

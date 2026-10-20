@@ -57,6 +57,8 @@ export interface ToolOutcome {
   errorMessage?: string;
   tests?: TestRunResult;
   finished?: boolean;
+  /** edit_file only: the file before the call, after it (when the edit applied), and the match count. */
+  file?: { path: string; before?: string; after?: string; matches?: number };
 }
 
 class ToolTimeoutError extends Error {
@@ -90,15 +92,16 @@ async function runTool(name: ToolName, args: Record<string, string>, ctx: ToolCo
       const contents = ctx.vfs.read(args.path);
       if (contents === undefined) {
         const message = `File not found: ${args.path}`;
-        return { result: { error: message }, errorType: "tool_error", errorMessage: message };
+        return { result: { error: message }, errorType: "tool_error", errorMessage: message, file: { path: args.path } };
       }
       const n = countOccurrences(contents, args.find);
       if (n !== 1) {
         const message = n === 0 ? "find string not found" : `find string is ambiguous (${n} matches)`;
-        return { result: { error: message }, errorType: "tool_error", errorMessage: message };
+        return { result: { error: message }, errorType: "tool_error", errorMessage: message, file: { path: args.path, before: contents, matches: n } };
       }
-      ctx.vfs.write(args.path, contents.replace(args.find, () => args.replace));
-      return { result: { ok: true, path: args.path } };
+      const after = contents.replace(args.find, () => args.replace);
+      ctx.vfs.write(args.path, after);
+      return { result: { ok: true, path: args.path }, file: { path: args.path, before: contents, after, matches: 1 } };
     }
     case "run_tests": {
       try {

@@ -25,12 +25,22 @@ export interface CompletionRequest {
   signal: AbortSignal;
 }
 
+/** What the scripted policy decided and why: the rule that fired and the condition it matched. */
+export interface PolicyDecision {
+  rule: string;
+  condition: string;
+}
+
 export interface Completion {
   /** Raw model text. It must contain a JSON tool call; the loop parses and validates it. */
   text: string;
   finishReason: string;
   /** Only what the runtime itself reported. Absent for the scripted brain. */
   usage?: ReportedUsage;
+  /** Set by the scripted brain only: the rule behind this reply. */
+  decision?: PolicyDecision;
+  /** Set by brains backed by a runtime: the exact request body it received, as JSON. */
+  request?: string;
 }
 
 export interface ChatModel {
