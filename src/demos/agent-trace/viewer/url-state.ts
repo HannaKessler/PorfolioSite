@@ -10,7 +10,7 @@ export interface UrlState {
   t?: number;
 }
 
-const ID = /^[A-Za-z0-9_-]{1,80}$/;
+const ID = /^[A-Za-z0-9._-]{1,80}$/;
 
 export function parseUrlState(search: string): UrlState {
   const p = new URLSearchParams(search);

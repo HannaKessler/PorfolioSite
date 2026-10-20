@@ -162,9 +162,20 @@ export function summarize(spans: ViewSpan[], resourceAttrs: Record<string, unkno
   const root = spans.find((s) => s.depth === 0);
   const chats = spans.filter((s) => s.op === "chat");
   const errorTypes: Record<string, number> = {};
+  // Count each error once, where it originated: a step or run that fails because
+  // a child failed with the same error.type is not counted again.
+  const typeOf = (s: ViewSpan) => String(s.span.attrs[ERROR_TYPE] ?? "error");
+  const childErrorTypes = new Map<string, Set<string>>();
+  for (const s of spans) {
+    if (!s.isError || !s.parentId) continue;
+    const set = childErrorTypes.get(s.parentId) ?? new Set<string>();
+    set.add(typeOf(s));
+    childErrorTypes.set(s.parentId, set);
+  }
   for (const s of spans) {
     if (!s.isError) continue;
-    const t = String(s.span.attrs[ERROR_TYPE] ?? "error");
+    const t = typeOf(s);
+    if (childErrorTypes.get(s.id)?.has(t)) continue;
     errorTypes[t] = (errorTypes[t] ?? 0) + 1;
   }
   const testRuns = spans.filter((s) => s.tool === "run_tests" && s.endMs !== null && num(s.span.attrs[APP.testsPassed]) !== undefined);

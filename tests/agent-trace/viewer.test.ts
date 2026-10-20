@@ -81,6 +81,19 @@ describe("viewer model", () => {
     for (const r of [s.inputTokens, s.outputTokens, s.ttftS, s.prefillTps, s.decodeTps]) expect(r).toEqual({ n: 0, m: 5, total: undefined, mean: undefined });
   });
 
+  it("counts a failed tool call once, not again on its step", async () => {
+    const model = new ReplayModel(DEFAULT_MODEL_ID, [
+      { content: '{"tool":"edit_file","args":{"path":"/src/formatDuration.js","find":"no such text","replace":"x"}}', finish_reason: "stop" },
+      { content: '{"tool":"finish","args":{"summary":"x"}}', finish_reason: "stop" },
+    ]);
+    const c = await runThroughPipeline(baseRequest(), { model });
+    const spans = buildViewSpans(c.store.index(c.runId)!);
+    expect(spans.filter((v) => v.isError && v.op === "step")).toHaveLength(1);
+    const s = summarize(spans);
+    expect(s.errorTypes).toEqual({ tool_error: 1 });
+    expect(s.errors).toBe(1);
+  });
+
   it("reports partial usage coverage as N of M calls", async () => {
     const usage = { prompt_tokens: 10, completion_tokens: 2, total_tokens: 12, extra: { e2e_latency_s: 1, prefill_tokens_per_s: 2, decode_tokens_per_s: 3, time_to_first_token_s: 4, time_per_output_token_s: 5 } };
     const model = new ReplayModel(DEFAULT_MODEL_ID, [
