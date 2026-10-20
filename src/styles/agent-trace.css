@@ -752,6 +752,557 @@
   font-size: 1.2rem;
 }
 
+/* Detail views: Activity, Files, Prompts */
+.atv-views {
+  display: grid;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  overflow: hidden;
+}
+
+.atv-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+  padding: 0.4rem 0.6rem 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-muted);
+}
+
+.atv-tab {
+  margin-bottom: -1px;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid transparent;
+  border-radius: 6px 6px 0 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.atv-tab:hover {
+  color: var(--text);
+}
+
+.atv-tab.is-active {
+  border-color: var(--line);
+  border-bottom-color: #fff;
+  background: #fff;
+  color: var(--text);
+}
+
+.atv-tab:focus-visible,
+.atv-feed-item:focus-visible,
+.atv-feed-head:focus-visible,
+.atv-edit-item:focus-visible,
+.atv-tree-file:focus-visible,
+.atv-copy:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.atv-tabs-hint {
+  margin-left: auto;
+  padding: 0 0.25rem 0.35rem;
+  font-size: 0.82rem;
+}
+
+.atv-tabpanel {
+  min-width: 0;
+}
+
+.atv-feed,
+.atv-calls,
+.atv-files {
+  position: relative;
+  max-height: clamp(24rem, 70vh, 44rem);
+  overflow: auto;
+  padding: 0.85rem 1rem;
+  font-size: 0.88rem;
+}
+
+.atv-feed-list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.atv-feed-step {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.55rem 0.65rem 0.6rem;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.atv-feed-step.is-active {
+  border-color: var(--text);
+  border-left-color: var(--text);
+}
+
+.atv-feed-step.is-error {
+  border-left-color: color-mix(in srgb, var(--accent) 55%, white);
+}
+
+.atv-feed-step.is-open {
+  border-style: dashed;
+}
+
+.atv-feed-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.atv-feed-step-title {
+  font-family: var(--font-subhead);
+  font-size: 1rem;
+}
+
+.atv-feed-item {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: var(--bg-muted);
+  cursor: pointer;
+}
+
+.atv-feed-item:hover {
+  background: var(--bg-hover);
+}
+
+.atv-feed-item.is-selected {
+  border-color: var(--text);
+  background: #fff;
+}
+
+.atv-feed-head.is-selected .atv-feed-step-title {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.atv-feed-item.is-error {
+  background: color-mix(in srgb, var(--accent-soft) 60%, #fff);
+}
+
+.atv-feed-item p,
+.atv-feed-step > p,
+.atv-files p,
+.atv-calls p {
+  margin: 0;
+}
+
+.atv-feed-kind {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 0.75rem;
+  font-weight: 600;
+}
+
+.atv-feed-label {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.atv-feed-thought blockquote {
+  margin: 0.15rem 0 0;
+  padding: 0.1rem 0 0.1rem 0.65rem;
+  border-left: 3px solid var(--accent);
+  font-style: italic;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.atv-feed-policy {
+  display: grid;
+  gap: 0.15rem;
+  padding-left: 0.65rem;
+  border-left: 3px solid var(--line);
+  overflow-wrap: anywhere;
+}
+
+.atv-feed-decision,
+.atv-feed-invalid {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.atv-feed-tool {
+  font-weight: 600;
+}
+
+.atv-feed-args {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+}
+
+.atv-feed-args > div {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: start;
+}
+
+.atv-feed-args dt {
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+}
+
+.atv-feed-args dd {
+  margin: 0;
+  min-width: 0;
+}
+
+.atv-pre-inline {
+  max-height: 8rem;
+  padding: 0.2rem 0.4rem;
+  background: #fff;
+}
+
+.atv-feed-failures {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0.2rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.atv-feed-outcome {
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.atv-feed-end {
+  margin-top: 0.75rem;
+}
+
+.atv-diff-count {
+  margin-left: 0.35rem;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+}
+
+/* Files */
+.atv-files {
+  display: grid;
+  grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.atv-files-side {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.atv-files-edits-title {
+  margin-top: 0.5rem !important;
+}
+
+.atv-tree,
+.atv-tree ul,
+.atv-edits {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.atv-tree ul {
+  padding-left: 0.9rem;
+}
+
+.atv-tree-dir {
+  display: block;
+  padding: 0.15rem 0.3rem;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+}
+
+.atv-tree-file {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  padding: 0.2rem 0.4rem;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: none;
+  color: var(--text);
+  font: 0.8rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  text-align: left;
+  cursor: pointer;
+}
+
+.atv-tree-file:hover {
+  background: var(--bg-hover);
+}
+
+.atv-tree-file.is-open {
+  border-color: var(--text);
+  background: var(--bg-hover);
+}
+
+.atv-tree-mod {
+  flex: none;
+  color: var(--accent);
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.atv-edits {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.atv-edit-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--line);
+  border-left-width: 3px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.atv-edit-item.is-ok {
+  border-left-color: var(--ok);
+}
+
+.atv-edit-item.is-error {
+  border-left-color: var(--accent);
+}
+
+.atv-edit-item.is-selected {
+  border-top-color: var(--text);
+  border-right-color: var(--text);
+  border-bottom-color: var(--text);
+  background: var(--bg-hover);
+}
+
+.atv-edit-status {
+  color: var(--muted);
+  text-align: right;
+}
+
+.atv-files-main {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.atv-files-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 0.75rem;
+}
+
+.atv-files-head h4,
+.atv-calls h4 {
+  margin: 0;
+  font-family: var(--font-subhead);
+  font-size: 0.95rem;
+  font-weight: 400;
+  overflow-wrap: anywhere;
+}
+
+.atv-edit-detail {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.atv-edit-attempt {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.6rem;
+}
+
+.atv-code {
+  display: grid;
+  margin: 0;
+  padding: 0.4rem 0;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--bg-muted);
+  font: 0.76rem/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.atv-code-line {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  white-space: pre;
+}
+
+.atv-diff .atv-code-line {
+  grid-template-columns: 2.4rem 2.4rem 1.2rem minmax(0, 1fr);
+}
+
+.atv-ln {
+  padding-right: 0.6rem;
+  color: var(--muted);
+  text-align: right;
+  user-select: none;
+}
+
+.atv-diff-sign {
+  user-select: none;
+}
+
+.atv-diff-add {
+  background: var(--software-soft);
+  color: color-mix(in srgb, var(--ok) 85%, #000);
+}
+
+.atv-diff-del {
+  background: var(--accent-soft);
+  color: color-mix(in srgb, var(--accent) 85%, #000);
+}
+
+/* Prompts */
+.atv-calls {
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+}
+
+.atv-call {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.atv-call.is-selected {
+  border-color: var(--text);
+}
+
+.atv-call > summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.6rem;
+  padding: 0.5rem 0.7rem;
+  cursor: pointer;
+}
+
+.atv-call[open] > summary {
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-muted);
+}
+
+.atv-call-title {
+  font-weight: 600;
+}
+
+.atv-call-meta {
+  overflow-wrap: anywhere;
+}
+
+.atv-call-body {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.7rem;
+}
+
+.atv-call-section {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.atv-call-section-head,
+.atv-msg-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.3rem 0.6rem;
+}
+
+.atv-msgs {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.atv-msg {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--line);
+  border-left-width: 3px;
+  border-radius: 6px;
+}
+
+.atv-msg-system {
+  border-left-color: var(--muted);
+}
+
+.atv-msg-user {
+  border-left-color: #3b6fb6;
+}
+
+.atv-msg-assistant {
+  border-left-color: var(--accent);
+}
+
+.atv-msg-tool {
+  border-left-color: var(--ok);
+}
+
+.atv-msg .atv-pre {
+  max-height: 20rem;
+}
+
+.atv-copy {
+  padding: 0.12rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.74rem;
+  cursor: pointer;
+}
+
+.atv-copy:hover {
+  background: var(--bg-hover);
+}
+
+.atv-show-in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.6rem;
+}
+
 @media (max-width: 1000px) {
   .atv-runpanel-grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -795,6 +1346,30 @@
 
   .atv-search input {
     width: 100%;
+  }
+
+  .atv-tabs-hint {
+    display: none;
+  }
+
+  .atv-feed,
+  .atv-calls,
+  .atv-files {
+    max-height: none;
+    padding: 0.7rem;
+  }
+
+  .atv-files {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .atv-edit-attempt {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .atv-feed-args > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.1rem;
   }
 }
 

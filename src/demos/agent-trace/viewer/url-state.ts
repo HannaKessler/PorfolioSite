@@ -1,5 +1,8 @@
 import { NO_FILTERS, type Filters } from "./model";
 
+export const DETAIL_VIEWS = ["activity", "files", "prompts"] as const;
+export type DetailView = (typeof DETAIL_VIEWS)[number];
+
 /** Everything needed to reproduce a view, kept in the query string. */
 export interface UrlState {
   run?: string;
@@ -8,6 +11,8 @@ export interface UrlState {
   cmp?: string;
   /** Playback time in ms from the run start. */
   t?: number;
+  /** Detail view below the timeline; absent means Activity. */
+  view?: DetailView;
 }
 
 const ID = /^[A-Za-z0-9._-]{1,80}$/;
@@ -20,7 +25,9 @@ export function parseUrlState(search: string): UrlState {
   };
   const t = Number(p.get("t"));
   const flags = new Set((p.get("f") ?? "").split(",").filter(Boolean));
+  const v = p.get("v");
   return {
+    view: v && (DETAIL_VIEWS as readonly string[]).includes(v) && v !== "activity" ? (v as DetailView) : undefined,
     run: id("run"),
     span: id("span"),
     cmp: id("cmp"),
@@ -47,6 +54,7 @@ export function serializeUrlState(state: UrlState): string {
   if (state.filters.q) p.set("q", state.filters.q);
   if (state.cmp) p.set("cmp", state.cmp);
   if (state.t !== undefined) p.set("t", String(Math.round(state.t * 1000) / 1000));
+  if (state.view && state.view !== "activity") p.set("v", state.view);
   const s = p.toString();
   return s ? `?${s}` : "";
 }

@@ -1,5 +1,6 @@
 import type { AttrValue } from "../collector/normalize";
-import { APP, GEN_AI, REPORTED_ONLY_KEYS } from "../tracing/attrs";
+import { APP, GEN_AI, PAYLOAD_LIMIT, REPORTED_ONLY_KEYS } from "../tracing/attrs";
+import type { DetailView } from "./url-state";
 import { formatMs, nsToMs, num, type ViewSpan } from "./model";
 
 const STATUS = ["Unset", "OK", "Error"];
@@ -87,7 +88,20 @@ function Usage({ span }: { span: ViewSpan }) {
   );
 }
 
-export function Inspector({ span, runStartNs, onClose }: { span?: ViewSpan; runStartNs: bigint; onClose?: () => void }) {
+/** Large payloads shown in the detail views rather than the attribute table. */
+const DETAIL_PAYLOADS: [string, DetailView][] = [
+  [APP.vfsFiles, "files"],
+  [APP.fileBefore, "files"],
+  [APP.fileAfter, "files"],
+  [APP.llmRequest, "prompts"],
+];
+
+const sizeLabel = (v: AttrValue) => {
+  const n = typeof v === "string" ? v.length : JSON.stringify(v).length;
+  return n < 1024 ? `${n} characters` : `${(n / 1024).toFixed(1)} K characters`;
+};
+
+export function Inspector({ span, runStartNs, onClose, onShow }: { span?: ViewSpan; runStartNs: bigint; onClose?: () => void; onShow?: (view: DetailView) => void }) {
   if (!span) {
     return (
       <aside className="atv-inspector is-empty" aria-label="Span details">
@@ -96,7 +110,11 @@ export function Inspector({ span, runStartNs, onClose }: { span?: ViewSpan; runS
     );
   }
   const s = span.span;
-  const shown = new Set<string>([GEN_AI.inputMessages, GEN_AI.outputMessages, GEN_AI.toolCallArguments, GEN_AI.toolCallResult, ...REPORTED_ONLY_KEYS]);
+  const shown = new Set<string>([GEN_AI.inputMessages, GEN_AI.outputMessages, GEN_AI.toolCallArguments, GEN_AI.toolCallResult, ...REPORTED_ONLY_KEYS, ...DETAIL_PAYLOADS.map(([k]) => k)]);
+  const payloads = DETAIL_PAYLOADS.filter(([k]) => s.attrs[k] !== undefined);
+  const views = new Set<DetailView>(["activity"]);
+  if (span.op === "chat") views.add("prompts");
+  if (payloads.length || span.tool === "edit_file") views.add("files");
   const attrs = Object.entries(s.attrs).filter(([k]) => !shown.has(k)).sort(([a], [b]) => a.localeCompare(b));
   return (
     <aside className="atv-inspector" aria-label="Span details">
@@ -119,8 +137,18 @@ export function Inspector({ span, runStartNs, onClose }: { span?: ViewSpan; runS
           {STATUS[s.status.code] ?? s.status.code}
         </span>
         {span.fault && <span className="atv-badge-fault">Injected fault: {span.fault}</span>}
-        {s.attrs[APP.truncated] === true && <span className="atv-chip">Payload truncated at 8 KB</span>}
+        {s.attrs[APP.truncated] === true && <span className="atv-chip">Payload truncated at {Math.round(PAYLOAD_LIMIT / 1024)} KB</span>}
       </p>
+      {onShow && (
+        <p className="atv-show-in">
+          <span className="atv-label">Show in</span>
+          {[...views].map((v) => (
+            <button key={v} type="button" className="atv-link" onClick={() => onShow(v)}>
+              {v === "activity" ? "Activity" : v === "files" ? "Files" : "Prompts"}
+            </button>
+          ))}
+        </p>
+      )}
       {s.status.message && <p className="atv-error-text">{s.status.message}</p>}
 
       {span.op === "chat" && (
@@ -174,6 +202,17 @@ export function Inspector({ span, runStartNs, onClose }: { span?: ViewSpan; runS
               <th scope="row">span id</th>
               <td><code>{s.spanId}</code></td>
             </tr>
+            {payloads.map(([k, view]) => (
+              <tr key={k}>
+                <th scope="row">{k}</th>
+                <td>
+                  {sizeLabel(s.attrs[k])} ·{" "}
+                  <button type="button" className="atv-link" onClick={() => onShow?.(view)}>
+                    shown in {view === "files" ? "Files" : "Prompts"}
+                  </button>
+                </td>
+              </tr>
+            ))}
             {attrs.map(([k, v]) => (
               <tr key={k}>
                 <th scope="row">{k}</th>

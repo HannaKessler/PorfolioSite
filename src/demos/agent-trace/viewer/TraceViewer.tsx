@@ -5,6 +5,7 @@ import { decodeAttributes } from "../collector/normalize";
 import type { TraceStore } from "../store/trace-store";
 import { saveRun } from "../store/idb";
 import { CostTable } from "./CostTable";
+import { DetailViews } from "./DetailViews";
 import { Compare } from "./Compare";
 import { Filters } from "./Filters";
 import { Inspector } from "./Inspector";
@@ -258,7 +259,27 @@ export function TraceViewer({ store, collector, focus, children }: Props) {
                 <p className="atv-muted">{spans.length === 0 ? "No spans yet at this point in the run." : "No spans match these filters."}</p>
               </div>
             )}
-            <Inspector span={selected} runStartNs={index.startNs} onClose={() => setSheetOpen(false)} />
+            <Inspector
+              span={selected}
+              runStartNs={index.startNs}
+              onClose={() => setSheetOpen(false)}
+              onShow={(view) => {
+                update({ view });
+                setSheetOpen(false);
+                requestAnimationFrame(() => document.getElementById("atv-views")?.scrollIntoView({ block: "start", behavior: "smooth" }));
+              }}
+            />
+          </div>
+          <div id="atv-views">
+            <DetailViews
+              view={url.view ?? "activity"}
+              onView={(view) => update({ view })}
+              spans={spans}
+              selected={selected}
+              onSelect={selectSpan}
+              playbackMs={playbackT}
+              live={live}
+            />
           </div>
         </>
       ) : (
