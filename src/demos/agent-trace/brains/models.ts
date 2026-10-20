@@ -1,7 +1,8 @@
 /**
  * Real models the visitor can opt into. VRAM figures are WebLLM's own
  * `vram_required_MB` from prebuiltAppConfig (a unit test keeps them in sync);
- * download sizes are the q4f16_1 Hugging Face repository totals.
+ * download sizes are the Hugging Face repository totals, which are the same
+ * for the q4f16_1 and q4f32_1 builds.
  */
 export interface ModelOption {
   /** q4f16_1 build; used when the GPU supports shader-f16. */
@@ -11,7 +12,7 @@ export interface ModelOption {
   label: string;
   vramMB: number;
   f32VramMB: number;
-  /** Approximate download of the q4f16_1 build. */
+  /** Approximate download (the same for both builds). */
   downloadLabel: string;
 }
 
@@ -25,9 +26,9 @@ export const MODEL_OPTIONS: ModelOption[] = [
   { id: "Llama-3.2-3B-Instruct-q4f16_1-MLC", f32Id: "Llama-3.2-3B-Instruct-q4f32_1-MLC", label: "Llama 3.2 3B Instruct", vramMB: 2264, f32VramMB: 2952, downloadLabel: "about 1.8 GB" },
 ];
 
-/** The build to load on this GPU, its VRAM need, and the download label (only known for q4f16_1). */
-export function resolveModel(option: ModelOption, shaderF16: boolean): { modelId: string; vramMB: number; downloadLabel?: string } {
+/** The build to load on this GPU, its VRAM need, and its download label. */
+export function resolveModel(option: ModelOption, shaderF16: boolean): { modelId: string; vramMB: number; downloadLabel: string } {
   return shaderF16
     ? { modelId: option.id, vramMB: option.vramMB, downloadLabel: option.downloadLabel }
-    : { modelId: option.f32Id, vramMB: option.f32VramMB };
+    : { modelId: option.f32Id, vramMB: option.f32VramMB, downloadLabel: option.downloadLabel };
 }

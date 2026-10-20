@@ -162,7 +162,7 @@ export function RunPanel({ client, store, collector, onRunStarted }: Props) {
                     </select>
                   </label>
                   <p className="atv-footnote">
-                    <code>{resolved.modelId}</code> · download {resolved.downloadLabel ?? "size shown while downloading"} · needs about{" "}
+                    <code>{resolved.modelId}</code> · download {resolved.downloadLabel} · needs about{" "}
                     {resolved.vramMB.toLocaleString()} MB of GPU memory.
                     {!capability.shaderF16 && " Your GPU lacks shader-f16, so the 32-bit build is used."} The model is cached by your browser after the first
                     download.

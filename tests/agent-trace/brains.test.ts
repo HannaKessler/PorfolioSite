@@ -106,7 +106,7 @@ describe("model catalogue and capability", () => {
   it("falls back to the q4f32 build without shader-f16", () => {
     const qwen = MODEL_OPTIONS.find((m) => m.id === DEFAULT_MODEL_ID)!;
     expect(resolveModel(qwen, true).modelId).toBe(DEFAULT_MODEL_ID);
-    expect(resolveModel(qwen, false)).toEqual({ modelId: "Qwen2.5-1.5B-Instruct-q4f32_1-MLC", vramMB: 1889 });
+    expect(resolveModel(qwen, false)).toEqual({ modelId: "Qwen2.5-1.5B-Instruct-q4f32_1-MLC", vramMB: 1889, downloadLabel: "about 880 MB" });
   });
 
   it("reports why WebGPU is unavailable", async () => {
