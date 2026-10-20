@@ -83,6 +83,7 @@ Vitest unit tests cover each layer without a browser:
 - **Identical pipeline:** recorded WebLLM-style completions are replayed through the same loop, and the test checks that their spans and the simulated brain's share the same names, kinds, hierarchy, required attributes and events.
 - **Transport and storage:** spans arrive open and then ended, an ended span is never replaced by an older open copy, and export → import → export reproduces the same document.
 - **Viewer logic:** filters, sequence alignment for compare, URL state, playback clipping and the what-if arithmetic.
+- **Bundled samples:** every sample passes the span schema, the simulated-brain samples carry no usage attributes, and in the real-model sample usage appears only on `chat` spans.
 
 A Playwright test loads the page, runs the agent in a real browser and checks that the trace reaches the timeline and the inspector.
 
@@ -91,5 +92,5 @@ A Playwright test loads the page, runs the agent in a real browser and checks th
 - The agent has one task (two planted-bug variants) and four tools; it demonstrates the pipeline rather than general coding ability.
 - The real model needs a browser with WebGPU, a download of several hundred megabytes and enough GPU memory. Small models may produce invalid tool calls or fail to fix the bug; those runs still produce complete traces.
 - Traces stay in the browser. There is no exporter to a remote collector; export is to a file.
-- Bundled samples were recorded with the simulated brain by a recorder script in Node.js, so their timings reflect that environment.
+- The simulated-brain samples were recorded by a script in Node.js, so their timings reflect that environment. The Qwen2.5 1.5B sample was recorded in the browser and exported with the viewer's Export button. In it, the model repeats an edit that does not match the file until the step cap stops the run.
 - Timing precision is limited by the browser's timer resolution, which is coarser on pages that are not cross-origin isolated.
