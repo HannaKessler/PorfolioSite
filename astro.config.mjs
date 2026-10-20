@@ -14,8 +14,18 @@ export default defineConfig({
     // was first seen, breaking the lazy import with '504 Outdated Optimize Dep'.
     optimizeDeps: {
       // Pre-bundled up front: first discovered when PBR mode loads, which would otherwise force a mid-session re-optimize.
-      include: ['three/examples/jsm/environments/RoomEnvironment.js'],
-      exclude: ['@electric-sql/pglite', '@babylonjs/core', '@babylonjs/loaders', '@babylonjs/materials'] },
+      // The Agent Trace Viewer's tracing and viewer libraries are first seen inside its workers, so they
+      // are listed here; WebLLM (a single large ES module, loaded only on opt-in) is excluded.
+      include: [
+        'three/examples/jsm/environments/RoomEnvironment.js',
+        '@opentelemetry/api',
+        '@opentelemetry/sdk-trace-base',
+        '@opentelemetry/otlp-transformer',
+        '@opentelemetry/resources',
+        '@tanstack/react-virtual',
+        'idb-keyval',
+      ],
+      exclude: ['@electric-sql/pglite', '@babylonjs/core', '@babylonjs/loaders', '@babylonjs/materials', '@mlc-ai/web-llm'] },
     worker: { format: 'es' },
     server: {
       proxy: {
