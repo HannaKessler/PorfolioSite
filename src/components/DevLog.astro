@@ -50,5 +50,58 @@ function formatDate(date: Date) {
         </li>
       ))
     }
-  </ol>
+    </ol>
 </section>
+
+<script>
+  function setupGifPlayer(player: HTMLElement) {
+    if (player.dataset.ready === "true") return;
+    player.dataset.ready = "true";
+
+    const image = player.querySelector("img");
+    const button = player.querySelector("button");
+    if (!(image instanceof HTMLImageElement) || !(button instanceof HTMLButtonElement)) return;
+
+    const source = image.getAttribute("src") ?? "";
+    let canvas: HTMLCanvasElement | null = null;
+    let playing = true;
+
+    function setPaused(paused: boolean) {
+      playing = !paused;
+      button.setAttribute("aria-label", paused ? "Play" : "Pause");
+      button.setAttribute("aria-pressed", String(paused));
+    }
+
+    function freeze() {
+      const width = image.naturalWidth;
+      const height = image.naturalHeight;
+      if (!width || !height) return;
+      if (!canvas) {
+        canvas = document.createElement("canvas");
+        canvas.className = "gif-player-still";
+        image.insertAdjacentElement("afterend", canvas);
+      }
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext("2d")?.drawImage(image, 0, 0, width, height);
+      image.hidden = true;
+      canvas.hidden = false;
+      setPaused(true);
+    }
+
+    function play() {
+      image.hidden = false;
+      if (canvas) canvas.hidden = true;
+      image.src = "";
+      image.src = source;
+      setPaused(false);
+    }
+
+    button.addEventListener("click", () => {
+      if (playing) freeze();
+      else play();
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>(".gif-player").forEach(setupGifPlayer);
+</script>

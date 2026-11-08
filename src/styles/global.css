@@ -933,3 +933,80 @@ h2 {
 .devlog .prose p:has(img) {
   margin: 0;
 }
+
+.devlog .prose {
+  display: flow-root;
+}
+
+.devlog .gif-player {
+  position: relative;
+  float: right;
+  width: 15rem;
+  max-width: 46%;
+  margin: 0.15rem 0 0.55rem 1.35rem;
+}
+
+.devlog .gif-player [hidden] {
+  display: none !important;
+}
+
+.devlog .gif-player-still {
+  width: 100%;
+  display: block;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+}
+
+.devlog .gif-player-toggle {
+  position: absolute;
+  right: 0.4rem;
+  bottom: 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.devlog .gif-player-toggle svg {
+  width: 0.72rem;
+  height: 0.72rem;
+  display: block;
+}
+
+.devlog .gif-player-toggle .gif-icon-play {
+  display: none;
+  margin-left: 0.08rem;
+}
+
+.devlog .gif-player-toggle[aria-pressed="true"] .gif-icon-pause {
+  display: none;
+}
+
+.devlog .gif-player-toggle[aria-pressed="true"] .gif-icon-play {
+  display: block;
+}
+
+.devlog .gif-player-toggle:hover {
+  background: var(--bg-hover);
+}
+
+.devlog .gif-player-toggle:focus,
+.devlog .gif-player-toggle:focus-visible {
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  .devlog .gif-player {
+    float: none;
+    width: min(15rem, 100%);
+    max-width: 100%;
+    margin: 0.4rem 0 1rem;
+  }
+}
