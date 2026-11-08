@@ -879,3 +879,57 @@ h2 {
 .wip-callout .button {
   text-decoration: none;
 }
+
+.devlog {
+  margin-top: 2.75rem;
+  max-width: 42rem;
+}
+
+.devlog-list {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+}
+
+.devlog-entry {
+  padding-top: 0.15rem;
+}
+
+.devlog-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.devlog-date {
+  margin: 0 0 0 auto;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.devlog-heading h3 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.devlog-entry h3 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.devlog-entry h3 a:hover {
+  color: var(--accent);
+}
+
+.devlog .prose img {
+  width: 100%;
+  margin: 0;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+}
+
+.devlog .prose p:has(img) {
+  margin: 0;
+}

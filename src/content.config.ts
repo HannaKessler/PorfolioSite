@@ -7,6 +7,8 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
+    /** Line under the title on the project page. The card uses description. */
+    tagline: z.string().optional(),
     pubDate: z.coerce.date(),
     featured: z.boolean().default(false),
     /** "demo" for small interactive demos, "project" for real tools; picks the home page section. */
@@ -34,4 +36,14 @@ const journey = defineCollection({
   }),
 });
 
-export const collections = { projects, journey };
+const devlog = defineCollection({
+  loader: glob({ base: "./src/content/devlog", pattern: "**/*.md" }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    /** Project id this entry belongs to. */
+    project: z.string().default("unannounced-game"),
+  }),
+});
+
+export const collections = { projects, journey, devlog };

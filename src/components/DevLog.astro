@@ -1,0 +1,54 @@
+---
+import { getCollection, render } from "astro:content";
+
+interface Props {
+  projectId: string;
+}
+
+const { projectId } = Astro.props;
+
+const entries = (await getCollection("devlog"))
+  .filter((entry) => entry.data.project === projectId)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const rendered = await Promise.all(
+  entries.map(async (entry) => ({
+    entry,
+    Content: (await render(entry)).Content,
+  })),
+);
+
+function formatDate(date: Date) {
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+}
+---
+
+<section class="devlog" aria-labelledby="devlog-heading">
+  <h2 id="devlog-heading">Dev log</h2>
+  <ol class="devlog-list">
+    {
+      rendered.map(({ entry, Content }) => (
+        <li>
+          <article class="devlog-entry" id={entry.id}>
+            <header class="devlog-heading">
+              <h3>
+                <a href={`#${entry.id}`}>{entry.data.title}</a>
+              </h3>
+              <time class="devlog-date" datetime={entry.data.date.toISOString().slice(0, 10)}>
+                {formatDate(entry.data.date)}
+              </time>
+            </header>
+            <div class="prose">
+              <Content />
+            </div>
+          </article>
+        </li>
+      ))
+    }
+  </ol>
+</section>

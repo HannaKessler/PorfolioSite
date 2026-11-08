@@ -6,6 +6,7 @@ import CatalogShop from "../../components/CatalogShop.astro";
 import FilmGraphExplorer from "../../components/FilmGraphExplorer.astro";
 import ModelViewer from "../../components/ModelViewer.astro";
 import AgentTraceViewer from "../../components/AgentTraceViewer.astro";
+import DevLog from "../../components/DevLog.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -17,13 +18,15 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
-const { title, description, tags, githubUrl, liveUrl, demoUrl, image } = project.data;
+const { title, description, tagline, tags, githubUrl, liveUrl, demoUrl, image } = project.data;
+const lede = tagline ?? description;
 const isSecretNotes = project.id === "secret-notes";
 const isCatalog = project.id === "catalog";
 const isFilmGraph = project.id === "film-graph";
 const isModelViewer = project.id === "model-viewer";
 const isAgentTrace = project.id === "agent-trace-viewer";
-const showAllWork = project.id !== "blender-asset-transformer";
+const isDevLog = project.id === "unannounced-game";
+const showAllWork = project.id !== "blender-asset-transformer" && project.id !== "unannounced-game";
 // Full-width demos: intro header, the demo in a frame, then the write-up.
 const isWideDemo = isCatalog || isFilmGraph || isModelViewer || isAgentTrace;
 ---
@@ -35,7 +38,7 @@ const isWideDemo = isCatalog || isFilmGraph || isModelViewer || isAgentTrace;
         <header class="os-intro">
           <p class="eyebrow">Software demo</p>
           <h1>{title}</h1>
-          <p class="lede">{description}</p>
+          <p class="lede">{lede}</p>
           <div class="meta-row">
             {tags.map((tag) => (
               <span class="tag">{tag}</span>
@@ -53,7 +56,7 @@ const isWideDemo = isCatalog || isFilmGraph || isModelViewer || isAgentTrace;
         <article class="demo-writeup">
           <p class="eyebrow">Software demo</p>
           <h1>{title}</h1>
-          <p class="lede">{description}</p>
+          <p class="lede">{lede}</p>
           <div class="meta-row" style="margin-bottom: 1.25rem;">
             {tags.map((tag) => (
               <span class="tag">{tag}</span>
@@ -79,28 +82,30 @@ const isWideDemo = isCatalog || isFilmGraph || isModelViewer || isAgentTrace;
       </article>
     ) : (
       <>
-        <p class="eyebrow">Software</p>
+        <p class="eyebrow">{isDevLog ? "Dev log" : "Software"}</p>
         <div class="project-hero">
           <div>
             <h1>{title}</h1>
-            <p class="lede">{description}</p>
+            <p class="lede">{lede}</p>
             <div class="meta-row" style="margin-bottom: 1.25rem;">
               {tags.map((tag) => (
                 <span class="tag">{tag}</span>
               ))}
             </div>
-            <div class="actions">
-              {demoUrl && (
-                <a class="button button-ghost" href={demoUrl}>Open demo</a>
-              )}
-              {githubUrl && (
-                <a class="button button-ghost" href={githubUrl} rel="noreferrer">GitHub</a>
-              )}
-              {liveUrl && (
-                <a class="button button-ghost" href={liveUrl} rel="noreferrer">Live site</a>
-              )}
-              {showAllWork && <a class="button button-ghost" href="/projects">All work</a>}
-            </div>
+            {(demoUrl || githubUrl || liveUrl || showAllWork) && (
+              <div class="actions">
+                {demoUrl && (
+                  <a class="button button-ghost" href={demoUrl}>Open demo</a>
+                )}
+                {githubUrl && (
+                  <a class="button button-ghost" href={githubUrl} rel="noreferrer">GitHub</a>
+                )}
+                {liveUrl && (
+                  <a class="button button-ghost" href={liveUrl} rel="noreferrer">Live site</a>
+                )}
+                {showAllWork && <a class="button button-ghost" href="/projects">All work</a>}
+              </div>
+            )}
           </div>
           {image && (
             <div class="project-cover">
@@ -111,6 +116,7 @@ const isWideDemo = isCatalog || isFilmGraph || isModelViewer || isAgentTrace;
         <div class="prose section">
           <Content />
         </div>
+        {isDevLog && <DevLog projectId={project.id} />}
       </>
     )}
   </div>
