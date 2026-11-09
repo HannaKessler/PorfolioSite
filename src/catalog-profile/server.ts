@@ -1,5 +1,4 @@
 import { createSchema, createYoga } from "graphql-yoga";
-import { parse } from "graphql";
 import { GRAPHQL_URL, SLOW_FAULT_MS } from "./config";
 import { typeDefs } from "./schema";
 import type { ProfileStore } from "./store";
@@ -60,15 +59,8 @@ function browserTypeDefs() {
 }
 
 export async function createProfileSchema() {
-  const canUseSubgraph = typeof process !== "undefined" && Boolean(process.versions?.node);
-  if (canUseSubgraph) {
-    try {
-      const { buildSubgraphSchema } = await import("@apollo/subgraph");
-      return buildSubgraphSchema([{ typeDefs: parse(typeDefs), resolvers }]);
-    } catch {
-      // Fall through to Yoga's schema so the worker can still serve the API.
-    }
-  }
+  // Yoga's schema only: @apollo/subgraph pulls Node built-ins and must stay out of the browser bundle.
+  // Federation SDL remains in schema.ts and is exercised by the Node-only subgraph test.
   return createSchema({ typeDefs: browserTypeDefs(), resolvers });
 }
 
