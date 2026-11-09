@@ -216,13 +216,32 @@ test("persisted queries send a hash and the allowlist rejects other queries", as
 test("the rest of the site is unaffected and never loads Postgres", async ({ page }) => {
   const heavy: string[] = [];
   page.on("request", (request) => {
-    if (BACKEND.test(request.url()) || /QueryEditor/.test(request.url())) heavy.push(request.url());
+    const url = request.url();
+    // Film Graph's compiled worker is also named backend.worker-*.js; the shop's
+    // catalog-profile worker uses the same filename. Match Film Graph / PGlite only.
+    if (/pglite|film-graph-seed|film-graph-sw|\/projects\/film-graph\/api\/|QueryEditor/i.test(url)) {
+      heavy.push(url);
+    }
   });
   await page.goto("/");
   await expect(page.getByRole("link", { name: /Film Data Query/ }).first()).toBeAttached();
   await page.goto("/projects/catalog/");
   await expect(page.locator("#open-stock")).toBeVisible();
-  expect(await page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(false);
+  // The shop may control this page with its own scoped worker. Film Graph must not.
+  const filmGraph = await page.evaluate(async () => {
+    const controller = navigator.serviceWorker.controller?.scriptURL ?? "";
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    const scripts = registrations.map(
+      (registration) =>
+        registration.active?.scriptURL ||
+        registration.waiting?.scriptURL ||
+        registration.installing?.scriptURL ||
+        registration.scope,
+    );
+    return { controller, scripts };
+  });
+  expect(filmGraph.controller).not.toMatch(/film-graph/i);
+  expect(filmGraph.scripts.filter((script) => /film-graph/i.test(script))).toEqual([]);
   await page.goto("/status/");
   expect(heavy).toEqual([]);
 });
