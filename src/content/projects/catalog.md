@@ -38,7 +38,17 @@ Search runs entirely in the browser. The query is split into lowercase words, an
 
 ## Personalization
 
-By default, and if you reject the consent notice, the shop shows five popular category rows with the highest-rated products first. If you accept, the browser keeps your eight most recent searches for 30 days in its local storage, without duplicates and with the newest first, and expired searches are cleared out. Those searches replace popular rows from the top with "Similar to" rows for your searches, up to five rows in total. Each one combines the similar products of the top four results for that search, skipping the top eight results themselves, and fills in from the top result's category if it needs more items. Each personalized row has a Remove button. Rejecting deletes any saved searches, and searches are never sent to a server. The consent dialog is an accessible modal that moves focus to its buttons. It appears until you make a choice, can be reopened from Cookie settings, and closes with Escape or a click outside once a choice exists.
+By default, and if you reject the consent notice, the shop shows five popular category rows with the highest-rated products first. If you accept, the browser keeps your eight most recent searches for 30 days in its local storage, without duplicates and with the newest first, and expired searches are cleared out. Those searches replace popular rows from the top with "Similar to" rows for your searches, up to five rows in total. Each one combines the similar products of the top four results for that search, skipping the top eight results themselves, and fills in from the top result's category if it needs more items. Each personalized row has a Remove button. Rejecting deletes any saved searches and the profile. Searches are never sent to a server. Those searches also feed the profile service described below. The consent dialog is an accessible modal that moves focus to its buttons. It appears until you make a choice, can be reopened from Cookie settings, and closes with Escape or a click outside once a choice exists.
+
+## Profile serving
+
+The shop also includes a profile service that hands traits to the page the way a personalization serving layer would. A GraphQL subgraph, built with Yoga as an Apollo Federation schema, runs in a dedicated web worker. A service worker scoped to `/projects/catalog` forwards `/projects/catalog/api/graphql` so the browser's Network tab shows real requests; if the service worker is unavailable the page talks to the worker directly. The same worker is shared by the shop home and the item pages, and views persist in IndexedDB so a profile survives navigation.
+
+The existing search history is the source of search traits. Accepting cookies still stores up to eight recent searches for 30 days and still drives the "Similar to" rows. Those queries are synced into the profile rather than collected again. Item-page views and a sample Add to cart action (nothing is for sale) add category and price signals. A reserved "Recommended for you" row is prerendered with featured products so the first paint does not jump. If the profile arrives within a 300 ms budget, the row's cards are swapped in place and an exposure is recorded. If the service is slow, down, switched off, or the visitor has opted out, the prerendered row stays put. Latency numbers are measured with `performance.now()` for that request.
+
+An Under the hood drawer, closed until opened, shows the live profile, the GraphQL request and response, the measured latency, the fallback reason, and the exposure log. It includes a kill switch and injected-fault toggles that simulate an outage or a slow service. Rejecting cookies, or switching to reject later, stops tracking and deletes the search history and the profile.
+
+This all runs in the visitor's browser, so the page stays free to host. The handler is written as a `Request`/`Response` GraphQL subgraph, so the same code could later run on Node behind a federation gateway with a Redis or DynamoDB cache. That production shape is not part of the hosted demo.
 
 ## Carousels
 
@@ -46,4 +56,4 @@ Product rows are horizontal scrolling tracks with previous and next buttons that
 
 ## Stack
 
-Astro, TypeScript, Java 17 or newer, Python 3, Elasticsearch 8.18.2, PowerShell, and the DummyJSON product API.
+Astro, TypeScript, Java 17 or newer, Python 3, Elasticsearch 8.18.2, PowerShell, the DummyJSON product API, GraphQL Yoga, Apollo Client, and an Apollo Federation subgraph running in a web worker.
