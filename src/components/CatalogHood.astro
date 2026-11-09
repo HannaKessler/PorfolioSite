@@ -1,23 +1,4 @@
 <div class="os-hood" id="os-hood">
-  <button
-    type="button"
-    class="os-hood-toggle"
-    data-hood-toggle
-    aria-expanded="false"
-    aria-controls="os-hood-panel"
-  >
-    <svg class="os-hood-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-      <path fill="currentColor" d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6z" />
-    </svg>
-    <span class="os-hood-copy">
-      <span class="os-hood-title">Under the hood: live profile service</span>
-      <span class="os-hood-subtitle">Inspect the in-browser GraphQL profile request, measured latency, and injected-fault switches.</span>
-    </span>
-    <span class="os-hood-badges">
-      <span class="os-hood-badge" data-hood-latency-badge hidden></span>
-      <span class="os-hood-badge" data-hood-fallback-badge hidden></span>
-    </span>
-  </button>
   <div class="os-hood-panel" id="os-hood-panel" hidden>
     <p class="os-hood-lead">Live data from the in-browser GraphQL profile service. Fault switches are injected for this demo.</p>
     <p class="os-hood-meta">Transport: <span data-hood-transport></span></p>

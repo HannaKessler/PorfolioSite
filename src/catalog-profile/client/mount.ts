@@ -31,9 +31,14 @@ export function readUiFaults(root: HTMLElement): FaultSettings {
   return { outage: flag("outage"), slow: flag("slow"), killSwitch: flag("killSwitch") };
 }
 
+function hoodScope(root: HTMLElement) {
+  return (root.closest(".container") as HTMLElement | null) ?? root;
+}
+
 export function prepareHood(root: HTMLElement) {
-  const toggle = root.querySelector<HTMLButtonElement>("[data-hood-toggle]");
-  const panel = root.querySelector<HTMLElement>("#os-hood-panel");
+  const scope = hoodScope(root);
+  const toggle = scope.querySelector<HTMLButtonElement>("[data-hood-toggle]");
+  const panel = scope.querySelector<HTMLElement>("#os-hood-panel");
   if (!toggle || !panel) return;
   if (!toggle.dataset.bound) {
     toggle.addEventListener("click", () => {
@@ -46,12 +51,13 @@ export function prepareHood(root: HTMLElement) {
 }
 
 function wireHood(root: HTMLElement, client: ProfileClient, refetch: () => Promise<void>) {
-  const hood = root.querySelector<HTMLElement>("#os-hood");
-  const panel = root.querySelector<HTMLElement>("#os-hood-panel");
-  const toggle = root.querySelector<HTMLButtonElement>("[data-hood-toggle]");
+  const scope = hoodScope(root);
+  const hood = scope.querySelector<HTMLElement>("#os-hood");
+  const panel = scope.querySelector<HTMLElement>("#os-hood-panel");
+  const toggle = scope.querySelector<HTMLButtonElement>("[data-hood-toggle]");
   if (!hood || !panel || !toggle) return;
   prepareHood(root);
-  paintHood(root, client, client.last);
+  paintHood(scope, client, client.last);
   if (hood.dataset.wired) return;
   hood.dataset.wired = "true";
 
