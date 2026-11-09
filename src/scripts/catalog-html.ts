@@ -91,6 +91,15 @@ export function resultsHtml(query: string, products: Product[], category: string
   </div>`;
 }
 
+export function recommendedSlotHtml() {
+  const row = popularRows()[0];
+  if (!row) return "";
+  return carouselHtml(row, "").replace(
+    '<section class="os-row">',
+    '<section class="os-row" id="os-recommended" data-source="default">',
+  );
+}
+
 export function initialBrowseHtml() {
-  return browseHtml(popularRows());
+  return browseHtml(popularRows().slice(1));
 }

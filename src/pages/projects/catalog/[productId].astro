@@ -32,7 +32,7 @@ const description = product.description.slice(0, 160);
 
 <BaseLayout title={product.title} description={description}>
   <div class="container demo-project os-wide">
-    <section class="os os-item-page" id="open-stock-item" aria-label="Searchable Shop product">
+    <section class="os os-item-page" id="open-stock-item" aria-label="Searchable Shop product" data-product-id={product.id}>
       <CatalogBar />
       <a class="os-back" href="/projects/catalog" data-back>Back to the shop</a>
       <article class="os-item">
@@ -69,6 +69,8 @@ const description = product.description.slice(0, 160);
             <span class:list={["os-stock", stockClass(product.availabilityStatus)]}>{product.availabilityStatus}</span>
           </p>
           <p class="os-note">Sample catalog. Nothing here is for sale.</p>
+          <button type="button" class="os-add-cart" data-add-cart>Add to cart</button>
+          <p class="os-note" data-cart-status hidden></p>
           <p>{product.description}</p>
           {
             product.tags?.length > 0 && (
@@ -124,6 +126,7 @@ const description = product.description.slice(0, 160);
         }
       </article>
       {similarHtml && <div class="os-similar" set:html={similarHtml} />}
+      <aside id="os-hood" class="os-hood" hidden></aside>
       <CatalogConsent />
     </section>
   </div>
