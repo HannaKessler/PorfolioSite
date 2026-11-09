@@ -1,7 +1,7 @@
 import { readConsent, readQueries, type Consent } from "../../scripts/catalog-data";
 import { connect } from "./connection";
 import { ProfileClient } from "./api";
-import { hoodMarkup, paintHood, paintRecommended } from "./ui";
+import { paintHood, paintRecommended } from "./ui";
 import type { FaultSettings } from "../types";
 
 let clientPromise: Promise<ProfileClient> | null = null;
@@ -32,13 +32,9 @@ export function readUiFaults(root: HTMLElement): FaultSettings {
 }
 
 export function prepareHood(root: HTMLElement) {
-  const panel = root.querySelector<HTMLElement>("#os-hood");
   const toggle = root.querySelector<HTMLButtonElement>("[data-hood-toggle]");
-  if (!panel || !toggle) return;
-  if (!panel.dataset.ready) {
-    panel.innerHTML = hoodMarkup;
-    panel.dataset.ready = "true";
-  }
+  const panel = root.querySelector<HTMLElement>("#os-hood-panel");
+  if (!toggle || !panel) return;
   if (!toggle.dataset.bound) {
     toggle.addEventListener("click", () => {
       const open = panel.hasAttribute("hidden");
@@ -50,15 +46,16 @@ export function prepareHood(root: HTMLElement) {
 }
 
 function wireHood(root: HTMLElement, client: ProfileClient, refetch: () => Promise<void>) {
-  const panel = root.querySelector<HTMLElement>("#os-hood");
+  const hood = root.querySelector<HTMLElement>("#os-hood");
+  const panel = root.querySelector<HTMLElement>("#os-hood-panel");
   const toggle = root.querySelector<HTMLButtonElement>("[data-hood-toggle]");
-  if (!panel || !toggle) return;
+  if (!hood || !panel || !toggle) return;
   prepareHood(root);
-  paintHood(panel, client, client.last);
-  if (panel.dataset.wired) return;
-  panel.dataset.wired = "true";
+  paintHood(root, client, client.last);
+  if (hood.dataset.wired) return;
+  hood.dataset.wired = "true";
 
-  panel.addEventListener("change", async (event) => {
+  hood.addEventListener("change", async (event) => {
     const target = event.target;
     if (!(target instanceof HTMLInputElement) || !target.dataset.fault) return;
     const key = target.dataset.fault as "outage" | "slow" | "killSwitch";

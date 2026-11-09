@@ -1,4 +1,4 @@
-﻿import { expect, test } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test("injected outage keeps the default recommended row", async ({ page }) => {
   await page.goto("/projects/catalog");
@@ -10,8 +10,12 @@ test("injected outage keeps the default recommended row", async ({ page }) => {
   const consent = page.getByRole("button", { name: "Reject" });
   if (await consent.isVisible()) await consent.click();
 
-  await page.getByRole("button", { name: "Under the hood" }).click();
-  await expect(page.locator("#os-hood")).toBeVisible();
+  const toggle = page.getByRole("button", { name: /Under the hood/i });
+  await expect(toggle).toBeVisible();
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  await expect(page.locator("#os-hood-panel")).toBeVisible();
   await page.locator('[data-fault="outage"]').check();
 
   await expect(page.locator("[data-hood-fallback]")).toHaveText(/outage/i, { timeout: 10_000 });

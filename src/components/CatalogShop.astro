@@ -1,14 +1,15 @@
 ---
 import "../styles/catalog.css";
+import CatalogHood from "./CatalogHood.astro";
 import CatalogBar from "./CatalogBar.astro";
 import CatalogConsent from "./CatalogConsent.astro";
 import { initialBrowseHtml, recommendedSlotHtml } from "../scripts/catalog-html";
 ---
 
 <section class="os" id="open-stock" aria-label="Searchable Shop catalog">
+  <CatalogHood />
   <CatalogBar />
   <div id="os-recommended-slot" set:html={recommendedSlotHtml()} />
-  <aside id="os-hood" class="os-hood" hidden></aside>
   <div id="os-stage" set:html={initialBrowseHtml()} />
   <CatalogConsent />
 </section>
