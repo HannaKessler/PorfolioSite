@@ -10,7 +10,7 @@ test("injected outage keeps the default recommended row", async ({ page }) => {
   const consent = page.getByRole("button", { name: "Reject" });
   if (await consent.isVisible()) await consent.click();
 
-  const toggle = page.getByRole("button", { name: /Under the hood/i });
+  const toggle = page.getByRole("button", { name: "Under the Hood" });
   await expect(toggle).toBeVisible();
   await expect(toggle).toHaveAttribute("aria-expanded", "false");
   await toggle.click();
