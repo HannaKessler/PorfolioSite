@@ -6,6 +6,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +52,35 @@ public class Indexer {
                 products.add(product);
             }
             skip += batch.length();
+        }
+
+        Path extrasPath;
+        if (args.length > 1) {
+            extrasPath = Path.of(args[1]);
+        } else {
+            extrasPath = Path.of("extra-products.json");
+            if (!Files.isRegularFile(extrasPath)) {
+                extrasPath = Path.of("catalog", "extra-products.json");
+            }
+        }
+        if (Files.isRegularFile(extrasPath)) {
+            String extrasBody = Files.readString(extrasPath, StandardCharsets.UTF_8);
+            JSONObject extrasRoot = new JSONObject(extrasBody);
+            JSONArray extras = extrasRoot.getJSONArray("products");
+            for (int i = 0; i < extras.length(); i++) {
+                JSONObject product = extras.getJSONObject(i);
+                String slug = product.optString("category", "");
+                if (!product.has("categoryName") || product.isNull("categoryName") || product.optString("categoryName").isEmpty()) {
+                    product.put("categoryName", categoryNames.optString(slug, slug));
+                }
+                if (product.isNull("brand")) {
+                    product.put("brand", "");
+                }
+                products.add(product);
+            }
+            System.out.println("loaded " + extras.length() + " extra products from " + extrasPath);
+        } else {
+            System.out.println("no extra-products.json found; indexing DummyJSON only");
         }
 
         if (products.isEmpty()) {

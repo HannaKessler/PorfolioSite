@@ -1,0 +1,44 @@
+# Image credits
+
+All photos below are licensed CC0 or Public Domain Mark. Product titles, brands, prices, and reviews are fictional mock catalog data for Hanna Kessler's Searchable Shop portfolio demo.
+
+- **Product 1000** (Porcelain Plate with Poppies and Insects): [Floral ceramic plate. Original Minneapolis](https://www.rawpixel.com/image/8627342/photo-image-flower-art-vintage) — creator: not listed; license: CC0 1.0; source host: rawpixel
+- **Product 1001** (Blue Floral Rimmed Porcelain Plate): [Blue ceramic plate. Original Minneapolis](https://www.rawpixel.com/image/8627676/photo-image-art-vintage-public-domain) — creator: not listed; license: CC0 1.0; source host: rawpixel
+- **Product 1002** (Blue and White Stag Motif Porcelain Plate): [Elegant classical ceramic plate](https://www.rawpixel.com/image/12851355/box) — creator: themet; license: CC0 1.0; source host: rawpixel
+- **Product 1003** (Star-Patterned Armorial Ceramic Plate): [Intricate ceramic plate design](https://www.rawpixel.com/image/12491663/dish) — creator: themet; license: CC0 1.0; source host: rawpixel
+- **Product 1004** (Amber Glazed Plate with Gold Rings): [Rustic ceramic plate with patterns](https://www.rawpixel.com/image/10235644/bowl) — creator: themet; license: CC0 1.0; source host: rawpixel
+- **Product 1005** (Orange and Blue Marbled Ceramic Tankard): [Colorful ceramic mug with patterns](https://www.rawpixel.com/image/9008999/tankard) — creator: artinstitutechicago; license: CC0 1.0; source host: rawpixel
+- **Product 1006** (Two-Tone Stoneware Tankard with Pewter Lid): [Vintage ceramic beer stein](https://www.rawpixel.com/image/11801271/mug) — creator: lacma; license: CC0 1.0; source host: rawpixel
+- **Product 1007** (Green Upholstered Armchair with Gilt Frame): [Elegant vintage wooden chair design](https://www.rawpixel.com/image/14248467/armchair) — creator: thegetty; license: CC0 1.0; source host: rawpixel
+- **Product 1008** (Tilt-Top Mahogany Candlestand): [Candlestand by Unidentified Maker](https://www.rawpixel.com/image/9265888/candlestand-unidentified-maker) — creator: barnesfoundation; license: CC0 1.0; source host: rawpixel
+- **Product 1009** (Turned Wood Pedestal Stand): [Candlestand by Unidentified Maker](https://www.rawpixel.com/image/9265989/candlestand-unidentified-maker) — creator: barnesfoundation; license: CC0 1.0; source host: rawpixel
+- **Product 1010** (Blue and White Plum Blossom Porcelain Jar): [Blue ceramic vase. Original Minneapolis](https://www.rawpixel.com/image/8627212/photo-image-art-vintage-public-domain) — creator: not listed; license: CC0 1.0; source host: rawpixel
+- **Product 1011** (Black Glazed Stoneware Storage Jar): [Ancient black ceramic vase artifact](https://www.rawpixel.com/image/12491765/bowl) — creator: themet; license: CC0 1.0; source host: rawpixel
+- **Product 1012** (Striped Teardrop Ceramic Bottle Vase): [Elegant striped ceramic vase](https://www.rawpixel.com/image/12491743/bottle) — creator: themet; license: CC0 1.0; source host: rawpixel
+- **Product 1013** (Cream Zigzag Pottery Vase with Lugs): [Ancient ceramic vase with handles](https://www.rawpixel.com/image/14260988/alabastron) — creator: thegetty; license: CC0 1.0; source host: rawpixel
+- **Product 1014** (Red Santa Claus Tealight Holder): [Santa Christmas](https://stocksnap.io/photo/santa-christmas-SIINMUDKJB) — creator: Ylanite Koppens; license: CC0 1.0; source host: stocksnap
+- **Product 1015** (Ornate Gilt Oval Picture Frame): [Gold picture frame](https://www.rawpixel.com/image/5903803/gold-picture-frame-free-public-domain-cc0-photo) — creator: not listed; license: CC0 1.0; source host: rawpixel
+- **Product 1016** (Carved Giltwood Rectangular Frame): [Picture Frame (c. 1650 -](https://www.rawpixel.com/image/13743530/picture-frame-c-1650-1660-anonymous) — creator: rijksmuseum; license: CC0 1.0; source host: rawpixel
+- **Product 1017** (Folded Cream Silk Ribbon): [Lint van crèmekleurig gaas van](https://www.rawpixel.com/image/13747235/image-public-domain-gray-background-knife) — creator: rijksmuseum; license: CC0 1.0; source host: rawpixel
+- **Product 1018** (Bronze Long-Neck Bottle Vase): [Glass perfume bottle](https://www.rawpixel.com/image/8364733/glass-perfume-bottle) — creator: themet; license: CC0 1.0; source host: rawpixel
+- **Product 1019** (Spiked Earthenware Lidded Jar): [Perfume Bottle Design Five Horizontally](https://www.rawpixel.com/image/8552018/perfume-bottle-with-design-five-horizontally-applied-trails-with-knobs) — creator: not listed; license: CC0 1.0; source host: rawpixel
+- **Product 1020** (Worn Leather-Bound Antique Book): [Women and heels](https://www.rawpixel.com/image/8734504/women-and-heels) — creator: usbotschaftberlin; license: CC0 1.0; source host: rawpixel
+- **Product 1021** (Tooled Leather and Hide Document Box): [Free woman black high heels](https://www.rawpixel.com/image/5921041/photo-image-public-domain-black-people) — creator: not listed; license: CC0 1.0; source host: rawpixel
+- **Product 1022** (Space Gray Tablet with White Stylus): [Tablet Computer](https://stocksnap.io/photo/tablet-computer-KCEVT4PCQ1) — creator: Birch Landing Home; license: CC0 1.0; source host: stocksnap
+- **Product 1023** (Mint Wired On-Ear Headphones): [Headphones Music](https://stocksnap.io/photo/headphones-music-1IXTRXOWOE) — creator: Icons8 team; license: CC0 1.0; source host: stocksnap
+- **Product 1024** (Knurled Dumbbell Handle and Weight Plate): [Weight lifting dumbbells](https://www.rawpixel.com/image/5912068/image-public-domain-free-fitness) — creator: not listed; license: CC0 1.0; source host: rawpixel
+- **Product 1025** (Red-Stitched Leather Baseball): [Free baseball black fabric image](https://www.rawpixel.com/image/5922332/photo-image-public-domain-green-black) — creator: not listed; license: CC0 1.0; source host: rawpixel
+- **Product 1026** (Fluffy Angled Makeup Brush): [Makeup Brush](https://stocksnap.io/photo/makeup-brush-IJSBS0EFPO) — creator: Pawel Kadysz; license: CC0 1.0; source host: stocksnap
+- **Product 1027** (Color-Block Makeup Pouch with Brushes): [Free makeup brush cosmetics bag](https://www.rawpixel.com/image/5916104/image-background-public-domain-brush) — creator: not listed; license: CC0 1.0; source host: rawpixel
+- **Product 1028** (Stacked Honey Glycerin Soap Bars): [Soap Bath](https://stocksnap.io/photo/soap-bath-AULHEZDSCC) — creator: Healthy Living; license: CC0 1.0; source host: stocksnap
+- **Product 1029** (Ribbon-Wrapped Guest Soap Favors): [Bars handmade soap platter](https://www.rawpixel.com/image/3290012/free-photo-image-birthday-cake-brie) — creator: not listed; license: CC0 1.0; source host: rawpixel
+- **Product 1030** (Cobalt Blue Faceted Glass Bottle): [Perfume bottle. Original Minneapolis Institute](https://www.rawpixel.com/image/7656646/photo-image-vintage-art-public-domain) — creator: not listed; license: CC0 1.0; source host: rawpixel
+- **Product 1031** (Black Leather Lace-Up Soft Shoe): [Dress Legs](https://stocksnap.io/photo/dress-legs-13E557834C) — creator: Morgan Sessions; license: CC0 1.0; source host: stocksnap
+- **Product 1032** (Green Brocade Vintage Heeled Shoes): [Black leather shoes ground](https://www.rawpixel.com/image/6027122/photo-image-public-domain-fashion-free) — creator: not listed; license: CC0 1.0; source host: rawpixel
+- **Product 1033** (Black Textured Stiletto Pumps): [Ancient worn leather shoe artifact](https://www.rawpixel.com/image/9036927/shoe) — creator: artinstitutechicago; license: CC0 1.0; source host: rawpixel
+- **Product 1034** (Yellow Suede Wedge Sandals): [Pair High-Heeled Women’s Shoes (c](https://www.rawpixel.com/image/13750784/pair-high-heeled-womens-shoes-c-1690-1710-anonymous) — creator: rijksmuseum; license: CC0 1.0; source host: rawpixel
+- **Product 1035** (Blue Canvas Weekender with Leather Trim): [Four women wearing assorted heels](https://www.rawpixel.com/image/3305282/free-photo-image-high-heel-footwear-ankle) — creator: not listed; license: CC0 1.0; source host: rawpixel
+- **Product 1036** (Brown Leather Weekend Duffel): [handmade ladies leather handbag designed](https://www.rawpixel.com/image/8811951/photo-image-public-domain-person-fashion) — creator: not listed; license: CC0 1.0; source host: rawpixel
+- **Product 1037** (Yellow Wayfarer Sunglasses): [handmade ladies leather handbag designed](https://www.rawpixel.com/image/8811956/photo-image-public-domain-person-fashion) — creator: not listed; license: CC0 1.0; source host: rawpixel
+- **Product 1038** (Translucent Square Eyeglasses): [Sunglasses Jeans](https://stocksnap.io/photo/sunglasses-jeans-JMGEUCEUJY) — creator: Ylanite Koppens; license: CC0 1.0; source host: stocksnap
+- **Product 1039** (Iridescent Teardrop Statement Necklace): [Sunglasses Summer](https://stocksnap.io/photo/sunglasses-summer-EVAARS1W4M) — creator: Jakub Rostkowski; license: CC0 1.0; source host: stocksnap

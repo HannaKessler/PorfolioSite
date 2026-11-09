@@ -1,0 +1,2463 @@
+{
+  "products": [
+    {
+      "id": 1000,
+      "title": "Porcelain Plate with Poppies and Insects",
+      "description": "White porcelain plate with a hand-painted spray of red poppies, green leaves, and small insects, framed by a cobalt-blue rim.",
+      "category": "kitchen-accessories",
+      "categoryName": "Kitchen Accessories",
+      "price": 32.0,
+      "discountPercentage": 13.2,
+      "rating": 4.45,
+      "stock": 114,
+      "tags": [
+        "kitchen accessories",
+        "plate",
+        "porcelain",
+        "floral"
+      ],
+      "brand": "Pebble & Pan",
+      "sku": "KIT-PEB-1000",
+      "weight": 10,
+      "dimensions": {
+        "width": 19.92,
+        "height": 12.51,
+        "depth": 33.74
+      },
+      "warrantyInformation": "2 year warranty",
+      "shippingInformation": "Ships in 3-5 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "A practical choice.",
+          "date": "2025-04-20T10:00:00.000Z",
+          "reviewerName": "Zoe Harper",
+          "reviewerEmail": "zoe.harper@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Would buy again.",
+          "date": "2025-06-02T10:00:00.000Z",
+          "reviewerName": "Owen Diaz",
+          "reviewerEmail": "owen.diaz@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Looks good in person.",
+          "date": "2025-11-24T10:00:00.000Z",
+          "reviewerName": "Jonah Blake",
+          "reviewerEmail": "jonah.blake@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001000"
+      },
+      "images": [
+        "/images/catalog-extra/1000.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1000-thumb.webp"
+    },
+    {
+      "id": 1001,
+      "title": "Blue Floral Rimmed Porcelain Plate",
+      "description": "White porcelain dinner plate encircled by a dense blue floral and scroll border.",
+      "category": "kitchen-accessories",
+      "categoryName": "Kitchen Accessories",
+      "price": 28.5,
+      "discountPercentage": 4.85,
+      "rating": 4.7,
+      "stock": 125,
+      "tags": [
+        "kitchen accessories",
+        "plate",
+        "porcelain",
+        "blue and white"
+      ],
+      "brand": "Pebble & Pan",
+      "sku": "KIT-PEB-1001",
+      "weight": 7,
+      "dimensions": {
+        "width": 7.92,
+        "height": 17.45,
+        "depth": 35.84
+      },
+      "warrantyInformation": "3 months warranty",
+      "shippingInformation": "Ships in 1 week",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Works well so far.",
+          "date": "2025-01-13T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Solid everyday pick.",
+          "date": "2025-01-14T10:00:00.000Z",
+          "reviewerName": "Felix Grant",
+          "reviewerEmail": "felix.grant@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "A practical choice.",
+          "date": "2025-06-13T10:00:00.000Z",
+          "reviewerName": "Ava Brooks",
+          "reviewerEmail": "ava.brooks@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "60 days return policy",
+      "minimumOrderQuantity": 2,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001001"
+      },
+      "images": [
+        "/images/catalog-extra/1001.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1001-thumb.webp"
+    },
+    {
+      "id": 1002,
+      "title": "Blue and White Stag Motif Porcelain Plate",
+      "description": "Blue-and-white porcelain plate with a leaping stag at the center, surrounded by floral roundels and a geometric rim.",
+      "category": "kitchen-accessories",
+      "categoryName": "Kitchen Accessories",
+      "price": 42.0,
+      "discountPercentage": 6.9,
+      "rating": 3.98,
+      "stock": 135,
+      "tags": [
+        "kitchen accessories",
+        "plate",
+        "porcelain",
+        "blue and white"
+      ],
+      "brand": "Cedar & Clove",
+      "sku": "KIT-CED-1002",
+      "weight": 10,
+      "dimensions": {
+        "width": 12.83,
+        "height": 24.26,
+        "depth": 13.48
+      },
+      "warrantyInformation": "Lifetime warranty",
+      "shippingInformation": "Ships in 1 week",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Works well so far.",
+          "date": "2025-10-25T10:00:00.000Z",
+          "reviewerName": "Liam Chen",
+          "reviewerEmail": "liam.chen@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "A practical choice.",
+          "date": "2025-08-01T10:00:00.000Z",
+          "reviewerName": "Clara Voss",
+          "reviewerEmail": "clara.voss@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Works well so far.",
+          "date": "2025-10-23T10:00:00.000Z",
+          "reviewerName": "Nina Volkov",
+          "reviewerEmail": "nina.volkov@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001002"
+      },
+      "images": [
+        "/images/catalog-extra/1002.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1002-thumb.webp"
+    },
+    {
+      "id": 1003,
+      "title": "Star-Patterned Armorial Ceramic Plate",
+      "description": "Ceramic plate covered in a blue star lattice, with a triangular armorial shield at the center and a densely patterned rim.",
+      "category": "kitchen-accessories",
+      "categoryName": "Kitchen Accessories",
+      "price": 48.0,
+      "discountPercentage": 12.35,
+      "rating": 4.15,
+      "stock": 89,
+      "tags": [
+        "kitchen accessories",
+        "plate",
+        "ceramic",
+        "patterned"
+      ],
+      "brand": "Pebble & Pan",
+      "sku": "KIT-PEB-1003",
+      "weight": 1,
+      "dimensions": {
+        "width": 37.35,
+        "height": 9.45,
+        "depth": 35.27
+      },
+      "warrantyInformation": "1 year warranty",
+      "shippingInformation": "Ships in 1 week",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Great quality for the price.",
+          "date": "2025-11-13T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Great quality for the price.",
+          "date": "2025-05-01T10:00:00.000Z",
+          "reviewerName": "Liam Chen",
+          "reviewerEmail": "liam.chen@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Better than expected.",
+          "date": "2025-01-11T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "7 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001003"
+      },
+      "images": [
+        "/images/catalog-extra/1003.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1003-thumb.webp"
+    },
+    {
+      "id": 1004,
+      "title": "Amber Glazed Plate with Gold Rings",
+      "description": "Amber-glazed ceramic plate with concentric gold rings and a radiating medallion at the center.",
+      "category": "kitchen-accessories",
+      "categoryName": "Kitchen Accessories",
+      "price": 36.5,
+      "discountPercentage": 9.33,
+      "rating": 4.16,
+      "stock": 138,
+      "tags": [
+        "kitchen accessories",
+        "plate",
+        "ceramic",
+        "amber glaze"
+      ],
+      "brand": "Nestline Kitchen",
+      "sku": "KIT-NES-1004",
+      "weight": 8,
+      "dimensions": {
+        "width": 39.72,
+        "height": 29.33,
+        "depth": 18.69
+      },
+      "warrantyInformation": "3 months warranty",
+      "shippingInformation": "Ships in 1 week",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Solid everyday pick.",
+          "date": "2025-01-09T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Would buy again.",
+          "date": "2025-05-17T10:00:00.000Z",
+          "reviewerName": "Jonah Blake",
+          "reviewerEmail": "jonah.blake@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Happy with this.",
+          "date": "2025-02-20T10:00:00.000Z",
+          "reviewerName": "Caleb Frost",
+          "reviewerEmail": "caleb.frost@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "90 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001004"
+      },
+      "images": [
+        "/images/catalog-extra/1004.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1004-thumb.webp"
+    },
+    {
+      "id": 1005,
+      "title": "Orange and Blue Marbled Ceramic Tankard",
+      "description": "Cylindrical ceramic tankard with orange, blue, and cream marbled decoration and a green patterned rim.",
+      "category": "kitchen-accessories",
+      "categoryName": "Kitchen Accessories",
+      "price": 27.0,
+      "discountPercentage": 7.56,
+      "rating": 4.0,
+      "stock": 0,
+      "tags": [
+        "kitchen accessories",
+        "mug",
+        "tankard",
+        "ceramic"
+      ],
+      "brand": "Pebble & Pan",
+      "sku": "KIT-PEB-1005",
+      "weight": 4,
+      "dimensions": {
+        "width": 13.19,
+        "height": 31.4,
+        "depth": 25.1
+      },
+      "warrantyInformation": "6 months warranty",
+      "shippingInformation": "Ships in 3-5 business days",
+      "availabilityStatus": "Out of Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Not fancy, but dependable.",
+          "date": "2025-02-13T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Not fancy, but dependable.",
+          "date": "2025-09-21T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Great quality for the price.",
+          "date": "2025-04-20T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 3,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001005"
+      },
+      "images": [
+        "/images/catalog-extra/1005.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1005-thumb.webp"
+    },
+    {
+      "id": 1006,
+      "title": "Two-Tone Stoneware Tankard with Pewter Lid",
+      "description": "Stoneware tankard glazed brown above a cream body, fitted with a shaped handle and a pewter lid.",
+      "category": "kitchen-accessories",
+      "categoryName": "Kitchen Accessories",
+      "price": 54.0,
+      "discountPercentage": 4.13,
+      "rating": 3.59,
+      "stock": 134,
+      "tags": [
+        "kitchen accessories",
+        "tankard",
+        "stoneware",
+        "pewter"
+      ],
+      "brand": "Nestline Kitchen",
+      "sku": "KIT-NES-1006",
+      "weight": 6,
+      "dimensions": {
+        "width": 11.47,
+        "height": 33.17,
+        "depth": 19.12
+      },
+      "warrantyInformation": "6 months warranty",
+      "shippingInformation": "Ships in 1-2 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Not fancy, but dependable.",
+          "date": "2025-04-07T10:00:00.000Z",
+          "reviewerName": "Maya Ortiz",
+          "reviewerEmail": "maya.ortiz@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Works well so far.",
+          "date": "2025-11-05T10:00:00.000Z",
+          "reviewerName": "Nina Volkov",
+          "reviewerEmail": "nina.volkov@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Not fancy, but dependable.",
+          "date": "2025-01-04T10:00:00.000Z",
+          "reviewerName": "Noah Patel",
+          "reviewerEmail": "noah.patel@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "90 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001006"
+      },
+      "images": [
+        "/images/catalog-extra/1006.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1006-thumb.webp"
+    },
+    {
+      "id": 1007,
+      "title": "Green Upholstered Armchair with Gilt Frame",
+      "description": "Armchair with an oval green upholstered back and seat on a carved, gilt wood frame.",
+      "category": "furniture",
+      "categoryName": "Furniture",
+      "price": 890.0,
+      "discountPercentage": 11.36,
+      "rating": 4.34,
+      "stock": 19,
+      "tags": [
+        "furniture",
+        "armchair",
+        "upholstered"
+      ],
+      "brand": "Northloom",
+      "sku": "FUR-NOR-1007",
+      "weight": 1,
+      "dimensions": {
+        "width": 38.35,
+        "height": 38.49,
+        "depth": 39.03
+      },
+      "warrantyInformation": "3 year warranty",
+      "shippingInformation": "Ships in 3-5 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Happy with this.",
+          "date": "2025-12-04T10:00:00.000Z",
+          "reviewerName": "Noah Patel",
+          "reviewerEmail": "noah.patel@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Not fancy, but dependable.",
+          "date": "2025-10-26T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Great quality for the price.",
+          "date": "2025-04-21T10:00:00.000Z",
+          "reviewerName": "Ava Brooks",
+          "reviewerEmail": "ava.brooks@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001007"
+      },
+      "images": [
+        "/images/catalog-extra/1007.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1007-thumb.webp"
+    },
+    {
+      "id": 1008,
+      "title": "Tilt-Top Mahogany Candlestand",
+      "description": "Mahogany candlestand with a circular tilt top, turned pedestal, and tripod cabriole legs.",
+      "category": "furniture",
+      "categoryName": "Furniture",
+      "price": 420.0,
+      "discountPercentage": 9.97,
+      "rating": 4.57,
+      "stock": 4,
+      "tags": [
+        "furniture",
+        "candlestand",
+        "mahogany",
+        "side table"
+      ],
+      "brand": "Oakline Studio",
+      "sku": "FUR-OAK-1008",
+      "weight": 3,
+      "dimensions": {
+        "width": 7.2,
+        "height": 33.44,
+        "depth": 25.34
+      },
+      "warrantyInformation": "3 months warranty",
+      "shippingInformation": "Ships in 3-5 business days",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Works well so far.",
+          "date": "2025-08-04T10:00:00.000Z",
+          "reviewerName": "Maya Ortiz",
+          "reviewerEmail": "maya.ortiz@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Solid everyday pick.",
+          "date": "2025-01-18T10:00:00.000Z",
+          "reviewerName": "Liam Chen",
+          "reviewerEmail": "liam.chen@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Looks good in person.",
+          "date": "2025-12-08T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "No return policy",
+      "minimumOrderQuantity": 2,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001008"
+      },
+      "images": [
+        "/images/catalog-extra/1008.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1008-thumb.webp"
+    },
+    {
+      "id": 1009,
+      "title": "Turned Wood Pedestal Stand",
+      "description": "Dark turned-wood pedestal stand with a round top, a small side hook, and a four-board base.",
+      "category": "furniture",
+      "categoryName": "Furniture",
+      "price": 245.0,
+      "discountPercentage": 13.45,
+      "rating": 4.66,
+      "stock": 0,
+      "tags": [
+        "furniture",
+        "pedestal",
+        "stand",
+        "wood"
+      ],
+      "brand": "Birch & Beam",
+      "sku": "FUR-BIR-1009",
+      "weight": 8,
+      "dimensions": {
+        "width": 12.88,
+        "height": 18.32,
+        "depth": 7.44
+      },
+      "warrantyInformation": "2 year warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "Out of Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Exactly as described.",
+          "date": "2025-03-11T10:00:00.000Z",
+          "reviewerName": "Caleb Frost",
+          "reviewerEmail": "caleb.frost@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Packaging was careful.",
+          "date": "2025-05-04T10:00:00.000Z",
+          "reviewerName": "Zoe Harper",
+          "reviewerEmail": "zoe.harper@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Works well so far.",
+          "date": "2025-04-12T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 2,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001009"
+      },
+      "images": [
+        "/images/catalog-extra/1009.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1009-thumb.webp"
+    },
+    {
+      "id": 1010,
+      "title": "Blue and White Plum Blossom Porcelain Jar",
+      "description": "Rounded porcelain jar painted with white plum blossoms on a deep cobalt-blue ground.",
+      "category": "home-decoration",
+      "categoryName": "Home Decoration",
+      "price": 78.0,
+      "discountPercentage": 14.86,
+      "rating": 4.75,
+      "stock": 111,
+      "tags": [
+        "home decoration",
+        "vase",
+        "porcelain",
+        "blue and white"
+      ],
+      "brand": "Softgauge",
+      "sku": "HOM-SOF-1010",
+      "weight": 1,
+      "dimensions": {
+        "width": 5.18,
+        "height": 34.01,
+        "depth": 35.45
+      },
+      "warrantyInformation": "2 year warranty",
+      "shippingInformation": "Ships in 3-5 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Better than expected.",
+          "date": "2025-08-04T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Not fancy, but dependable.",
+          "date": "2025-04-07T10:00:00.000Z",
+          "reviewerName": "Ava Brooks",
+          "reviewerEmail": "ava.brooks@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Works well so far.",
+          "date": "2025-10-14T10:00:00.000Z",
+          "reviewerName": "Theo Park",
+          "reviewerEmail": "theo.park@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "7 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001010"
+      },
+      "images": [
+        "/images/catalog-extra/1010.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1010-thumb.webp"
+    },
+    {
+      "id": 1011,
+      "title": "Black Glazed Stoneware Storage Jar",
+      "description": "Tall, dark-glazed stoneware jar with a wide mouth and a softly rounded shoulder.",
+      "category": "home-decoration",
+      "categoryName": "Home Decoration",
+      "price": 64.0,
+      "discountPercentage": 3.89,
+      "rating": 4.92,
+      "stock": 101,
+      "tags": [
+        "home decoration",
+        "jar",
+        "stoneware",
+        "black glaze"
+      ],
+      "brand": "Clay & Cord",
+      "sku": "HOM-CLA-1011",
+      "weight": 1,
+      "dimensions": {
+        "width": 24.85,
+        "height": 15.61,
+        "depth": 27.85
+      },
+      "warrantyInformation": "3 months warranty",
+      "shippingInformation": "Ships overnight",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Great quality for the price.",
+          "date": "2025-01-01T10:00:00.000Z",
+          "reviewerName": "Theo Park",
+          "reviewerEmail": "theo.park@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Better than expected.",
+          "date": "2025-02-08T10:00:00.000Z",
+          "reviewerName": "Owen Diaz",
+          "reviewerEmail": "owen.diaz@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Exactly as described.",
+          "date": "2025-12-18T10:00:00.000Z",
+          "reviewerName": "Owen Diaz",
+          "reviewerEmail": "owen.diaz@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "90 days return policy",
+      "minimumOrderQuantity": 3,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001011"
+      },
+      "images": [
+        "/images/catalog-extra/1011.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1011-thumb.webp"
+    },
+    {
+      "id": 1012,
+      "title": "Striped Teardrop Ceramic Bottle Vase",
+      "description": "Teardrop-shaped ceramic bottle vase banded in brown, tan, and teal stripes.",
+      "category": "home-decoration",
+      "categoryName": "Home Decoration",
+      "price": 48.0,
+      "discountPercentage": 15.5,
+      "rating": 4.2,
+      "stock": 42,
+      "tags": [
+        "home decoration",
+        "vase",
+        "ceramic",
+        "striped"
+      ],
+      "brand": "Quiet Object",
+      "sku": "HOM-QUI-1012",
+      "weight": 2,
+      "dimensions": {
+        "width": 16.81,
+        "height": 14.24,
+        "depth": 24.9
+      },
+      "warrantyInformation": "3 months warranty",
+      "shippingInformation": "Ships in 1 week",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Solid everyday pick.",
+          "date": "2025-03-01T10:00:00.000Z",
+          "reviewerName": "Liam Chen",
+          "reviewerEmail": "liam.chen@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Exactly as described.",
+          "date": "2025-08-26T10:00:00.000Z",
+          "reviewerName": "Ava Brooks",
+          "reviewerEmail": "ava.brooks@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Exactly as described.",
+          "date": "2025-04-07T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "60 days return policy",
+      "minimumOrderQuantity": 2,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001012"
+      },
+      "images": [
+        "/images/catalog-extra/1012.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1012-thumb.webp"
+    },
+    {
+      "id": 1013,
+      "title": "Cream Zigzag Pottery Vase with Lugs",
+      "description": "Tall cream pottery vase with an incised zigzag pattern and small lug handles on the shoulder.",
+      "category": "home-decoration",
+      "categoryName": "Home Decoration",
+      "price": 56.0,
+      "discountPercentage": 6.1,
+      "rating": 4.65,
+      "stock": 0,
+      "tags": [
+        "home decoration",
+        "vase",
+        "pottery"
+      ],
+      "brand": "Quiet Object",
+      "sku": "HOM-QUI-1013",
+      "weight": 2,
+      "dimensions": {
+        "width": 8.92,
+        "height": 23.04,
+        "depth": 8.56
+      },
+      "warrantyInformation": "3 year warranty",
+      "shippingInformation": "Ships in 1 week",
+      "availabilityStatus": "Out of Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Better than expected.",
+          "date": "2025-09-21T10:00:00.000Z",
+          "reviewerName": "Sofia Mendes",
+          "reviewerEmail": "sofia.mendes@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Great quality for the price.",
+          "date": "2025-11-07T10:00:00.000Z",
+          "reviewerName": "Ava Brooks",
+          "reviewerEmail": "ava.brooks@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Would buy again.",
+          "date": "2025-04-27T10:00:00.000Z",
+          "reviewerName": "Owen Diaz",
+          "reviewerEmail": "owen.diaz@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "No return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001013"
+      },
+      "images": [
+        "/images/catalog-extra/1013.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1013-thumb.webp"
+    },
+    {
+      "id": 1014,
+      "title": "Red Santa Claus Tealight Holder",
+      "description": "Red ceramic Santa Claus figure with a hollow, cut-out coat that holds a lit tealight.",
+      "category": "home-decoration",
+      "categoryName": "Home Decoration",
+      "price": 18.0,
+      "discountPercentage": 12.81,
+      "rating": 4.37,
+      "stock": 150,
+      "tags": [
+        "home decoration",
+        "candle holder",
+        "holiday",
+        "santa"
+      ],
+      "brand": "Clay & Cord",
+      "sku": "HOM-CLA-1014",
+      "weight": 4,
+      "dimensions": {
+        "width": 22.02,
+        "height": 9.08,
+        "depth": 9.66
+      },
+      "warrantyInformation": "3 months warranty",
+      "shippingInformation": "Ships in 1-2 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "A practical choice.",
+          "date": "2025-04-13T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Exactly as described.",
+          "date": "2025-12-08T10:00:00.000Z",
+          "reviewerName": "Caleb Frost",
+          "reviewerEmail": "caleb.frost@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Works well so far.",
+          "date": "2025-12-26T10:00:00.000Z",
+          "reviewerName": "Jonah Blake",
+          "reviewerEmail": "jonah.blake@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "60 days return policy",
+      "minimumOrderQuantity": 2,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001014"
+      },
+      "images": [
+        "/images/catalog-extra/1014.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1014-thumb.webp"
+    },
+    {
+      "id": 1015,
+      "title": "Ornate Gilt Oval Picture Frame",
+      "description": "Empty oval picture frame with an ornate gilt molded border.",
+      "category": "home-decoration",
+      "categoryName": "Home Decoration",
+      "price": 52.0,
+      "discountPercentage": 2.33,
+      "rating": 4.37,
+      "stock": 120,
+      "tags": [
+        "home decoration",
+        "picture frame",
+        "gilt",
+        "oval"
+      ],
+      "brand": "Atelier Hearth",
+      "sku": "HOM-ATE-1015",
+      "weight": 4,
+      "dimensions": {
+        "width": 32.58,
+        "height": 35.98,
+        "depth": 7.36
+      },
+      "warrantyInformation": "1 week warranty",
+      "shippingInformation": "Ships in 1-2 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Nice finish.",
+          "date": "2025-02-02T10:00:00.000Z",
+          "reviewerName": "Eli Turner",
+          "reviewerEmail": "eli.turner@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Works well so far.",
+          "date": "2025-06-05T10:00:00.000Z",
+          "reviewerName": "Priya Nair",
+          "reviewerEmail": "priya.nair@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Packaging was careful.",
+          "date": "2025-11-26T10:00:00.000Z",
+          "reviewerName": "Sofia Mendes",
+          "reviewerEmail": "sofia.mendes@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "60 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001015"
+      },
+      "images": [
+        "/images/catalog-extra/1015.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1015-thumb.webp"
+    },
+    {
+      "id": 1016,
+      "title": "Carved Giltwood Rectangular Frame",
+      "description": "Rectangular giltwood frame deeply carved with scrolling, wave-like ornament.",
+      "category": "home-decoration",
+      "categoryName": "Home Decoration",
+      "price": 95.0,
+      "discountPercentage": 11.4,
+      "rating": 4.46,
+      "stock": 42,
+      "tags": [
+        "home decoration",
+        "picture frame",
+        "giltwood",
+        "carved"
+      ],
+      "brand": "Softgauge",
+      "sku": "HOM-SOF-1016",
+      "weight": 7,
+      "dimensions": {
+        "width": 34.14,
+        "height": 20.08,
+        "depth": 27.49
+      },
+      "warrantyInformation": "6 months warranty",
+      "shippingInformation": "Ships overnight",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "A practical choice.",
+          "date": "2025-08-16T10:00:00.000Z",
+          "reviewerName": "Ava Brooks",
+          "reviewerEmail": "ava.brooks@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Packaging was careful.",
+          "date": "2025-07-04T10:00:00.000Z",
+          "reviewerName": "Eli Turner",
+          "reviewerEmail": "eli.turner@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Better than expected.",
+          "date": "2025-06-02T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "60 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001016"
+      },
+      "images": [
+        "/images/catalog-extra/1016.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1016-thumb.webp"
+    },
+    {
+      "id": 1017,
+      "title": "Folded Cream Silk Ribbon",
+      "description": "A folded bolt of cream silk ribbon wrapped with a paper band marked 15 metres.",
+      "category": "home-decoration",
+      "categoryName": "Home Decoration",
+      "price": 9.5,
+      "discountPercentage": 10.5,
+      "rating": 4.52,
+      "stock": 143,
+      "tags": [
+        "home decoration",
+        "ribbon",
+        "silk"
+      ],
+      "brand": "Quiet Object",
+      "sku": "HOM-QUI-1017",
+      "weight": 5,
+      "dimensions": {
+        "width": 29.66,
+        "height": 13.36,
+        "depth": 14.47
+      },
+      "warrantyInformation": "1 month warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Great quality for the price.",
+          "date": "2025-12-11T10:00:00.000Z",
+          "reviewerName": "Caleb Frost",
+          "reviewerEmail": "caleb.frost@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Happy with this.",
+          "date": "2025-08-08T10:00:00.000Z",
+          "reviewerName": "Sofia Mendes",
+          "reviewerEmail": "sofia.mendes@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Nice finish.",
+          "date": "2025-08-17T10:00:00.000Z",
+          "reviewerName": "Caleb Frost",
+          "reviewerEmail": "caleb.frost@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "No return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001017"
+      },
+      "images": [
+        "/images/catalog-extra/1017.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1017-thumb.webp"
+    },
+    {
+      "id": 1018,
+      "title": "Bronze Long-Neck Bottle Vase",
+      "description": "Small bronze bottle vase with a bulbous base, long neck, and weathered patina.",
+      "category": "home-decoration",
+      "categoryName": "Home Decoration",
+      "price": 72.0,
+      "discountPercentage": 9.21,
+      "rating": 4.01,
+      "stock": 46,
+      "tags": [
+        "home decoration",
+        "vase",
+        "bronze"
+      ],
+      "brand": "Quiet Object",
+      "sku": "HOM-QUI-1018",
+      "weight": 6,
+      "dimensions": {
+        "width": 35.61,
+        "height": 29.41,
+        "depth": 13.06
+      },
+      "warrantyInformation": "1 month warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "A practical choice.",
+          "date": "2025-01-16T10:00:00.000Z",
+          "reviewerName": "Jonah Blake",
+          "reviewerEmail": "jonah.blake@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Packaging was careful.",
+          "date": "2025-07-28T10:00:00.000Z",
+          "reviewerName": "Caleb Frost",
+          "reviewerEmail": "caleb.frost@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Looks good in person.",
+          "date": "2025-02-11T10:00:00.000Z",
+          "reviewerName": "Felix Grant",
+          "reviewerEmail": "felix.grant@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "90 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001018"
+      },
+      "images": [
+        "/images/catalog-extra/1018.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1018-thumb.webp"
+    },
+    {
+      "id": 1019,
+      "title": "Spiked Earthenware Lidded Jar",
+      "description": "Round earthenware jar with a lid, covered in raised spike-like bosses.",
+      "category": "home-decoration",
+      "categoryName": "Home Decoration",
+      "price": 68.0,
+      "discountPercentage": 9.42,
+      "rating": 4.32,
+      "stock": 126,
+      "tags": [
+        "home decoration",
+        "jar",
+        "earthenware",
+        "pottery"
+      ],
+      "brand": "Clay & Cord",
+      "sku": "HOM-CLA-1019",
+      "weight": 7,
+      "dimensions": {
+        "width": 20.51,
+        "height": 37.59,
+        "depth": 28.93
+      },
+      "warrantyInformation": "3 months warranty",
+      "shippingInformation": "Ships overnight",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Exactly as described.",
+          "date": "2025-02-28T10:00:00.000Z",
+          "reviewerName": "Priya Nair",
+          "reviewerEmail": "priya.nair@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "A practical choice.",
+          "date": "2025-05-15T10:00:00.000Z",
+          "reviewerName": "Liam Chen",
+          "reviewerEmail": "liam.chen@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Would buy again.",
+          "date": "2025-01-25T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001019"
+      },
+      "images": [
+        "/images/catalog-extra/1019.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1019-thumb.webp"
+    },
+    {
+      "id": 1020,
+      "title": "Worn Leather-Bound Antique Book",
+      "description": "Thick antique book bound in heavily worn dark leather, standing upright.",
+      "category": "home-decoration",
+      "categoryName": "Home Decoration",
+      "price": 40.0,
+      "discountPercentage": 5.29,
+      "rating": 3.98,
+      "stock": 82,
+      "tags": [
+        "home decoration",
+        "book",
+        "leather",
+        "antique"
+      ],
+      "brand": "Quiet Object",
+      "sku": "HOM-QUI-1020",
+      "weight": 1,
+      "dimensions": {
+        "width": 28.34,
+        "height": 11.67,
+        "depth": 20.46
+      },
+      "warrantyInformation": "1 month warranty",
+      "shippingInformation": "Ships in 1 week",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 5,
+          "comment": "Great quality for the price.",
+          "date": "2025-05-27T10:00:00.000Z",
+          "reviewerName": "Jonah Blake",
+          "reviewerEmail": "jonah.blake@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Solid everyday pick.",
+          "date": "2025-01-04T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Looks good in person.",
+          "date": "2025-12-03T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "60 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001020"
+      },
+      "images": [
+        "/images/catalog-extra/1020.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1020-thumb.webp"
+    },
+    {
+      "id": 1021,
+      "title": "Tooled Leather and Hide Document Box",
+      "description": "Rectangular storage box with tooled leather borders, a hide panel, and a metal latch.",
+      "category": "home-decoration",
+      "categoryName": "Home Decoration",
+      "price": 85.0,
+      "discountPercentage": 15.93,
+      "rating": 4.63,
+      "stock": 104,
+      "tags": [
+        "home decoration",
+        "box",
+        "leather"
+      ],
+      "brand": "Lumen Nest",
+      "sku": "HOM-LUM-1021",
+      "weight": 6,
+      "dimensions": {
+        "width": 8.27,
+        "height": 21.41,
+        "depth": 29.49
+      },
+      "warrantyInformation": "3 months warranty",
+      "shippingInformation": "Ships in 1-2 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Works well so far.",
+          "date": "2025-07-05T10:00:00.000Z",
+          "reviewerName": "Theo Park",
+          "reviewerEmail": "theo.park@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Better than expected.",
+          "date": "2025-10-16T10:00:00.000Z",
+          "reviewerName": "Priya Nair",
+          "reviewerEmail": "priya.nair@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Happy with this.",
+          "date": "2025-12-24T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001021"
+      },
+      "images": [
+        "/images/catalog-extra/1021.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1021-thumb.webp"
+    },
+    {
+      "id": 1022,
+      "title": "Space Gray Tablet with White Stylus",
+      "description": "Space gray tablet with a black screen and circular home button, lying beside a white stylus.",
+      "category": "tablets",
+      "categoryName": "Tablets",
+      "price": 399.0,
+      "discountPercentage": 3.42,
+      "rating": 4.7,
+      "stock": 53,
+      "tags": [
+        "tablets",
+        "tablet",
+        "stylus"
+      ],
+      "brand": "Paperlight",
+      "sku": "TAB-PAP-1022",
+      "weight": 10,
+      "dimensions": {
+        "width": 33.14,
+        "height": 30.68,
+        "depth": 33.35
+      },
+      "warrantyInformation": "Lifetime warranty",
+      "shippingInformation": "Ships in 1 week",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 5,
+          "comment": "A practical choice.",
+          "date": "2025-11-20T10:00:00.000Z",
+          "reviewerName": "Sofia Mendes",
+          "reviewerEmail": "sofia.mendes@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Better than expected.",
+          "date": "2025-12-22T10:00:00.000Z",
+          "reviewerName": "Maya Ortiz",
+          "reviewerEmail": "maya.ortiz@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Would buy again.",
+          "date": "2025-01-14T10:00:00.000Z",
+          "reviewerName": "Maya Ortiz",
+          "reviewerEmail": "maya.ortiz@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "7 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001022"
+      },
+      "images": [
+        "/images/catalog-extra/1022.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1022-thumb.webp"
+    },
+    {
+      "id": 1023,
+      "title": "Mint Wired On-Ear Headphones",
+      "description": "Mint-green wired on-ear headphones photographed on a split mint-and-pink background.",
+      "category": "mobile-accessories",
+      "categoryName": "Mobile Accessories",
+      "price": 29.0,
+      "discountPercentage": 13.73,
+      "rating": 4.18,
+      "stock": 8,
+      "tags": [
+        "mobile accessories",
+        "headphones",
+        "on-ear",
+        "mint"
+      ],
+      "brand": "Amperset",
+      "sku": "MOB-AMP-1023",
+      "weight": 7,
+      "dimensions": {
+        "width": 24.89,
+        "height": 36.43,
+        "depth": 5.3
+      },
+      "warrantyInformation": "1 week warranty",
+      "shippingInformation": "Ships in 3-5 business days",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Would buy again.",
+          "date": "2025-01-27T10:00:00.000Z",
+          "reviewerName": "Liam Chen",
+          "reviewerEmail": "liam.chen@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Better than expected.",
+          "date": "2025-01-23T10:00:00.000Z",
+          "reviewerName": "Eli Turner",
+          "reviewerEmail": "eli.turner@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Not fancy, but dependable.",
+          "date": "2025-10-27T10:00:00.000Z",
+          "reviewerName": "Zoe Harper",
+          "reviewerEmail": "zoe.harper@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "60 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001023"
+      },
+      "images": [
+        "/images/catalog-extra/1023.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1023-thumb.webp"
+    },
+    {
+      "id": 1024,
+      "title": "Knurled Dumbbell Handle and Weight Plate",
+      "description": "Close-up of a knurled metal handle passing through a cast-iron weight plate.",
+      "category": "sports-accessories",
+      "categoryName": "Sports Accessories",
+      "price": 34.0,
+      "discountPercentage": 15.09,
+      "rating": 3.73,
+      "stock": 133,
+      "tags": [
+        "sports accessories",
+        "dumbbell",
+        "weights"
+      ],
+      "brand": "Courtline",
+      "sku": "SPO-COU-1024",
+      "weight": 6,
+      "dimensions": {
+        "width": 18.78,
+        "height": 23.3,
+        "depth": 21.23
+      },
+      "warrantyInformation": "3 months warranty",
+      "shippingInformation": "Ships in 1 week",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Works well so far.",
+          "date": "2025-03-06T10:00:00.000Z",
+          "reviewerName": "Owen Diaz",
+          "reviewerEmail": "owen.diaz@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Great quality for the price.",
+          "date": "2025-08-22T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Would buy again.",
+          "date": "2025-12-14T10:00:00.000Z",
+          "reviewerName": "Maya Ortiz",
+          "reviewerEmail": "maya.ortiz@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001024"
+      },
+      "images": [
+        "/images/catalog-extra/1024.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1024-thumb.webp"
+    },
+    {
+      "id": 1025,
+      "title": "Red-Stitched Leather Baseball",
+      "description": "Cream leather baseball with red stitching, photographed against a dark cloth.",
+      "category": "sports-accessories",
+      "categoryName": "Sports Accessories",
+      "price": 14.0,
+      "discountPercentage": 8.56,
+      "rating": 4.7,
+      "stock": 11,
+      "tags": [
+        "sports accessories",
+        "baseball"
+      ],
+      "brand": "Courtline",
+      "sku": "SPO-COU-1025",
+      "weight": 7,
+      "dimensions": {
+        "width": 13.76,
+        "height": 24.43,
+        "depth": 21.96
+      },
+      "warrantyInformation": "1 month warranty",
+      "shippingInformation": "Ships in 1 week",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Solid everyday pick.",
+          "date": "2025-10-17T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Exactly as described.",
+          "date": "2025-07-26T10:00:00.000Z",
+          "reviewerName": "Noah Patel",
+          "reviewerEmail": "noah.patel@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Great quality for the price.",
+          "date": "2025-08-27T10:00:00.000Z",
+          "reviewerName": "Clara Voss",
+          "reviewerEmail": "clara.voss@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "No return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001025"
+      },
+      "images": [
+        "/images/catalog-extra/1025.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1025-thumb.webp"
+    },
+    {
+      "id": 1026,
+      "title": "Fluffy Angled Makeup Brush",
+      "description": "A single fluffy, angled makeup brush standing in a cup on a windowsill.",
+      "category": "beauty",
+      "categoryName": "Beauty",
+      "price": 12.0,
+      "discountPercentage": 5.15,
+      "rating": 3.45,
+      "stock": 27,
+      "tags": [
+        "beauty",
+        "makeup brush"
+      ],
+      "brand": "Shadeform",
+      "sku": "BEA-SHA-1026",
+      "weight": 7,
+      "dimensions": {
+        "width": 29.68,
+        "height": 24.85,
+        "depth": 7.62
+      },
+      "warrantyInformation": "3 year warranty",
+      "shippingInformation": "Ships overnight",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Happy with this.",
+          "date": "2025-05-05T10:00:00.000Z",
+          "reviewerName": "Theo Park",
+          "reviewerEmail": "theo.park@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Better than expected.",
+          "date": "2025-11-07T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Solid everyday pick.",
+          "date": "2025-12-26T10:00:00.000Z",
+          "reviewerName": "Priya Nair",
+          "reviewerEmail": "priya.nair@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "60 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001026"
+      },
+      "images": [
+        "/images/catalog-extra/1026.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1026-thumb.webp"
+    },
+    {
+      "id": 1027,
+      "title": "Color-Block Makeup Pouch with Brushes",
+      "description": "Open zip pouch in pastel geometric panels, with two makeup brushes beside it.",
+      "category": "beauty",
+      "categoryName": "Beauty",
+      "price": 18.0,
+      "discountPercentage": 10.64,
+      "rating": 3.41,
+      "stock": 139,
+      "tags": [
+        "beauty",
+        "makeup bag",
+        "brushes"
+      ],
+      "brand": "Shadeform",
+      "sku": "BEA-SHA-1027",
+      "weight": 3,
+      "dimensions": {
+        "width": 39.37,
+        "height": 31.51,
+        "depth": 6.33
+      },
+      "warrantyInformation": "3 year warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 5,
+          "comment": "Exactly as described.",
+          "date": "2025-02-11T10:00:00.000Z",
+          "reviewerName": "Owen Diaz",
+          "reviewerEmail": "owen.diaz@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Works well so far.",
+          "date": "2025-01-14T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Happy with this.",
+          "date": "2025-05-16T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "90 days return policy",
+      "minimumOrderQuantity": 3,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001027"
+      },
+      "images": [
+        "/images/catalog-extra/1027.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1027-thumb.webp"
+    },
+    {
+      "id": 1028,
+      "title": "Stacked Honey Glycerin Soap Bars",
+      "description": "Two stacked honey-colored soap bars with a coarsely salted top, set near a glass bottle.",
+      "category": "skin-care",
+      "categoryName": "Skin Care",
+      "price": 9.5,
+      "discountPercentage": 8.0,
+      "rating": 4.26,
+      "stock": 126,
+      "tags": [
+        "skin care",
+        "soap",
+        "glycerin"
+      ],
+      "brand": "Soapstone Lab",
+      "sku": "SKI-SOA-1028",
+      "weight": 10,
+      "dimensions": {
+        "width": 23.7,
+        "height": 38.92,
+        "depth": 38.09
+      },
+      "warrantyInformation": "1 month warranty",
+      "shippingInformation": "Ships in 1-2 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "A practical choice.",
+          "date": "2025-07-21T10:00:00.000Z",
+          "reviewerName": "Nina Volkov",
+          "reviewerEmail": "nina.volkov@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Works well so far.",
+          "date": "2025-03-08T10:00:00.000Z",
+          "reviewerName": "Caleb Frost",
+          "reviewerEmail": "caleb.frost@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Would buy again.",
+          "date": "2025-10-18T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "90 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001028"
+      },
+      "images": [
+        "/images/catalog-extra/1028.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1028-thumb.webp"
+    },
+    {
+      "id": 1029,
+      "title": "Ribbon-Wrapped Guest Soap Favors",
+      "description": "Small guest soaps wrapped in paper and blue-and-white baker\u2019s twine, piled in a shallow basket.",
+      "category": "skin-care",
+      "categoryName": "Skin Care",
+      "price": 14.0,
+      "discountPercentage": 15.83,
+      "rating": 4.9,
+      "stock": 6,
+      "tags": [
+        "skin care",
+        "soap",
+        "guest soap"
+      ],
+      "brand": "Dewline",
+      "sku": "SKI-DEW-1029",
+      "weight": 8,
+      "dimensions": {
+        "width": 35.55,
+        "height": 18.09,
+        "depth": 12.89
+      },
+      "warrantyInformation": "1 week warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Exactly as described.",
+          "date": "2025-06-17T10:00:00.000Z",
+          "reviewerName": "Theo Park",
+          "reviewerEmail": "theo.park@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Better than expected.",
+          "date": "2025-07-28T10:00:00.000Z",
+          "reviewerName": "Noah Patel",
+          "reviewerEmail": "noah.patel@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Works well so far.",
+          "date": "2025-10-01T10:00:00.000Z",
+          "reviewerName": "Felix Grant",
+          "reviewerEmail": "felix.grant@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "No return policy",
+      "minimumOrderQuantity": 2,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001029"
+      },
+      "images": [
+        "/images/catalog-extra/1029.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1029-thumb.webp"
+    },
+    {
+      "id": 1030,
+      "title": "Cobalt Blue Faceted Glass Bottle",
+      "description": "Small cobalt-blue glass bottle with a faceted, wave-like body and a silver screw cap.",
+      "category": "fragrances",
+      "categoryName": "Fragrances",
+      "price": 26.0,
+      "discountPercentage": 14.09,
+      "rating": 3.91,
+      "stock": 3,
+      "tags": [
+        "fragrances",
+        "perfume",
+        "glass bottle",
+        "cobalt"
+      ],
+      "brand": "North Scent",
+      "sku": "FRA-NOR-1030",
+      "weight": 8,
+      "dimensions": {
+        "width": 30.59,
+        "height": 32.16,
+        "depth": 34.63
+      },
+      "warrantyInformation": "6 months warranty",
+      "shippingInformation": "Ships overnight",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 5,
+          "comment": "Not fancy, but dependable.",
+          "date": "2025-03-27T10:00:00.000Z",
+          "reviewerName": "Sofia Mendes",
+          "reviewerEmail": "sofia.mendes@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Great quality for the price.",
+          "date": "2025-05-21T10:00:00.000Z",
+          "reviewerName": "Clara Voss",
+          "reviewerEmail": "clara.voss@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Nice finish.",
+          "date": "2025-07-28T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "7 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001030"
+      },
+      "images": [
+        "/images/catalog-extra/1030.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1030-thumb.webp"
+    },
+    {
+      "id": 1031,
+      "title": "Black Leather Lace-Up Soft Shoe",
+      "description": "Black leather lace-up shoe with a soft, unlined upper and a rounded toe, shown on a white background.",
+      "category": "womens-shoes",
+      "categoryName": "Womens Shoes",
+      "price": 64.0,
+      "discountPercentage": 15.14,
+      "rating": 4.72,
+      "stock": 37,
+      "tags": [
+        "womens shoes",
+        "leather",
+        "lace-up"
+      ],
+      "brand": "Heeltheory",
+      "sku": "WSH-HEE-1031",
+      "weight": 5,
+      "dimensions": {
+        "width": 23.94,
+        "height": 15.84,
+        "depth": 22.06
+      },
+      "warrantyInformation": "1 month warranty",
+      "shippingInformation": "Ships in 1 week",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Better than expected.",
+          "date": "2025-09-09T10:00:00.000Z",
+          "reviewerName": "Jonah Blake",
+          "reviewerEmail": "jonah.blake@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Nice finish.",
+          "date": "2025-11-24T10:00:00.000Z",
+          "reviewerName": "Zoe Harper",
+          "reviewerEmail": "zoe.harper@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Nice finish.",
+          "date": "2025-06-20T10:00:00.000Z",
+          "reviewerName": "Zoe Harper",
+          "reviewerEmail": "zoe.harper@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "90 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001031"
+      },
+      "images": [
+        "/images/catalog-extra/1031.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1031-thumb.webp"
+    },
+    {
+      "id": 1032,
+      "title": "Green Brocade Vintage Heeled Shoes",
+      "description": "Pair of vintage heeled shoes covered in green patterned brocade, with straps and covered buttons.",
+      "category": "womens-shoes",
+      "categoryName": "Womens Shoes",
+      "price": 110.0,
+      "discountPercentage": 11.9,
+      "rating": 3.6,
+      "stock": 143,
+      "tags": [
+        "womens shoes",
+        "heels",
+        "brocade",
+        "vintage"
+      ],
+      "brand": "Heeltheory",
+      "sku": "WSH-HEE-1032",
+      "weight": 6,
+      "dimensions": {
+        "width": 33.72,
+        "height": 15.31,
+        "depth": 39.94
+      },
+      "warrantyInformation": "3 year warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Looks good in person.",
+          "date": "2025-09-08T10:00:00.000Z",
+          "reviewerName": "Priya Nair",
+          "reviewerEmail": "priya.nair@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Happy with this.",
+          "date": "2025-04-01T10:00:00.000Z",
+          "reviewerName": "Zoe Harper",
+          "reviewerEmail": "zoe.harper@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Not fancy, but dependable.",
+          "date": "2025-01-16T10:00:00.000Z",
+          "reviewerName": "Maya Ortiz",
+          "reviewerEmail": "maya.ortiz@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001032"
+      },
+      "images": [
+        "/images/catalog-extra/1032.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1032-thumb.webp"
+    },
+    {
+      "id": 1033,
+      "title": "Black Textured Stiletto Pumps",
+      "description": "Black pointed-toe stiletto pumps with a textured surface, photographed on a brick walkway.",
+      "category": "womens-shoes",
+      "categoryName": "Womens Shoes",
+      "price": 89.0,
+      "discountPercentage": 10.9,
+      "rating": 3.72,
+      "stock": 159,
+      "tags": [
+        "womens shoes",
+        "pumps",
+        "stiletto"
+      ],
+      "brand": "Heeltheory",
+      "sku": "WSH-HEE-1033",
+      "weight": 1,
+      "dimensions": {
+        "width": 24.74,
+        "height": 32.36,
+        "depth": 20.31
+      },
+      "warrantyInformation": "3 year warranty",
+      "shippingInformation": "Ships in 1 week",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 3,
+          "comment": "Nice finish.",
+          "date": "2025-06-27T10:00:00.000Z",
+          "reviewerName": "Theo Park",
+          "reviewerEmail": "theo.park@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Not fancy, but dependable.",
+          "date": "2025-04-14T10:00:00.000Z",
+          "reviewerName": "Noah Patel",
+          "reviewerEmail": "noah.patel@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Looks good in person.",
+          "date": "2025-07-14T10:00:00.000Z",
+          "reviewerName": "Liam Chen",
+          "reviewerEmail": "liam.chen@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 2,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001033"
+      },
+      "images": [
+        "/images/catalog-extra/1033.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1033-thumb.webp"
+    },
+    {
+      "id": 1034,
+      "title": "Yellow Suede Wedge Sandals",
+      "description": "Pair of yellow suede peep-toe wedge sandals seen from behind.",
+      "category": "womens-shoes",
+      "categoryName": "Womens Shoes",
+      "price": 72.0,
+      "discountPercentage": 3.92,
+      "rating": 3.65,
+      "stock": 70,
+      "tags": [
+        "womens shoes",
+        "wedges",
+        "suede",
+        "yellow"
+      ],
+      "brand": "Lastline",
+      "sku": "WSH-LAS-1034",
+      "weight": 6,
+      "dimensions": {
+        "width": 36.64,
+        "height": 8.18,
+        "depth": 35.28
+      },
+      "warrantyInformation": "2 year warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 5,
+          "comment": "Happy with this.",
+          "date": "2025-11-05T10:00:00.000Z",
+          "reviewerName": "Liam Chen",
+          "reviewerEmail": "liam.chen@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Not fancy, but dependable.",
+          "date": "2025-07-27T10:00:00.000Z",
+          "reviewerName": "Ava Brooks",
+          "reviewerEmail": "ava.brooks@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Solid everyday pick.",
+          "date": "2025-07-11T10:00:00.000Z",
+          "reviewerName": "Ava Brooks",
+          "reviewerEmail": "ava.brooks@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001034"
+      },
+      "images": [
+        "/images/catalog-extra/1034.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1034-thumb.webp"
+    },
+    {
+      "id": 1035,
+      "title": "Blue Canvas Weekender with Leather Trim",
+      "description": "Bright blue canvas weekender bag with tan leather handles, strap, and corner patches.",
+      "category": "womens-bags",
+      "categoryName": "Womens Bags",
+      "price": 98.0,
+      "discountPercentage": 14.2,
+      "rating": 4.17,
+      "stock": 15,
+      "tags": [
+        "womens bags",
+        "weekender",
+        "canvas"
+      ],
+      "brand": "Carryform",
+      "sku": "WBG-CAR-1035",
+      "weight": 9,
+      "dimensions": {
+        "width": 19.41,
+        "height": 24.55,
+        "depth": 16.51
+      },
+      "warrantyInformation": "1 month warranty",
+      "shippingInformation": "Ships in 2 weeks",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 5,
+          "comment": "Would buy again.",
+          "date": "2025-02-25T10:00:00.000Z",
+          "reviewerName": "Owen Diaz",
+          "reviewerEmail": "owen.diaz@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Nice finish.",
+          "date": "2025-03-14T10:00:00.000Z",
+          "reviewerName": "Noah Patel",
+          "reviewerEmail": "noah.patel@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Better than expected.",
+          "date": "2025-10-07T10:00:00.000Z",
+          "reviewerName": "Owen Diaz",
+          "reviewerEmail": "owen.diaz@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "90 days return policy",
+      "minimumOrderQuantity": 3,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001035"
+      },
+      "images": [
+        "/images/catalog-extra/1035.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1035-thumb.webp"
+    },
+    {
+      "id": 1036,
+      "title": "Brown Leather Weekend Duffel",
+      "description": "Slouchy brown leather duffel with a shoulder strap, buckle details, and side pockets.",
+      "category": "womens-bags",
+      "categoryName": "Womens Bags",
+      "price": 156.0,
+      "discountPercentage": 6.12,
+      "rating": 4.21,
+      "stock": 55,
+      "tags": [
+        "womens bags",
+        "duffel",
+        "leather"
+      ],
+      "brand": "Bagpost",
+      "sku": "WBG-BAG-1036",
+      "weight": 6,
+      "dimensions": {
+        "width": 5.84,
+        "height": 13.57,
+        "depth": 34.46
+      },
+      "warrantyInformation": "2 year warranty",
+      "shippingInformation": "Ships overnight",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Works well so far.",
+          "date": "2025-07-08T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "A practical choice.",
+          "date": "2025-10-26T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Exactly as described.",
+          "date": "2025-10-19T10:00:00.000Z",
+          "reviewerName": "Nina Volkov",
+          "reviewerEmail": "nina.volkov@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "30 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001036"
+      },
+      "images": [
+        "/images/catalog-extra/1036.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1036-thumb.webp"
+    },
+    {
+      "id": 1037,
+      "title": "Yellow Wayfarer Sunglasses",
+      "description": "Yellow wayfarer-style sunglasses centered on a split blue-and-peach background.",
+      "category": "sunglasses",
+      "categoryName": "Sunglasses",
+      "price": 28.0,
+      "discountPercentage": 6.47,
+      "rating": 4.81,
+      "stock": 112,
+      "tags": [
+        "sunglasses",
+        "wayfarer",
+        "yellow"
+      ],
+      "brand": "Shadeorbit",
+      "sku": "SUN-SHA-1037",
+      "weight": 7,
+      "dimensions": {
+        "width": 31.87,
+        "height": 33.53,
+        "depth": 27.84
+      },
+      "warrantyInformation": "1 month warranty",
+      "shippingInformation": "Ships overnight",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 5,
+          "comment": "Nice finish.",
+          "date": "2025-09-12T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Great quality for the price.",
+          "date": "2025-10-03T10:00:00.000Z",
+          "reviewerName": "Zoe Harper",
+          "reviewerEmail": "zoe.harper@x.dummyjson.com"
+        },
+        {
+          "rating": 5,
+          "comment": "Looks good in person.",
+          "date": "2025-01-19T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "No return policy",
+      "minimumOrderQuantity": 2,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001037"
+      },
+      "images": [
+        "/images/catalog-extra/1037.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1037-thumb.webp"
+    },
+    {
+      "id": 1038,
+      "title": "Translucent Square Eyeglasses",
+      "description": "Pair of translucent cream square eyeglasses resting on a wooden surface.",
+      "category": "sunglasses",
+      "categoryName": "Sunglasses",
+      "price": 45.0,
+      "discountPercentage": 4.34,
+      "rating": 4.34,
+      "stock": 14,
+      "tags": [
+        "sunglasses",
+        "eyeglasses",
+        "clear frames"
+      ],
+      "brand": "Shadeorbit",
+      "sku": "SUN-SHA-1038",
+      "weight": 3,
+      "dimensions": {
+        "width": 35.57,
+        "height": 38.05,
+        "depth": 28.74
+      },
+      "warrantyInformation": "1 month warranty",
+      "shippingInformation": "Ships in 3-5 business days",
+      "availabilityStatus": "In Stock",
+      "reviews": [
+        {
+          "rating": 4,
+          "comment": "Solid everyday pick.",
+          "date": "2025-09-04T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Solid everyday pick.",
+          "date": "2025-05-15T10:00:00.000Z",
+          "reviewerName": "Jonah Blake",
+          "reviewerEmail": "jonah.blake@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Looks good in person.",
+          "date": "2025-07-03T10:00:00.000Z",
+          "reviewerName": "Caleb Frost",
+          "reviewerEmail": "caleb.frost@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "60 days return policy",
+      "minimumOrderQuantity": 2,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001038"
+      },
+      "images": [
+        "/images/catalog-extra/1038.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1038-thumb.webp"
+    },
+    {
+      "id": 1039,
+      "title": "Iridescent Teardrop Statement Necklace",
+      "description": "Statement necklace of graduated iridescent teardrop stones set in silver-tone links, displayed on a bust.",
+      "category": "womens-jewellery",
+      "categoryName": "Womens Jewellery",
+      "price": 62.0,
+      "discountPercentage": 12.62,
+      "rating": 4.6,
+      "stock": 4,
+      "tags": [
+        "womens jewellery",
+        "necklace",
+        "statement"
+      ],
+      "brand": "Pearlpost",
+      "sku": "WJW-PEA-1039",
+      "weight": 9,
+      "dimensions": {
+        "width": 13.17,
+        "height": 18.45,
+        "depth": 38.02
+      },
+      "warrantyInformation": "1 year warranty",
+      "shippingInformation": "Ships overnight",
+      "availabilityStatus": "Low Stock",
+      "reviews": [
+        {
+          "rating": 5,
+          "comment": "Works well so far.",
+          "date": "2025-09-11T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com"
+        },
+        {
+          "rating": 3,
+          "comment": "Exactly as described.",
+          "date": "2025-06-21T10:00:00.000Z",
+          "reviewerName": "Zoe Harper",
+          "reviewerEmail": "zoe.harper@x.dummyjson.com"
+        },
+        {
+          "rating": 4,
+          "comment": "Works well so far.",
+          "date": "2025-08-13T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com"
+        }
+      ],
+      "returnPolicy": "90 days return policy",
+      "minimumOrderQuantity": 1,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "updatedAt": "2026-11-09T22:00:00.000Z",
+        "barcode": "1000000001039"
+      },
+      "images": [
+        "/images/catalog-extra/1039.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1039-thumb.webp"
+    }
+  ]
+}

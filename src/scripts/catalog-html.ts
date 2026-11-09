@@ -18,7 +18,9 @@ export function esc(value: unknown) {
 }
 
 function httpsUrl(value: string) {
-  return value.startsWith("https://") ? value : "";
+  // Allow absolute https URLs and same-origin public paths (extra catalog images).
+  if (value.startsWith("https://") || value.startsWith("/")) return value;
+  return "";
 }
 
 export function cardHtml(product: Product, query: string) {
