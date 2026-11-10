@@ -812,6 +812,23 @@
   cursor: pointer;
 }
 
+.os-add-cart.is-out,
+.os-add-cart:disabled,
+.os-add-cart[aria-disabled="true"] {
+  background: #9ca3af;
+  border-color: #9ca3af;
+  color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.os-add-cart.is-out:hover,
+.os-add-cart:disabled:hover,
+.os-add-cart[aria-disabled="true"]:hover {
+  background: #9ca3af;
+  border-color: #9ca3af;
+  color: #f3f4f6;
+}
+
 @media (max-width: 720px) {
   .os-bar-actions {
     grid-column: 1 / -1;

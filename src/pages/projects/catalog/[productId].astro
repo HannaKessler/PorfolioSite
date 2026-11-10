@@ -15,6 +15,8 @@ import {
   productById,
   similarProducts,
   stockClass,
+  isOutOfStock,
+  addToCartLabel,
   type Product,
 } from "../../../scripts/catalog-data";
 
@@ -30,6 +32,7 @@ const images = product.images?.length ? product.images : product.thumbnail ? [pr
 const similar = similarProducts(product);
 const similarHtml = similar.length ? carouselHtml({ title: "Similar products", items: similar }, "") : "";
 const description = product.description.slice(0, 160);
+const outOfStock = isOutOfStock(product);
 ---
 
 <BaseLayout title={product.title} description={description}>
@@ -73,7 +76,7 @@ const description = product.description.slice(0, 160);
             <span class:list={["os-stock", stockClass(product.availabilityStatus)]}>{product.availabilityStatus}</span>
           </p>
           <p class="os-note">Sample catalog. Nothing here is for sale.</p>
-          <button type="button" class="os-add-cart" data-add-cart>Add to cart</button>
+          <button type="button" class:list={["os-add-cart", { "is-out": outOfStock }]} data-add-cart disabled={outOfStock} aria-disabled={outOfStock ? "true" : undefined}>{addToCartLabel(product)}</button>
           <p class="os-note" data-cart-status hidden></p>
           <p>{product.description}</p>
           {

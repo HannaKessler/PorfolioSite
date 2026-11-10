@@ -123,7 +123,12 @@ export async function mountItemProfile(root: HTMLElement, productId: number) {
     await client.trackEvent("PRODUCT_VIEW", productId);
   }
 
-  root.querySelector<HTMLButtonElement>("[data-add-cart]")?.addEventListener("click", async () => {
+  const addCart = root.querySelector<HTMLButtonElement>("[data-add-cart]");
+  addCart?.addEventListener("click", async (event) => {
+    if (addCart.disabled || addCart.getAttribute("aria-disabled") === "true") {
+      event.preventDefault();
+      return;
+    }
     if (readConsent() !== "granted") {
       root.querySelector<HTMLElement>("[data-cart-status]")?.replaceChildren(
         document.createTextNode("Accept cookies to include this in your profile. Nothing here is for sale."),
