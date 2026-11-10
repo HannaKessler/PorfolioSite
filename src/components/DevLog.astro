@@ -9,7 +9,11 @@ const { projectId } = Astro.props;
 
 const entries = (await getCollection("devlog"))
   .filter((entry) => entry.data.project === projectId)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  .sort((a, b) => {
+    const byDate = a.data.date.valueOf() - b.data.date.valueOf();
+    if (byDate !== 0) return byDate;
+    return a.id.localeCompare(b.id);
+  });
 
 const rendered = await Promise.all(
   entries.map(async (entry) => ({
