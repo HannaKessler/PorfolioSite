@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SecretNotesDemo from "../../components/SecretNotesDemo.astro";
 import CatalogShop from "../../components/CatalogShop.astro";
+import CatalogHoodToggle from "../../components/CatalogHoodToggle.astro";
 import FilmGraphExplorer from "../../components/FilmGraphExplorer.astro";
 import ModelViewer from "../../components/ModelViewer.astro";
 import AgentTraceViewer from "../../components/AgentTraceViewer.astro";
@@ -36,7 +37,6 @@ const isWideDemo = isCatalog || isFilmGraph || isModelViewer || isAgentTrace;
     {isWideDemo && (
       <>
         <header class="os-intro">
-          <p class="eyebrow">Software demo</p>
           <h1>{title}</h1>
           <p class="lede">{lede}</p>
           <div class="meta-row">
@@ -44,6 +44,7 @@ const isWideDemo = isCatalog || isFilmGraph || isModelViewer || isAgentTrace;
               <span class="tag">{tag}</span>
             ))}
           </div>
+          {isCatalog && <CatalogHoodToggle />}
         </header>
         <div class="os-frame">
           {isCatalog ? <CatalogShop /> : isModelViewer ? <ModelViewer /> : isAgentTrace ? <AgentTraceViewer /> : <FilmGraphExplorer />}
@@ -54,7 +55,6 @@ const isWideDemo = isCatalog || isFilmGraph || isModelViewer || isAgentTrace;
       <>
         <SecretNotesDemo />
         <article class="demo-writeup">
-          <p class="eyebrow">Software demo</p>
           <h1>{title}</h1>
           <p class="lede">{lede}</p>
           <div class="meta-row" style="margin-bottom: 1.25rem;">
@@ -82,7 +82,7 @@ const isWideDemo = isCatalog || isFilmGraph || isModelViewer || isAgentTrace;
       </article>
     ) : (
       <>
-        <p class="eyebrow">{isDevLog ? "Dev log" : "Software"}</p>
+        <p class="eyebrow">{isDevLog ? "Dev Log" : "Software"}</p>
         <div class="project-hero">
           <div>
             <h1>{title}</h1>
@@ -95,15 +95,15 @@ const isWideDemo = isCatalog || isFilmGraph || isModelViewer || isAgentTrace;
             {(demoUrl || githubUrl || liveUrl || showAllWork) && (
               <div class="actions">
                 {demoUrl && (
-                  <a class="button button-ghost" href={demoUrl}>Open demo</a>
+                  <a class="button button-ghost" href={demoUrl}>Open Demo</a>
                 )}
                 {githubUrl && (
                   <a class="button button-ghost" href={githubUrl} rel="noreferrer">GitHub</a>
                 )}
                 {liveUrl && (
-                  <a class="button button-ghost" href={liveUrl} rel="noreferrer">Live site</a>
+                  <a class="button button-ghost" href={liveUrl} rel="noreferrer">Live Site</a>
                 )}
-                {showAllWork && <a class="button button-ghost" href="/projects">All work</a>}
+                {showAllWork && <a class="button button-ghost" href="/projects">All Work</a>}
               </div>
             )}
           </div>

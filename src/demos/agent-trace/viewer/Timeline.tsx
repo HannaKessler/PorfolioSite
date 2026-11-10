@@ -209,7 +209,7 @@ export function Timeline({ rows, totalMs, openEndMs, selectedId, onSelect, colla
                     {row.isError && <span className="atv-icon atv-icon-error" title="Error">✕</span>}
                     {row.endMs === null && <span className="atv-icon atv-icon-open" title="Running">●</span>}
                     <span className="atv-row-name">{row.span.name}</span>
-                    {row.fault && <span className="atv-badge-fault" title={`Injected fault: ${row.fault}`}>fault</span>}
+                    {row.fault && <span className="atv-badge-fault" title={`Injected Fault: ${row.fault}`}>fault</span>}
                   </span>
                   <span className="atv-sr">
                     {dur}

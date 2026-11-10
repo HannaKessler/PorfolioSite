@@ -21,7 +21,7 @@ export async function mountSecretNotesDemo(root: HTMLElement) {
   try {
     cfg = await loadConfig();
   } catch {
-    root.innerHTML = `<p class="sn-error">The Secret notes API is not reachable. If you are developing locally, start it on port 8787. On the live site, the API host must be deployed and PUBLIC_SECRET_NOTES_API must point at it.</p>`;
+    root.innerHTML = `<p class="sn-error">The Secret Notes API is not reachable. If you are developing locally, start it on port 8787. On the live site, the API host must be deployed and PUBLIC_SECRET_NOTES_API must point at it.</p>`;
     return;
   }
 
@@ -44,7 +44,7 @@ export async function mountSecretNotesDemo(root: HTMLElement) {
           <label for="sn-password">Password</label>
           <div class="sn-pw">
             <input id="sn-password" name="password" type="password" autocomplete="new-password" required minlength="${cfg.passwordMinLength}" />
-            <button type="button" class="sn-pw-toggle" data-for="sn-password" aria-label="Show password" aria-pressed="false">Show</button>
+            <button type="button" class="sn-pw-toggle" data-for="sn-password" aria-label="Show Password" aria-pressed="false">Show</button>
           </div>
           <div class="sn-inline">
             <div>
@@ -57,7 +57,7 @@ export async function mountSecretNotesDemo(root: HTMLElement) {
               </select>
             </div>
             <div>
-              <label for="sn-max">Max downloads</label>
+              <label for="sn-max">Max Downloads</label>
               <input id="sn-max" name="maxDownloads" type="number" min="1" max="${cfg.maxDownloadsCap}" value="${cfg.defaultMaxDownloads}" />
             </div>
           </div>
@@ -72,14 +72,14 @@ export async function mountSecretNotesDemo(root: HTMLElement) {
           ${turnstileMarkup(cfg)}
           <p class="sn-error" id="sn-send-err"></p>
           <div class="sn-actions">
-            <button type="submit" class="sn-btn sn-btn-primary" id="sn-go"${cfg.serviceDisabled ? " disabled" : ""}>Create link</button>
-            <button type="button" class="sn-btn sn-btn-ghost" id="sn-clear">Clear fields</button>
+            <button type="submit" class="sn-btn sn-btn-primary" id="sn-go"${cfg.serviceDisabled ? " disabled" : ""}>Create Link</button>
+            <button type="button" class="sn-btn sn-btn-ghost" id="sn-clear">Clear Fields</button>
           </div>
         </div>
       </div>
     </form>
     <div class="sn-link-box" id="sn-result">
-      <div class="sn-link-head">Share link</div>
+      <div class="sn-link-head">Share Link</div>
       <p class="sn-link-empty" id="sn-link-empty">Your link will appear here after you create a note.</p>
       <div id="sn-link-ready" hidden>
         <div class="sn-link-row">
@@ -180,7 +180,7 @@ export async function mountSecretNotesDemo(root: HTMLElement) {
       linkEmpty.setAttribute("hidden", "");
       linkReady.hidden = false;
     } catch {
-      sendErr.textContent = "Could not reach the Secret notes API.";
+      sendErr.textContent = "Could not reach the Secret Notes API.";
     } finally {
       go.disabled = false;
     }
@@ -193,7 +193,7 @@ export async function mountSecretNotesDemo(root: HTMLElement) {
     pw.type = "password";
     const toggle = root.querySelector<HTMLButtonElement>('[data-for="sn-password"]')!;
     toggle.setAttribute("aria-pressed", "false");
-    toggle.setAttribute("aria-label", "Show password");
+    toggle.setAttribute("aria-label", "Show Password");
     fileInput.value = "";
     fileName.textContent = "";
     sendErr.textContent = "";

@@ -23,7 +23,7 @@ export function Summary({ summary }: { summary: RunSummary }) {
   const errorText = Object.entries(s.errorTypes).map(([k, n]) => `${n} ${k.replace(/_/g, " ")}`).join(", ");
   const anyUsage = s.inputTokens.n + s.outputTokens.n + s.ttftS.n + s.prefillTps.n + s.decodeTps.n > 0;
   return (
-    <section className="atv-summary" aria-label="Run summary">
+    <section className="atv-summary" aria-label="Run Summary">
       <dl className="atv-stats">
         <div>
           <dt>Outcome</dt>

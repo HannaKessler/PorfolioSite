@@ -39,7 +39,7 @@ export function BootBanner({ status, connection, started, onReset }: Props) {
             11 MB compressed in total). Later visits start from a copy saved in your browser.
           </p>
           {status?.progress !== undefined && (
-            <progress className="fg-boot-progress" value={status.progress} max={1} aria-label="Setup progress">
+            <progress className="fg-boot-progress" value={status.progress} max={1} aria-label="Setup Progress">
               {Math.round(status.progress * 100)}%
             </progress>
           )}

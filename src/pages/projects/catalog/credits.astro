@@ -1,0 +1,60 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import creditsMarkdown from "../../../data/catalog-extra-credits.md?raw";
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function safeHref(href: string) {
+  return href.startsWith("https://") ? href : "";
+}
+
+function creditsHtml(markdown: string) {
+  const items: string[] = [];
+  const blocks: string[] = [];
+  const flush = () => {
+    if (items.length) {
+      blocks.push(`<ul>${items.join("")}</ul>`);
+      items.length = 0;
+    }
+  };
+  for (const line of markdown.split("\n")) {
+    if (line.startsWith("# ")) {
+      flush();
+      blocks.push(`<h1>${escapeHtml(line.slice(2))}</h1>`);
+    } else if (line.startsWith("- ")) {
+      const html = escapeHtml(line.slice(2))
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\[(.*?)\]\((.*?)\)/g, (_match, label: string, href: string) => {
+          const safe = safeHref(href.replace(/&amp;/g, "&"));
+          return safe
+            ? `<a href="${escapeHtml(safe)}" rel="noopener noreferrer">${label}</a>`
+            : label;
+        });
+      items.push(`<li>${html}</li>`);
+    } else if (!line.trim()) {
+      flush();
+    } else {
+      flush();
+      blocks.push(`<p>${escapeHtml(line)}</p>`);
+    }
+  }
+  flush();
+  return blocks.join("\n");
+}
+
+const body = creditsHtml(creditsMarkdown);
+---
+<BaseLayout title="Searchable Shop Image Credits" description="Public-domain photo credits for the Searchable Shop mock catalog.">
+  <div class="container demo-project">
+    <article class="prose">
+      <p><a href="/projects/catalog">Back to Searchable Shop</a></p>
+      <div set:html={body} />
+    </article>
+  </div>
+</BaseLayout>

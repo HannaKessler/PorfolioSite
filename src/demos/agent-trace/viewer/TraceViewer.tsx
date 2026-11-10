@@ -284,8 +284,8 @@ export function TraceViewer({ store, collector, focus, children }: Props) {
         </>
       ) : (
         <div className="atv-empty-state">
-          <p className="atv-overlay-title">No trace selected</p>
-          <p className="atv-muted">Run the agent, pick a recorded sample, or import an OTLP-JSON file.</p>
+          <p className="atv-overlay-title">No Trace Selected</p>
+          <p className="atv-muted">Run the Agent, pick a recorded sample, or import an OTLP-JSON file.</p>
         </div>
       )}
 

@@ -16,10 +16,12 @@ const LogoTag = heading ? "h1" : "p";
     </a>
   </LogoTag>
   <form class="os-search" action="/projects/catalog" method="get" role="search">
-    <label class="visually-hidden" for="os-q">Search products</label>
-    <input id="os-q" name="q" type="search" placeholder="Search products" autocomplete="off" enterkeyhint="search" />
+    <label class="visually-hidden" for="os-q">Search Products</label>
+    <input id="os-q" name="q" type="search" placeholder="Search Products" autocomplete="off" enterkeyhint="search" />
     <button type="submit">Search</button>
     <ul id="os-suggest" class="os-suggest" hidden></ul>
   </form>
-  <button type="button" class="os-cookie-btn" data-cookie-settings>Cookie settings</button>
+  <div class="os-bar-actions">
+    <button type="button" class="os-cookie-btn" data-cookie-settings>Cookie Settings</button>
+  </div>
 </header>

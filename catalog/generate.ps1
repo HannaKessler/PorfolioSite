@@ -1,5 +1,5 @@
 # Builds src/data/catalog.json with the free local Elasticsearch distribution.
-# Java loads DummyJSON. Python adds sale prices and similar-product ids.
+# Java loads DummyJSON and catalog/extra-products.json. Python adds sale prices and similar-product ids.
 # The Elasticsearch install stays in catalog/.tools and is not committed.
 
 $ErrorActionPreference = "Stop"
@@ -79,7 +79,7 @@ try {
     & $javac.FullName -encoding UTF-8 -cp $jsonJar -d $build (Join-Path $PSScriptRoot "Indexer.java")
     if ($LASTEXITCODE -ne 0) { throw "javac failed" }
     $java = Join-Path $javac.DirectoryName "java.exe"
-    & $java -cp "$build;$jsonJar" Indexer
+    & $java -cp "$build;$jsonJar" Indexer "http://127.0.0.1:9200" (Join-Path $PSScriptRoot "extra-products.json")
     if ($LASTEXITCODE -ne 0) { throw "Indexer failed" }
 
     python (Join-Path $PSScriptRoot "enrich.py")

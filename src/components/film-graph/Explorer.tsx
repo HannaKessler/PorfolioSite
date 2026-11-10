@@ -331,7 +331,7 @@ export default function Explorer() {
       />
 
       <div className="fg-section-head fg-raw-head">
-        <h2>Under the hood</h2>
+        <h2>Under the Hood</h2>
         <p>The generated GraphQL query and REST calls for your question, their raw responses, and how they compare.</p>
         {stale && answer.kind === "done" && <p className="fg-ans-stale fg-stale-inline">These results are from your previous question.</p>}
       </div>
@@ -346,8 +346,8 @@ export default function Explorer() {
               value={requestTab}
               onChange={setRequestTab}
               tabs={[
-                { id: "graphql", label: "GraphQL query" },
-                { id: "rest", label: "REST calls" },
+                { id: "graphql", label: "GraphQL Query" },
+                { id: "rest", label: "REST Calls" },
               ]}
               idPrefix="fg-req"
             />
@@ -410,21 +410,21 @@ export default function Explorer() {
             )}
           </div>
           <fieldset className="fg-options">
-            <legend>Server options</legend>
-            <Switch checked={options.batching} onChange={setOption("batching")} label="DataLoader batching" hint="Off shows the N+1 problem" />
-            <Switch checked={options.persisted} onChange={setOption("persisted")} label="Send persisted query hash" hint="GraphQL only" />
-            <Switch checked={options.persistedOnly} onChange={setOption("persistedOnly")} label="Reject non-persisted queries" hint="Allowlist mode" />
-            <Switch checked={options.etags} onChange={setOption("etags")} label="ETag revalidation" hint="REST only" />
+            <legend>Server Options</legend>
+            <Switch checked={options.batching} onChange={setOption("batching")} label="DataLoader Batching" hint="Off shows the N+1 problem" />
+            <Switch checked={options.persisted} onChange={setOption("persisted")} label="Send Persisted Query Hash" hint="GraphQL Only" />
+            <Switch checked={options.persistedOnly} onChange={setOption("persistedOnly")} label="Reject Non-Persisted Queries" hint="Allowlist mode" />
+            <Switch checked={options.etags} onChange={setOption("etags")} label="ETag Revalidation" hint="REST Only" />
           </fieldset>
           <div className="fg-actions">
             <button type="button" className="button button-primary" onClick={() => void run("both")} disabled={busy || !!variablesError}>
-              {running === "both" ? "Running…" : "Run both"}
+              {running === "both" ? "Running…" : "Run Both"}
             </button>
             <button type="button" className="button button-ghost" onClick={() => void run("graphql")} disabled={busy || !!variablesError}>
-              GraphQL only
+              GraphQL Only
             </button>
             <button type="button" className="button button-ghost" onClick={() => void run("rest")} disabled={busy || isCustom || !!variablesError}>
-              REST only
+              REST Only
             </button>
           </div>
         </section>
@@ -437,8 +437,8 @@ export default function Explorer() {
               value={resultTab}
               onChange={setResultTab}
               tabs={[
-                { id: "graphql", label: "GraphQL result" },
-                { id: "rest", label: "REST result" },
+                { id: "graphql", label: "GraphQL Result" },
+                { id: "rest", label: "REST Result" },
               ]}
               idPrefix="fg-res"
             />
@@ -452,7 +452,7 @@ export default function Explorer() {
           >
             {resultTab === "graphql" ? (
               gqlRun ? (
-                <JsonView value={gqlRun.result.body} label="GraphQL response body" />
+                <JsonView value={gqlRun.result.body} label="GraphQL Response Body" />
               ) : (
                 <p className="fg-placeholder">{running ? "Running…" : "Press Run to see the response."}</p>
               )

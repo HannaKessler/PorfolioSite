@@ -1,5 +1,6 @@
 import { bindCarousels } from "./catalog-carousel";
 import { mountConsent } from "./catalog-consent";
+import { mountItemProfile, onConsentChange, prepareHood } from "../catalog-profile/client/mount";
 
 export function mountItem(root: HTMLElement) {
   const back = root.querySelector<HTMLAnchorElement>("[data-back]");
@@ -10,7 +11,7 @@ export function mountItem(root: HTMLElement) {
   if (query && input) input.value = query;
   if (query && back) {
     back.href = `/projects/catalog?q=${encodeURIComponent(query)}`;
-    back.textContent = "Back to results";
+    back.textContent = "Back to Results";
   }
   if (query) {
     root.querySelectorAll<HTMLAnchorElement>(".os-similar a").forEach((link) => {
@@ -20,8 +21,21 @@ export function mountItem(root: HTMLElement) {
     });
   }
   bindCarousels(root);
+  prepareHood(root);
 
-  mountConsent(root);
+  const productId = Number(root.getAttribute("data-product-id"));
+  let refresh: (() => Promise<void>) | undefined;
+  if (Number.isFinite(productId) && productId > 0) {
+    void mountItemProfile(root, productId).then((mounted) => {
+      refresh = mounted.refresh;
+    });
+  }
+
+  mountConsent(root, async (choice) => {
+    const { getProfileClient } = await import("../catalog-profile/client/mount");
+    const client = await getProfileClient();
+    await onConsentChange(client, choice, refresh);
+  });
 
   root.querySelectorAll<HTMLButtonElement>("[data-image]").forEach((button) => {
     button.addEventListener("click", () => {

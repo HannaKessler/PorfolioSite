@@ -76,7 +76,7 @@ describe("viewer model", () => {
   it("summarizes a scripted run without any usage figures", async () => {
     const c = await runThroughPipeline(baseRequest());
     const s = summarize(buildViewSpans(c.store.index(c.runId)!));
-    expect(s).toMatchObject({ outcome: "finished", steps: 5, llmCalls: 5, toolCalls: 5, retries: 0, tests: { passed: 6, failed: 0 }, brain: "Simulated brain" });
+    expect(s).toMatchObject({ outcome: "finished", steps: 5, llmCalls: 5, toolCalls: 5, retries: 0, tests: { passed: 6, failed: 0 }, brain: "Simulated Brain" });
     expect(s.errorTypes).toEqual({ test_failure: 1 });
     for (const r of [s.inputTokens, s.outputTokens, s.ttftS, s.prefillTps, s.decodeTps]) expect(r).toEqual({ n: 0, m: 5, total: undefined, mean: undefined });
   });

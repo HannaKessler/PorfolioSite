@@ -1,5 +1,5 @@
 ---
-title: Getting started
+title: Getting Started
 date: 2026-11-08
 ---
 

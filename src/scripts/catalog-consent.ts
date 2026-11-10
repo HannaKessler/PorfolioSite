@@ -12,9 +12,9 @@ export function mountConsent(root: HTMLElement, onChoice?: (choice: Consent) => 
     const choice = readConsent();
     summary.hidden = choice === null;
     summary.textContent = choice === "granted"
-      ? "Accepted. Up to 8 recent searches are stored in this browser for 30 days."
+      ? "Accepted. Up to 8 recent searches are stored in this browser for 30 days and used with views and add-to-cart actions in a local profile."
       : choice === "denied"
-        ? "Rejected. No searches are stored."
+        ? "Rejected. No searches or profile are stored."
         : "";
     const open = choice === null || popup.classList.contains("is-open");
     popup.hidden = !open;

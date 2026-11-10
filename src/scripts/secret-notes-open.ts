@@ -18,7 +18,7 @@ export async function mountSecretNotesOpen(root: HTMLElement) {
   try {
     cfg = await loadConfig();
   } catch {
-    root.innerHTML = `<p class="sn-error">The Secret notes API is not reachable. If you are developing locally, start it on port 8787.</p>`;
+    root.innerHTML = `<p class="sn-error">The Secret Notes API is not reachable. If you are developing locally, start it on port 8787.</p>`;
     return;
   }
 
@@ -32,7 +32,7 @@ export async function mountSecretNotesOpen(root: HTMLElement) {
         <label for="sn-open-password">Password</label>
         <div class="sn-pw">
           <input id="sn-open-password" name="password" type="password" autocomplete="current-password" required minlength="${cfg.passwordMinLength}" />
-          <button type="button" class="sn-pw-toggle" data-for="sn-open-password" aria-label="Show password" aria-pressed="false">Show</button>
+          <button type="button" class="sn-pw-toggle" data-for="sn-open-password" aria-label="Show Password" aria-pressed="false">Show</button>
         </div>
         ${turnstileMarkup(cfg)}
         <p class="sn-error" id="sn-open-err"></p>
@@ -68,7 +68,7 @@ export async function mountSecretNotesOpen(root: HTMLElement) {
       }
     } catch (caught) {
       err.textContent =
-        caught instanceof Error ? caught.message : "Could not reach the Secret notes API.";
+        caught instanceof Error ? caught.message : "Could not reach the Secret Notes API.";
     }
   });
 }

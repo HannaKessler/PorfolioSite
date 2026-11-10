@@ -73,14 +73,14 @@ function labelFor(tone: Tone): string {
 }
 
 function copyFor(tone: Tone): string {
-  if (tone === "ok") return "The Secret notes API answered this probe. Uploads are open.";
+  if (tone === "ok") return "The Secret Notes API answered this probe. Uploads are open.";
   if (tone === "paused") {
     return "The API is up, but the kill switch is on. Existing notes can still be opened until they expire.";
   }
   if (tone === "degraded") {
     return "The API answered, but latency or quota is over the demo target.";
   }
-  return "This page could not reach the Secret notes API. Locally, start it on port 8787. On the live site, PUBLIC_SECRET_NOTES_API must point at the deployed host.";
+  return "This page could not reach the Secret Notes API. Locally, start it on port 8787. On the live site, PUBLIC_SECRET_NOTES_API must point at the deployed host.";
 }
 
 function meter(value: number, max: number): string {
@@ -160,21 +160,21 @@ function render(root: HTMLElement, probe: Probe, history: Probe[], payload?: Sta
 
   root.innerHTML = `
     <div class="st-banner st-banner-${tone}">
-      <p class="st-kicker">Secret notes</p>
+      <p class="st-kicker">Secret Notes</p>
       <p class="st-state">${labelFor(tone)}</p>
       <p>${copyFor(tone)}</p>
     </div>
     <div class="st-stats">
       <div class="st-stat">
-        <p class="st-stat-label">This probe</p>
+        <p class="st-stat-label">This Probe</p>
         <p class="st-stat-value">${probe.ok ? `${probe.ms} ms` : "Failed"}</p>
       </div>
       <div class="st-stat">
-        <p class="st-stat-label">Session average</p>
+        <p class="st-stat-label">Session Average</p>
         <p class="st-stat-value">${avgMs} ms</p>
       </div>
       <div class="st-stat">
-        <p class="st-stat-label">Session reachability</p>
+        <p class="st-stat-label">Session Reachability</p>
         <p class="st-stat-value">${history.length ? `${sessionPct}%` : "—"}</p>
       </div>
       <div class="st-stat">
@@ -186,12 +186,12 @@ function render(root: HTMLElement, probe: Probe, history: Probe[], payload?: Sta
       quota
         ? `<div class="st-quota">
             <div>
-              <h3>Active storage</h3>
+              <h3>Active Storage</h3>
               <p>${formatBytes(quota.activeBytes)} of ${formatBytes(quota.maxActiveBytes)}</p>
               ${meter(quota.activeBytes, quota.maxActiveBytes)}
             </div>
             <div>
-              <h3>Uploads today</h3>
+              <h3>Uploads Today</h3>
               <p>${quota.uploadsToday} of ${quota.maxUploadsPerDay}</p>
               ${meter(quota.uploadsToday, quota.maxUploadsPerDay)}
             </div>
@@ -199,11 +199,11 @@ function render(root: HTMLElement, probe: Probe, history: Probe[], payload?: Sta
         : ""
     }
     <div class="st-toolbar">
-      <button type="button" class="button button-ghost" id="st-refresh">Check again</button>
+      <button type="button" class="button button-ghost" id="st-refresh">Check Again</button>
       <p class="st-muted">${sourceNote} ${payload?.antivirus ? `Scan path: ${payload.antivirus}.` : ""} History stays in this browser.</p>
     </div>
     <table class="st-table">
-      <caption>Probes from this tab</caption>
+      <caption>Probes from This Tab</caption>
       <thead>
         <tr><th>Time</th><th>Result</th><th>Latency</th><th>Source</th></tr>
       </thead>

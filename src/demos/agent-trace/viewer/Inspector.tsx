@@ -136,7 +136,7 @@ export function Inspector({ span, runStartNs, onClose, onShow }: { span?: ViewSp
           {s.status.code === 2 ? "✕ " : s.status.code === 1 ? "✓ " : ""}
           {STATUS[s.status.code] ?? s.status.code}
         </span>
-        {span.fault && <span className="atv-badge-fault">Injected fault: {span.fault}</span>}
+        {span.fault && <span className="atv-badge-fault">Injected Fault: {span.fault}</span>}
         {s.attrs[APP.truncated] === true && <span className="atv-chip">Payload truncated at {Math.round(PAYLOAD_LIMIT / 1024)} KB</span>}
       </p>
       {onShow && (

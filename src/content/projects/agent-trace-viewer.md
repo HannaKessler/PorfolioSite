@@ -8,7 +8,7 @@ tags:
   - TypeScript
   - React
   - OpenTelemetry
-  - LLM agents
+  - LLM Agents
   - WebLLM
   - WebGPU
 githubUrl: https://github.com/HannaKessler/PorfolioSite
@@ -29,11 +29,11 @@ What it demonstrates:
 - **Browser engineering:** three Web Workers (agent, tests, model), MessagePort transport, IndexedDB persistence and lazy loading of a large model runtime.
 - **Testing:** unit tests for every layer, golden traces, determinism checks, a schema test that holds both brains to the same contract, and a Playwright end-to-end test.
 
-## What you can do with it
+## What You Can Do with It
 
-- Run the agent with the simulated brain and watch spans appear on the timeline while they are still open.
+- Run the Agent with the Simulated Brain and watch spans appear on the timeline while they are still open.
 - Opt in to a real model. The page checks for WebGPU first, shows the download size and GPU memory needed, and reports download progress. The model is cached by the browser and can be removed again.
-- Inject faults: a flaky test, a tool that blocks past its deadline, or a model reply that is cut off mid-JSON. Each one really happens in the run, and the affected spans are marked as injected faults.
+- Inject Faults: a flaky test, a tool that blocks past its deadline, or a model reply that is cut off mid-JSON. Each one really happens in the run, and the affected spans are marked as injected faults.
 - Step through a run one agent step at a time.
 - Inspect any span: its prompt and response, tool arguments and results, events, status and attributes.
 - Follow the run step by step in the activity feed: the real model's reasoning in its own words, or the rule the simulated brain applied, then the tool call with its arguments, the result (including test failures and tool errors) and the outcome. Selecting an item selects the same span in the timeline and inspector, and the other way round.
@@ -51,7 +51,7 @@ What it demonstrates:
 - **Collector and store:** one `ingest()` entry point validates and normalizes OTLP-JSON from the live port, bundled samples and uploaded files alike, then upserts spans by ID into a store indexed by trace, parent and start time. Finished runs are saved to IndexedDB so they survive a reload.
 - **Viewer:** a React island on a static Astro page. It reads only from the store and has no knowledge of which brain produced a trace.
 
-## Engineering decisions and trade-offs
+## Engineering Decisions and Trade-Offs
 
 - **One monitor for both brains.** Both brains return raw text that must contain a JSON tool call, so the simulated brain goes through the same parser, validator and retry path as the real model. An architecture test fails if the tracing, collector, store or viewer code imports anything from the brains.
 - **Only measured data.** Spans hold real durations, real tool inputs and outputs and real test results. Token counts and model statistics (time to first token, prefill and decode speed) are copied from what the WebLLM runtime reports, field by field. When a value is not reported, the attribute is left out rather than estimated, and the viewer says "Not reported by this brain". The simulated brain reports no usage at all and adds no artificial delay.
@@ -65,7 +65,7 @@ What it demonstrates:
 - **Cost as a what-if.** A model running in the browser has no price, so there is no cost figure. For real-model runs, a collapsed panel multiplies the run's reported token counts by prices the visitor enters; there are no default prices, and every figure is labelled as a what-if.
 - **Lazy loading.** The page loads the viewer (about 35 KB gzip, plus React, which the site's other demos share). The agent worker starts on the first run. The WebLLM runtime and the model weights are fetched only on opt-in. The runtime is about 4.3 MB gzip in total, because the engine's client in the agent worker and the engine's own worker each include the library.
 
-## Trace schema
+## Trace Schema
 
 ```
 invoke_agent trace-fixer        run config, brain, outcome, final test result, project files at the start

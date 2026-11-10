@@ -21,6 +21,8 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@apollo/client": "^3.13.8",
+    "@apollo/subgraph": "^2.14.1",
     "@astrojs/react": "^7.0.1",
     "@babylonjs/core": "^9.30.0",
     "@babylonjs/loaders": "^9.30.0",

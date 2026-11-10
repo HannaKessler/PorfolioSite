@@ -18,7 +18,9 @@ export function esc(value: unknown) {
 }
 
 function httpsUrl(value: string) {
-  return value.startsWith("https://") ? value : "";
+  // Allow absolute https URLs and same-origin public paths (extra catalog images).
+  if (value.startsWith("https://") || value.startsWith("/")) return value;
+  return "";
 }
 
 export function cardHtml(product: Product, query: string) {
@@ -54,9 +56,9 @@ export function carouselHtml(row: ShopRow, query: string) {
       ${forget}
     </div>
     <div class="os-scroller">
-      <button type="button" class="os-scroll" data-scroll="-1" aria-label="Previous products" hidden>‹</button>
+      <button type="button" class="os-scroll" data-scroll="-1" aria-label="Previous Products" hidden>‹</button>
       <div class="os-track" tabindex="0">${cards}</div>
-      <button type="button" class="os-scroll" data-scroll="1" aria-label="Next products">›</button>
+      <button type="button" class="os-scroll" data-scroll="1" aria-label="Next Products">›</button>
     </div>
   </section>`;
 }
@@ -91,6 +93,15 @@ export function resultsHtml(query: string, products: Product[], category: string
   </div>`;
 }
 
+export function recommendedSlotHtml() {
+  const row = popularRows()[0];
+  if (!row) return "";
+  return carouselHtml(row, "").replace(
+    '<section class="os-row">',
+    '<section class="os-row" id="os-recommended" data-source="default">',
+  );
+}
+
 export function initialBrowseHtml() {
-  return browseHtml(popularRows());
+  return browseHtml(popularRows().slice(1));
 }

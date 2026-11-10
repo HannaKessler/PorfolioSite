@@ -130,17 +130,17 @@ export function RunPanel({ client, store, collector, onRunStarted }: Props) {
   const webllmBlocked = brain === "webllm" && (!capability || !capability.ok);
 
   return (
-    <section className="atv-runpanel" aria-label="Run the agent">
+    <section className="atv-runpanel" aria-label="Run the Agent">
       <div className="atv-runpanel-grid">
         <fieldset className="atv-fieldset">
           <legend>Brain</legend>
           <label className="atv-radio">
             <input type="radio" name="atv-brain" checked={brain === "scripted"} disabled={busy} onChange={() => setBrain("scripted")} />
-            Simulated brain <span className="atv-muted">(a deterministic rule set; no download)</span>
+            Simulated Brain <span className="atv-muted">(a deterministic rule set; no download)</span>
           </label>
           <label className="atv-radio">
             <input type="radio" name="atv-brain" checked={brain === "webllm"} disabled={busy} onChange={() => setBrain("webllm")} />
-            Real model in your browser <span className="atv-muted">(WebLLM, WebGPU)</span>
+            Real Model in Your Browser <span className="atv-muted">(WebLLM, WebGPU)</span>
           </label>
           {brain === "webllm" && (
             <div className="atv-model">
@@ -188,16 +188,16 @@ export function RunPanel({ client, store, collector, onRunStarted }: Props) {
         </fieldset>
 
         <fieldset className="atv-fieldset">
-          <legend>Task and limits</legend>
+          <legend>Task and Limits</legend>
           <label className="atv-field">
-            <span>Planted bug</span>
+            <span>Planted Bug</span>
             <select value={variant} disabled={busy} onChange={(e) => setVariant(e.target.value as RunRequest["variant"])}>
               <option value="rounding">Rounding (59.6 s shows as 1:60)</option>
               <option value="padding">Padding (65 s shows as 1:5)</option>
             </select>
           </label>
           <label className="atv-field">
-            <span>Step cap</span>
+            <span>Step Cap</span>
             <input type="number" min={1} max={40} value={maxSteps} disabled={busy} onChange={(e) => setMaxSteps(Math.max(1, Math.min(40, Number(e.target.value) || 1)))} />
           </label>
           <label className="atv-field">
@@ -205,20 +205,20 @@ export function RunPanel({ client, store, collector, onRunStarted }: Props) {
             <input inputMode="numeric" placeholder="Random" value={seedText} disabled={busy} onChange={(e) => setSeedText(e.target.value.replace(/\D/g, ""))} />
           </label>
           <label className="atv-check">
-            <input type="checkbox" checked={stepMode} disabled={busy} onChange={(e) => setStepMode(e.target.checked)} /> Step mode (pause before each step)
+            <input type="checkbox" checked={stepMode} disabled={busy} onChange={(e) => setStepMode(e.target.checked)} /> Step Mode (Pause Before Each Step)
           </label>
         </fieldset>
 
         <fieldset className="atv-fieldset">
-          <legend>Inject faults</legend>
+          <legend>Inject Faults</legend>
           <label className="atv-check">
-            <input type="checkbox" checked={flaky} disabled={busy} onChange={(e) => setFlaky(e.target.checked)} /> Flaky test on the first test run
+            <input type="checkbox" checked={flaky} disabled={busy} onChange={(e) => setFlaky(e.target.checked)} /> Flaky Test on the First Test Run
           </label>
           <label className="atv-check">
-            <input type="checkbox" checked={malformed} disabled={busy} onChange={(e) => setMalformed(e.target.checked)} /> Malformed model output (second reply)
+            <input type="checkbox" checked={malformed} disabled={busy} onChange={(e) => setMalformed(e.target.checked)} /> Malformed Model Output (Second Reply)
           </label>
           <label className="atv-field">
-            <span>Tool timeout</span>
+            <span>Tool Timeout</span>
             <select value={timeoutTool} disabled={busy} onChange={(e) => setTimeoutTool(e.target.value as ToolName | "")}>
               <option value="">None</option>
               <option value="run_tests">run_tests</option>
@@ -231,7 +231,7 @@ export function RunPanel({ client, store, collector, onRunStarted }: Props) {
 
       <div className="atv-runbar">
         <button type="button" className="atv-run" onClick={start} disabled={busy || webllmBlocked}>
-          {brain === "scripted" ? "Run the agent" : cached[resolved.modelId] ? "Run with a real model" : "Download and run with a real model"}
+          {brain === "scripted" ? "Run the Agent" : cached[resolved.modelId] ? "Run with a Real Model" : "Download and Run with a Real Model"}
         </button>
         {status === "awaiting-step" && (
           <button type="button" className="atv-btn" onClick={() => { setStatus("running"); setMessage(undefined); client().step(); }}>

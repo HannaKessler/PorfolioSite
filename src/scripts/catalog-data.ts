@@ -93,6 +93,15 @@ export function stockClass(status: string) {
   return "is-in";
 }
 
+export function isOutOfStock(product: { stock?: number; availabilityStatus?: string }) {
+  if (product.stock === 0) return true;
+  return (product.availabilityStatus ?? "").toLowerCase().includes("out of stock");
+}
+
+export function addToCartLabel(product: { stock?: number; availabilityStatus?: string }) {
+  return isOutOfStock(product) ? "Out of Stock" : "Add to Cart";
+}
+
 export interface ShopRow {
   title: string;
   items: Product[];

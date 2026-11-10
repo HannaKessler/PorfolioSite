@@ -470,7 +470,7 @@ export default function Viewer() {
           <div className={`mv-overlay mv-${status.kind}`} role={status.kind === "error" ? "alert" : "status"}>
             {status.kind === "empty" && (
               <>
-                <p className="mv-overlay-title">Drop a 3D model here</p>
+                <p className="mv-overlay-title">Drop a 3D Model Here</p>
                 <p>glTF/GLB, OBJ + MTL, STL, FBX or PLY. Drop textures and other referenced files together with the model.</p>
                 <p>It opens in three.js, Babylon.js and two hand-written renderers side by side.</p>
                 <div className="mv-empty-actions">
@@ -497,7 +497,7 @@ export default function Viewer() {
             )}
           </div>
         )}
-        {dragging && <div className="mv-dropzone">Drop to open</div>}
+        {dragging && <div className="mv-dropzone">Drop to Open</div>}
       </div>
       {files && <StageBar />}
       </div>

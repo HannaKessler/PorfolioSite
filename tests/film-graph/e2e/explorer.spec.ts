@@ -29,7 +29,7 @@ async function openAndRun(page: Page) {
 }
 
 /** The result panels show pretty JSON; GraphQL's body has the data under "data". */
-async function resultJson(page: Page, tab: "GraphQL result" | "REST result") {
+async function resultJson(page: Page, tab: "GraphQL Result" | "REST Result") {
   await page.getByRole("tab", { name: tab }).click();
   return JSON.parse(await page.locator(".fg-json pre").innerText());
 }
@@ -64,7 +64,7 @@ test("nothing loads or runs until the visitor acts", async ({ page }) => {
   await expect(page.getByRole("combobox", { name: "Director" })).toHaveValue("Christopher Nolan");
   // Picking another question doesn't run anything either.
   await question(page, /Shortest link between/).click();
-  await expect(page.getByRole("combobox", { name: "First actor" })).toHaveValue("Kevin Bacon");
+  await expect(page.getByRole("combobox", { name: "First Actor" })).toHaveValue("Kevin Bacon");
   await page.waitForTimeout(1500);
   expect(backend).toEqual([]);
   expect(await page.evaluate(async () => (await navigator.serviceWorker.getRegistrations()).length)).toBe(0);
@@ -104,8 +104,8 @@ test("every question answers, and GraphQL and REST return the same data", async 
     expect(await number(page, "requests", "graphql"), String(item.name)).toBe(1);
     expect(await number(page, "requests", "rest"), String(item.name)).toBeGreaterThanOrEqual(item.minRest);
     expect(await number(page, "db", "graphql"), String(item.name)).toBeGreaterThan(0);
-    const graphql = await resultJson(page, "GraphQL result");
-    const rest = await resultJson(page, "REST result");
+    const graphql = await resultJson(page, "GraphQL Result");
+    const rest = await resultJson(page, "REST Result");
     expect(rest, String(item.name)).toEqual(graphql.data);
   }
   await expect(answer(page).locator(".fg-chain-person").first()).toHaveText("Kevin Bacon");
@@ -115,14 +115,14 @@ test("every question answers, and GraphQL and REST return the same data", async 
 test("names are searched as you type, and only Run runs the new question", async ({ page }) => {
   await page.goto(DEMO);
   await question(page, /^Films actor and actor both appear in/).click();
-  await fillBlank(page, "First actor", "tom han", "Tom Hanks");
+  await fillBlank(page, "First Actor", "tom han", "Tom Hanks");
   // Suggestions show disambiguating detail and come from GraphQL search.
-  const second = page.getByRole("combobox", { name: "Second actor" });
+  const second = page.getByRole("combobox", { name: "Second Actor" });
   await second.fill("meg");
   await expect(page.getByRole("option", { name: /Meg Ryan/ })).toContainText("b. 1961");
   await expect(page.locator(".fg-combo-status:visible").filter({ hasText: "POST /graphql" })).toBeVisible();
   await second.press("Escape");
-  await fillBlank(page, "Second actor", "meg ryan", "Meg Ryan");
+  await fillBlank(page, "Second Actor", "meg ryan", "Meg Ryan");
   // The editor and variables reflect the picks before anything runs.
   await expect(page.getByLabel(/^Variables/)).toHaveValue(/"a": "2263"[\s\S]*"b": "167498"/);
   await expect(answer(page)).toHaveAttribute("data-state", "idle");
@@ -164,7 +164,7 @@ test("answers show every result in full, with nothing collapsed", async ({ page 
   await page.goto(DEMO);
   await question(page, /films, by decade/).click();
   await runQuestion(page);
-  const { data } = await resultJson(page, "GraphQL result");
+  const { data } = await resultJson(page, "GraphQL Result");
   const decades = data.person.byDecade;
   const credits = decades.reduce((sum: number, group: any) => sum + group.credits.length, 0);
   await expect(answer(page).locator(".fg-ans-decades > li")).toHaveCount(decades.length);
@@ -190,7 +190,7 @@ test("running again revalidates REST with ETags", async ({ page }) => {
 
 test("N+1 demo: batching cuts 100+ queries to a handful", async ({ page }) => {
   await page.goto(DEMO);
-  await page.getByRole("button", { name: "Run with batching off, then on" }).click();
+  await page.getByRole("button", { name: "Run with Batching Off, Then On" }).click();
   const off = page.locator('[data-n1="off"] .fg-bar-value strong');
   const on = page.locator('[data-n1="on"] .fg-bar-value strong');
   await expect(off).toBeVisible({ timeout: 90_000 });
@@ -200,29 +200,48 @@ test("N+1 demo: batching cuts 100+ queries to a handful", async ({ page }) => {
 
 test("persisted queries send a hash and the allowlist rejects other queries", async ({ page }) => {
   await openAndRun(page);
-  await page.getByRole("switch", { name: /Send persisted query hash/ }).check();
-  await page.getByRole("button", { name: "GraphQL only" }).click();
+  await page.getByRole("switch", { name: /Send Persisted Query Hash/ }).check();
+  await page.getByRole("button", { name: "GraphQL Only" }).click();
   await expect(page.locator('[data-pq="saved"]')).toContainText("%");
   const sent = await page.locator('[data-pq="sent"]').innerText();
   const full = await page.locator('[data-pq="full"]').innerText();
   expect(sent).not.toBe(full);
-  await page.getByRole("button", { name: "Try a query that is not on the list" }).click();
+  await page.getByRole("button", { name: "Try a Query That Is Not on the List" }).click();
   await expect(page.locator('[data-pq="error"]')).toContainText(/persisted/i);
   // Name search is on the allowlist too, so it keeps working in allowlist mode.
-  await page.getByRole("switch", { name: /Reject non-persisted queries/ }).check();
+  await page.getByRole("switch", { name: /Reject Non-Persisted Queries/ }).check();
   await fillBlank(page, "Director", "spielberg", "Steven Spielberg");
 });
 
 test("the rest of the site is unaffected and never loads Postgres", async ({ page }) => {
   const heavy: string[] = [];
   page.on("request", (request) => {
-    if (BACKEND.test(request.url()) || /QueryEditor/.test(request.url())) heavy.push(request.url());
+    const url = request.url();
+    // Film Graph's compiled worker is also named backend.worker-*.js; the shop's
+    // catalog-profile worker uses the same filename. Match Film Graph / PGlite only.
+    if (/pglite|film-graph-seed|film-graph-sw|\/projects\/film-graph\/api\/|QueryEditor/i.test(url)) {
+      heavy.push(url);
+    }
   });
   await page.goto("/");
   await expect(page.getByRole("link", { name: /Film Data Query/ }).first()).toBeAttached();
   await page.goto("/projects/catalog/");
   await expect(page.locator("#open-stock")).toBeVisible();
-  expect(await page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(false);
+  // The shop may control this page with its own scoped worker. Film Graph must not.
+  const filmGraph = await page.evaluate(async () => {
+    const controller = navigator.serviceWorker.controller?.scriptURL ?? "";
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    const scripts = registrations.map(
+      (registration) =>
+        registration.active?.scriptURL ||
+        registration.waiting?.scriptURL ||
+        registration.installing?.scriptURL ||
+        registration.scope,
+    );
+    return { controller, scripts };
+  });
+  expect(filmGraph.controller).not.toMatch(/film-graph/i);
+  expect(filmGraph.scripts.filter((script) => /film-graph/i.test(script))).toEqual([]);
   await page.goto("/status/");
   expect(heavy).toEqual([]);
 });

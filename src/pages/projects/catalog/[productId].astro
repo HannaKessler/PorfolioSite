@@ -1,6 +1,8 @@
 ---
 import catalog from "../../../data/catalog.json";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import CatalogHoodToggle from "../../../components/CatalogHoodToggle.astro";
+import CatalogHood from "../../../components/CatalogHood.astro";
 import CatalogBar from "../../../components/CatalogBar.astro";
 import CatalogConsent from "../../../components/CatalogConsent.astro";
 import "../../../styles/catalog.css";
@@ -13,6 +15,8 @@ import {
   productById,
   similarProducts,
   stockClass,
+  isOutOfStock,
+  addToCartLabel,
   type Product,
 } from "../../../scripts/catalog-data";
 
@@ -26,15 +30,18 @@ export function getStaticPaths() {
 const product = productById(Astro.props.productId) as Product;
 const images = product.images?.length ? product.images : product.thumbnail ? [product.thumbnail] : [];
 const similar = similarProducts(product);
-const similarHtml = similar.length ? carouselHtml({ title: "Similar products", items: similar }, "") : "";
+const similarHtml = similar.length ? carouselHtml({ title: "Similar Products", items: similar }, "") : "";
 const description = product.description.slice(0, 160);
+const outOfStock = isOutOfStock(product);
 ---
 
 <BaseLayout title={product.title} description={description}>
   <div class="container demo-project os-wide">
-    <section class="os os-item-page" id="open-stock-item" aria-label="Searchable Shop product">
+    <section class="os os-item-page" id="open-stock-item" aria-label="Searchable Shop Product" data-product-id={product.id}>
+      <CatalogHoodToggle />
+      <CatalogHood />
       <CatalogBar />
-      <a class="os-back" href="/projects/catalog" data-back>Back to the shop</a>
+      <a class="os-back" href="/projects/catalog" data-back>Back to the Shop</a>
       <article class="os-item">
         <div class="os-gallery">
           <div class="os-hero">
@@ -50,7 +57,7 @@ const description = product.description.slice(0, 160);
             images.length > 1 && (
               <div class="os-thumbs">
                 {images.map((image, index) => (
-                  <button type="button" class:list={[{ "is-on": index === 0 }]} data-image={image} aria-label={`Show image ${index + 1}`}>
+                  <button type="button" class:list={[{ "is-on": index === 0 }]} data-image={image} aria-label={`Show Image ${index + 1}`}>
                     <img src={image} alt="" />
                   </button>
                 ))}
@@ -69,6 +76,8 @@ const description = product.description.slice(0, 160);
             <span class:list={["os-stock", stockClass(product.availabilityStatus)]}>{product.availabilityStatus}</span>
           </p>
           <p class="os-note">Sample catalog. Nothing here is for sale.</p>
+          <button type="button" class:list={["os-add-cart", { "is-out": outOfStock }]} data-add-cart disabled={outOfStock} aria-disabled={outOfStock ? "true" : undefined}>{addToCartLabel(product)}</button>
+          <p class="os-note" data-cart-status hidden></p>
           <p>{product.description}</p>
           {
             product.tags?.length > 0 && (
@@ -98,7 +107,7 @@ const description = product.description.slice(0, 160);
             <dd>{product.shippingInformation}</dd>
             <dt>Returns</dt>
             <dd>{product.returnPolicy}</dd>
-            <dt>Minimum order</dt>
+            <dt>Minimum Order</dt>
             <dd>{product.minimumOrderQuantity}</dd>
             <dt>Barcode</dt>
             <dd>{product.meta?.barcode}</dd>

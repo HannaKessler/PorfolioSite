@@ -43,7 +43,7 @@ function Reasoning({ call }: { call: ModelCall }) {
   if (call.policy) {
     return (
       <div className="atv-feed-policy">
-        <p className="atv-feed-label">Scripted policy decision · a fixed rule, not model reasoning</p>
+        <p className="atv-feed-label">Scripted Policy Decision · a fixed rule, not model reasoning</p>
         <p>
           <strong>Rule:</strong> {call.policy.rule}
         </p>
@@ -60,7 +60,7 @@ function Reasoning({ call }: { call: ModelCall }) {
     // Traces recorded before the policy decision was traced: the text is a fixed string in the rule set.
     return (
       <div className="atv-feed-policy">
-        <p className="atv-feed-label">Simulated brain · fixed text from its rule set, not model reasoning</p>
+        <p className="atv-feed-label">Simulated Brain · fixed text from its rule set, not model reasoning</p>
         <p>{thought}</p>
       </div>
     );
@@ -68,7 +68,7 @@ function Reasoning({ call }: { call: ModelCall }) {
   if (thought !== undefined) {
     return (
       <div className="atv-feed-thought">
-        <p className="atv-feed-label">Model's reasoning · its own words, verbatim</p>
+        <p className="atv-feed-label">Model's Reasoning · its own words, verbatim</p>
         <blockquote>{thought}</blockquote>
       </div>
     );
@@ -81,13 +81,13 @@ function CallItem({ call, selectedId, onSelect, retries }: { call: ModelCall; se
   return (
     <Selectable id={call.span.id} selectedId={selectedId} onSelect={onSelect} className={`atv-feed-item atv-feed-call${call.error ? " is-error" : ""}`}>
       <p className="atv-feed-kind">
-        <span>{call.policy ? "Simulated brain" : "Model"}{retries ? ` · attempt ${call.attempt}` : ""}</span>
+        <span>{call.policy ? "Simulated Brain" : "Model"}{retries ? ` · attempt ${call.attempt}` : ""}</span>
         <span className="atv-muted">{duration(call.span)}</span>
       </p>
       <Reasoning call={call} />
       {call.parsed?.ok && (
         <div className="atv-feed-decision">
-          <p className="atv-feed-label">Tool call</p>
+          <p className="atv-feed-label">Tool Call</p>
           <p>
             <code className="atv-feed-tool">{call.parsed.call.tool}</code>
           </p>
@@ -97,8 +97,8 @@ function CallItem({ call, selectedId, onSelect, retries }: { call: ModelCall; se
       {call.parsed && !call.parsed.ok && (
         <div className="atv-feed-invalid">
           <p className="atv-error-text">Rejected by the validator: {call.parsed.error}</p>
-          {call.fault && <p><span className="atv-badge-fault">Injected fault: {call.fault}</span></p>}
-          <p className="atv-feed-label">Raw reply</p>
+          {call.fault && <p><span className="atv-badge-fault">Injected Fault: {call.fault}</span></p>}
+          <p className="atv-feed-label">Raw Reply</p>
           <pre className="atv-pre">{call.output}</pre>
         </div>
       )}
@@ -175,7 +175,7 @@ function ToolItem({ tool, selectedId, onSelect }: { tool: ToolCallView; selected
         <span>
           Tool · <code className="atv-feed-tool">{tool.tool}</code>
           {tool.attempt > 1 ? ` · attempt ${tool.attempt}` : ""}
-          {tool.fault && <> <span className="atv-badge-fault">Injected fault: {tool.fault}</span></>}
+          {tool.fault && <> <span className="atv-badge-fault">Injected Fault: {tool.fault}</span></>}
         </span>
         <span className="atv-muted">{duration(tool.span)}</span>
       </p>
@@ -196,7 +196,7 @@ function StepItem({ step, selectedId, onSelect, active }: { step: ActivityStep; 
       </Selectable>
       {step.pause && (
         <Selectable id={step.pause.id} selectedId={selectedId} onSelect={onSelect} className="atv-feed-item atv-feed-pause">
-          <p className="atv-muted">Step mode: waited {duration(step.pause)} for the visitor to allow this step.</p>
+          <p className="atv-muted">Step Mode: waited {duration(step.pause)} for the visitor to allow this step.</p>
         </Selectable>
       )}
       {step.calls.map((c) => (

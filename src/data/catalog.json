@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-09T22:25:02Z",
-  "source": "https://dummyjson.com/products",
+  "generatedAt": "2026-11-09T23:14:39Z",
+  "source": "https://dummyjson.com/products + catalog/extra-products.json (public-domain photo mock catalog)",
   "elasticsearchVersion": "8.18.2",
   "popularThemes": [
     {
@@ -9,24 +9,24 @@
       "averageRating": 4.6
     },
     {
-      "slug": "womens-dresses",
-      "name": "Womens Dresses",
-      "averageRating": 4.11
-    },
-    {
-      "slug": "sports-accessories",
-      "name": "Sports Accessories",
-      "averageRating": 4.01
+      "slug": "home-decoration",
+      "name": "Home Decoration",
+      "averageRating": 4.24
     },
     {
       "slug": "furniture",
       "name": "Furniture",
-      "averageRating": 4.01
+      "averageRating": 4.2
     },
     {
       "slug": "womens-jewellery",
       "name": "Womens Jewellery",
-      "averageRating": 3.98
+      "averageRating": 4.13
+    },
+    {
+      "slug": "womens-dresses",
+      "name": "Womens Dresses",
+      "averageRating": 4.11
     }
   ],
   "products": [
@@ -94,12 +94,12 @@
         4,
         3,
         5,
-        161,
         125,
+        161,
         76,
-        114,
-        94,
         121,
+        94,
+        114,
         98,
         88,
         129
@@ -170,9 +170,13 @@
         5,
         161,
         175,
+        4,
+        127,
         179,
-        176,
-        173
+        100,
+        173,
+        128,
+        97
       ]
     },
     {
@@ -312,16 +316,16 @@
       "similarIds": [
         5,
         189,
-        3,
         1,
+        3,
         70,
         91,
         37,
         25,
         161,
-        181,
         162,
-        120
+        181,
+        184
       ]
     },
     {
@@ -391,12 +395,12 @@
         1,
         189,
         70,
-        43,
         161,
+        43,
         181,
+        130,
         47,
-        45,
-        130
+        86
       ]
     },
     {
@@ -468,9 +472,9 @@
         8,
         7,
         121,
+        97,
         69,
         194,
-        97,
         66,
         85,
         83
@@ -622,7 +626,7 @@
         135,
         170,
         148,
-        119
+        125
       ]
     },
     {
@@ -838,15 +842,15 @@
         12,
         13,
         186,
+        1007,
         15,
         167,
         86,
-        44,
         173,
+        44,
         83,
-        14,
-        43,
-        152
+        194,
+        43
       ]
     },
     {
@@ -917,13 +921,13 @@
         15,
         96,
         43,
-        13,
         93,
+        13,
+        87,
         86,
         47,
-        87,
-        159,
-        184
+        184,
+        159
       ]
     },
     {
@@ -991,16 +995,16 @@
       "similarIds": [
         47,
         15,
-        11,
         43,
+        11,
         162,
         45,
         67,
         182,
-        12,
         187,
         73,
-        14
+        12,
+        46
       ]
     },
     {
@@ -1067,17 +1071,17 @@
       "salePrice": 489.94,
       "similarIds": [
         12,
-        182,
-        74,
         50,
+        74,
+        182,
         97,
         46,
-        15,
         177,
         58,
         30,
+        49,
         43,
-        11
+        15
       ]
     },
     {
@@ -1151,10 +1155,10 @@
         43,
         157,
         83,
-        14,
         46,
+        93,
         76,
-        93
+        187
       ]
     },
     {
@@ -1296,8 +1300,8 @@
         104,
         19,
         35,
-        23,
         33,
+        23,
         40,
         186,
         20,
@@ -1375,9 +1379,9 @@
         25,
         72,
         93,
-        56,
-        20,
-        184
+        77,
+        184,
+        56
       ]
     },
     {
@@ -1451,8 +1455,8 @@
         56,
         24,
         6,
-        188,
-        34
+        34,
+        188
       ]
     },
     {
@@ -1523,8 +1527,8 @@
         87,
         66,
         155,
-        70,
         38,
+        70,
         23,
         31
       ]
@@ -1596,9 +1600,9 @@
         29,
         24,
         17,
+        23,
         42,
         56,
-        23,
         81,
         75
       ]
@@ -1669,13 +1673,13 @@
         157,
         37,
         25,
-        104,
-        17,
         26,
+        17,
+        104,
         36,
         29,
-        53,
-        72
+        72,
+        110
       ]
     },
     {
@@ -1741,15 +1745,15 @@
         31,
         32,
         24,
-        57,
         16,
+        57,
         20,
         63,
         17,
         21,
         56,
-        19,
-        35
+        35,
+        19
       ]
     },
     {
@@ -1817,9 +1821,9 @@
         31,
         40,
         21,
-        52,
         20,
         32,
+        52,
         33,
         30,
         29,
@@ -1890,14 +1894,14 @@
         37,
         30,
         182,
-        156,
         70,
+        156,
         33,
         4,
         157,
         54,
-        184,
-        39
+        39,
+        184
       ]
     },
     {
@@ -1961,8 +1965,8 @@
       "salePrice": 0.98,
       "similarIds": [
         25,
-        156,
         37,
+        156,
         21,
         182,
         46,
@@ -2037,15 +2041,15 @@
         39,
         42,
         31,
-        30,
         16,
+        30,
         33,
-        34,
         35,
+        34,
+        1011,
         62,
-        153,
         28,
-        60
+        153
       ]
     },
     {
@@ -2115,14 +2119,14 @@
         62,
         39,
         52,
+        1017,
         27,
         38,
-        71,
+        1013,
         19,
+        71,
         32,
-        16,
-        61,
-        176
+        16
       ]
     },
     {
@@ -2268,8 +2272,8 @@
         36,
         17,
         157,
-        34,
         31,
+        34,
         46
       ]
     },
@@ -2335,16 +2339,16 @@
       "similarIds": [
         23,
         39,
+        16,
         29,
         27,
-        16,
         42,
         63,
         21,
         57,
         30,
-        24,
-        164
+        164,
+        24
       ]
     },
     {
@@ -2559,15 +2563,15 @@
         28,
         39,
         30,
-        29,
         38,
-        49,
+        29,
         42,
+        49,
         48,
         62,
         32,
-        130,
-        20
+        20,
+        27
       ]
     },
     {
@@ -2704,18 +2708,18 @@
       },
       "salePrice": 18.47,
       "similarIds": [
-        3,
         30,
+        3,
         29,
         18,
-        20,
         26,
+        20,
         22,
         77,
-        43,
         16,
+        43,
         128,
-        93
+        42
       ]
     },
     {
@@ -2789,7 +2793,7 @@
         184,
         35,
         70,
-        91
+        46
       ]
     },
     {
@@ -2862,8 +2866,8 @@
         164,
         68,
         24,
-        130,
-        37
+        37,
+        130
       ]
     },
     {
@@ -2934,10 +2938,10 @@
         31,
         27,
         25,
-        41,
         30,
-        16,
-        20
+        41,
+        19,
+        16
       ]
     },
     {
@@ -3078,15 +3082,15 @@
         65,
         128,
         188,
-        6,
         17,
         172,
+        6,
         81,
         105,
+        21,
         69,
         58,
-        21,
-        107
+        35
       ]
     },
     {
@@ -3159,7 +3163,7 @@
         180,
         36,
         35,
-        41,
+        25,
         98
       ]
     },
@@ -3229,14 +3233,14 @@
         45,
         162,
         46,
-        44,
         13,
-        182,
-        47,
+        44,
         93,
+        182,
         77,
         193,
         87,
+        47,
         12
       ]
     },
@@ -3309,8 +3313,8 @@
         105,
         172,
         152,
-        11,
         13,
+        11,
         185,
         156
       ]
@@ -3686,14 +3690,14 @@
         59,
         50,
         185,
-        46,
-        154,
-        60,
-        83,
         69,
+        154,
+        83,
+        46,
+        60,
         54,
-        77,
-        93
+        175,
+        77
       ]
     },
     {
@@ -3760,8 +3764,8 @@
         74,
         64,
         60,
-        49,
         58,
+        49,
         63,
         57,
         48,
@@ -3992,11 +3996,11 @@
         150,
         56,
         76,
-        54,
         50,
+        54,
         72,
         69,
-        83
+        58
       ]
     },
     {
@@ -4067,11 +4071,11 @@
         63,
         162,
         76,
-        74,
         25,
+        74,
         67,
-        64,
-        50
+        57,
+        64
       ]
     },
     {
@@ -4142,11 +4146,11 @@
         73,
         63,
         77,
-        61,
+        76,
+        57,
         74,
         70,
-        76,
-        57
+        61
       ]
     },
     {
@@ -4222,9 +4226,9 @@
         113,
         51,
         68,
-        48,
         70,
-        76
+        48,
+        65
       ]
     },
     {
@@ -4295,9 +4299,9 @@
         68,
         52,
         66,
+        74,
         56,
         23,
-        74,
         31,
         64
       ]
@@ -4368,13 +4372,13 @@
         64,
         50,
         48,
-        70,
         72,
+        70,
         75,
         128,
+        121,
         66,
-        188,
-        121
+        60
       ]
     },
     {
@@ -4443,12 +4447,12 @@
         62,
         156,
         75,
-        72,
         70,
+        72,
         155,
         74,
-        66,
         52,
+        66,
         63
       ]
     },
@@ -4524,7 +4528,7 @@
         53,
         51,
         61,
-        63
+        72
       ]
     },
     {
@@ -4597,9 +4601,9 @@
         76,
         63,
         48,
-        159,
         57,
-        58
+        58,
+        159
       ]
     },
     {
@@ -4666,15 +4670,15 @@
         75,
         39,
         157,
-        28,
-        184,
         180,
+        184,
+        28,
         59,
-        163,
-        50,
         37,
+        163,
+        70,
         65,
-        70
+        50
       ]
     },
     {
@@ -4742,9 +4746,9 @@
         76,
         50,
         74,
-        54,
-        48,
         77,
+        48,
+        54,
         68,
         70,
         60,
@@ -4824,7 +4828,7 @@
         61,
         63,
         77,
-        54
+        57
       ]
     },
     {
@@ -4896,10 +4900,10 @@
         51,
         62,
         100,
-        80,
         77,
+        80,
         56,
-        46
+        63
       ]
     },
     {
@@ -4974,10 +4978,10 @@
         57,
         20,
         52,
-        69,
-        58,
         113,
-        63
+        58,
+        69,
+        68
       ]
     },
     {
@@ -5043,17 +5047,17 @@
       "salePrice": 14.51,
       "similarIds": [
         73,
-        63,
         77,
+        63,
         44,
         54,
-        13,
         70,
-        47,
-        62,
-        50,
         46,
-        65
+        47,
+        13,
+        50,
+        65,
+        64
       ]
     },
     {
@@ -5123,8 +5127,8 @@
         72,
         63,
         60,
-        57,
         48,
+        57,
         70,
         66,
         69,
@@ -5196,8 +5200,8 @@
         75,
         74,
         71,
-        188,
         182,
+        188,
         49,
         85,
         66,
@@ -5275,8 +5279,8 @@
         74,
         58,
         63,
-        66,
         25,
+        66,
         162,
         52
       ]
@@ -5342,8 +5346,8 @@
       },
       "salePrice": 37.71,
       "similarIds": [
-        59,
         52,
+        59,
         68,
         69,
         75,
@@ -5428,7 +5432,7 @@
         53,
         50,
         59,
-        62
+        57
       ]
     },
     {
@@ -5653,7 +5657,7 @@
         59,
         68,
         176,
-        70
+        61
       ]
     },
     {
@@ -5720,15 +5724,15 @@
         63,
         57,
         60,
-        64,
         74,
+        64,
         50,
         54,
         77,
         61,
-        53,
         72,
-        48
+        48,
+        53
       ]
     },
     {
@@ -6026,13 +6030,13 @@
         123,
         82,
         136,
-        126,
         81,
         129,
+        126,
         132,
         100,
-        101,
-        124
+        124,
+        134
       ]
     },
     {
@@ -6100,14 +6104,14 @@
         79,
         80,
         78,
-        88,
         152,
-        161,
-        151,
         69,
         182,
-        99,
-        138,
+        71,
+        151,
+        161,
+        139,
+        46,
         122
       ]
     },
@@ -6255,10 +6259,10 @@
         85,
         86,
         84,
-        162,
         185,
         154,
         177,
+        162,
         186,
         179,
         156,
@@ -6338,9 +6342,9 @@
         165,
         175,
         174,
-        62,
         90,
-        92
+        92,
+        62
       ]
     },
     {
@@ -6416,9 +6420,9 @@
         165,
         162,
         164,
-        189,
+        179,
         188,
-        179
+        189
       ]
     },
     {
@@ -6567,8 +6571,8 @@
         85,
         86,
         84,
-        166,
         162,
+        166,
         180,
         93,
         164,
@@ -6718,8 +6722,8 @@
         139,
         88,
         138,
-        150,
         186,
+        150,
         90,
         188,
         187,
@@ -6800,9 +6804,9 @@
         91,
         89,
         194,
+        86,
         107,
         165,
-        86,
         85,
         180
       ]
@@ -6956,11 +6960,11 @@
         88,
         185,
         187,
-        175,
         165,
         186,
+        175,
         155,
-        183
+        158
       ]
     },
     {
@@ -7026,18 +7030,18 @@
       },
       "salePrice": 84.6,
       "similarIds": [
-        185,
         95,
+        185,
         194,
         193,
+        1036,
         87,
         94,
         98,
         154,
         97,
         184,
-        192,
-        190
+        192
       ]
     },
     {
@@ -7107,11 +7111,11 @@
         98,
         95,
         192,
-        177,
         96,
         190,
-        93,
         191,
+        177,
+        93,
         193,
         194,
         174
@@ -7488,15 +7492,13 @@
       "salePrice": 87.92,
       "similarIds": [
         103,
-        101,
         126,
         160,
         106,
-        108,
-        136,
-        112,
         105,
-        161
+        112,
+        136,
+        108
       ]
     },
     {
@@ -7567,11 +7569,11 @@
         102,
         104,
         103,
-        99,
         106,
-        80,
         105,
+        99,
         108,
+        80,
         186,
         159
       ]
@@ -7641,8 +7643,8 @@
         103,
         107,
         99,
-        159,
         104,
+        159,
         106,
         108
       ]
@@ -7783,11 +7785,11 @@
         101,
         100,
         106,
-        107,
         102,
+        107,
         104,
-        78,
         105,
+        78,
         160,
         108
       ]
@@ -7857,14 +7859,14 @@
         102,
         100,
         105,
-        108,
         110,
+        108,
         101,
         103,
         106,
         107,
-        17,
         123,
+        17,
         111
       ]
     },
@@ -8160,8 +8162,8 @@
         123,
         100,
         121,
-        101,
         103,
+        101,
         107
       ]
     },
@@ -8309,11 +8311,11 @@
         108,
         47,
         102,
+        121,
         65,
         107,
-        121,
         99,
-        106
+        103
       ]
     },
     {
@@ -8453,17 +8455,17 @@
       "salePrice": 458.44,
       "similarIds": [
         109,
-        160,
         99,
+        160,
         133,
         106,
         105,
         107,
-        153,
-        101,
         108,
+        153,
         103,
-        123
+        101,
+        104
       ]
     },
     {
@@ -8538,9 +8540,9 @@
         66,
         58,
         194,
-        128,
         85,
-        107
+        128,
+        155
       ]
     },
     {
@@ -8685,8 +8687,8 @@
       },
       "salePrice": 13961.99,
       "similarIds": [
-        117,
         114,
+        117,
         113,
         123,
         136,
@@ -8772,8 +8774,8 @@
         121,
         56,
         48,
-        175,
         127,
+        175,
         68
       ]
     },
@@ -8849,8 +8851,8 @@
         6,
         49,
         159,
-        161,
         84,
+        161,
         177,
         163
       ]
@@ -8929,7 +8931,7 @@
         151,
         44,
         43,
-        93
+        161
       ]
     },
     {
@@ -9213,8 +9215,8 @@
         131,
         135,
         133,
-        136,
         108,
+        136,
         129,
         128
       ]
@@ -9291,9 +9293,9 @@
         131,
         122,
         121,
-        130,
         129,
-        135
+        130,
+        134
       ]
     },
     {
@@ -9368,9 +9370,9 @@
         136,
         132,
         134,
+        78,
         108,
-        130,
-        78
+        130
       ]
     },
     {
@@ -9518,12 +9520,12 @@
         136,
         127,
         123,
-        128,
         125,
+        128,
         131,
         121,
-        80,
         129,
+        80,
         133
       ]
     },
@@ -9597,10 +9599,10 @@
         128,
         121,
         129,
-        161,
         131,
-        113,
+        161,
         123,
+        113,
         122,
         167
       ]
@@ -9671,14 +9673,14 @@
         130,
         126,
         129,
-        127,
         121,
+        127,
         136,
-        135,
         134,
         125,
         123,
-        122,
+        135,
+        132,
         131
       ]
     },
@@ -9749,14 +9751,14 @@
         130,
         128,
         134,
-        124,
         131,
+        124,
         123,
         135,
         136,
         133,
-        132,
-        127
+        127,
+        132
       ]
     },
     {
@@ -9823,16 +9825,16 @@
       "salePrice": 309.71,
       "similarIds": [
         126,
-        136,
         128,
+        136,
         129,
         123,
         131,
         132,
         135,
+        133,
         121,
         109,
-        133,
         124
       ]
     },
@@ -9983,8 +9985,8 @@
         126,
         160,
         161,
-        115,
         130,
+        115,
         121,
         134,
         129
@@ -10287,14 +10289,14 @@
         132,
         135,
         123,
-        130,
         131,
-        126,
         134,
+        130,
+        126,
         115,
-        121,
         129,
         133,
+        121,
         128
       ]
     },
@@ -10370,7 +10372,7 @@
         142,
         148,
         150,
-        145
+        149
       ]
     },
     {
@@ -10436,16 +10438,16 @@
       "similarIds": [
         150,
         151,
-        142,
         140,
-        139,
+        142,
         147,
+        139,
         153,
         137,
         148,
         152,
-        143,
-        146
+        1025,
+        143
       ]
     },
     {
@@ -10519,10 +10521,10 @@
         151,
         147,
         153,
+        1025,
         148,
         140,
-        152,
-        142
+        152
       ]
     },
     {
@@ -10590,8 +10592,8 @@
         147,
         138,
         153,
-        142,
         151,
+        142,
         137,
         146,
         143,
@@ -10667,12 +10669,12 @@
         138,
         147,
         142,
-        148,
         137,
         144,
+        148,
         143,
         152,
-        151
+        139
       ]
     },
     {
@@ -10737,11 +10739,11 @@
       "salePrice": 11.87,
       "similarIds": [
         143,
-        138,
         145,
+        138,
         148,
-        140,
         147,
+        140,
         151,
         152,
         146,
@@ -10975,7 +10977,7 @@
         147,
         148,
         151,
-        138
+        149
       ]
     },
     {
@@ -11044,10 +11046,10 @@
         137,
         147,
         148,
-        142,
         140,
-        152,
+        142,
         139,
+        152,
         149,
         138,
         145
@@ -11124,8 +11126,8 @@
         148,
         152,
         143,
-        145,
-        139
+        139,
+        145
       ]
     },
     {
@@ -11195,8 +11197,8 @@
         152,
         146,
         138,
-        143,
         147,
+        143,
         153,
         137,
         140,
@@ -11265,17 +11267,17 @@
       "salePrice": 46.73,
       "similarIds": [
         148,
-        150,
         146,
+        150,
         137,
         138,
+        1024,
         153,
         140,
-        143,
         151,
+        143,
         152,
-        147,
-        145
+        147
       ]
     },
     {
@@ -11348,8 +11350,8 @@
         147,
         149,
         53,
-        89,
         146,
+        89,
         142
       ]
     },
@@ -11489,8 +11491,8 @@
       },
       "salePrice": 40.19,
       "similarIds": [
-        143,
         151,
+        143,
         137,
         142,
         148,
@@ -11645,14 +11647,14 @@
         156,
         158,
         157,
-        179,
         83,
+        179,
         187,
         93,
         49,
         185,
-        181,
-        186
+        186,
+        181
       ]
     },
     {
@@ -11725,8 +11727,8 @@
         188,
         85,
         164,
-        179,
         87,
+        179,
         176,
         92,
         70
@@ -11801,12 +11803,12 @@
         49,
         158,
         185,
-        181,
         187,
+        181,
         83,
-        182,
         184,
-        176
+        182,
+        59
       ]
     },
     {
@@ -11951,14 +11953,14 @@
         155,
         154,
         156,
+        1037,
         157,
         90,
         92,
-        128,
         93,
         194,
+        128,
         85,
-        136,
         172
       ]
     },
@@ -12029,15 +12031,15 @@
         78,
         161,
         103,
-        160,
         106,
+        160,
         123,
         101,
         132,
         82,
-        124,
-        121,
-        126
+        126,
+        80,
+        121
       ]
     },
     {
@@ -12184,9 +12186,9 @@
         125,
         134,
         129,
+        128,
         107,
-        4,
-        128
+        4
       ]
     },
     {
@@ -12261,10 +12263,10 @@
         182,
         43,
         83,
-        172,
         163,
         189,
-        93
+        93,
+        172
       ]
     },
     {
@@ -12332,15 +12334,15 @@
       "salePrice": 16.15,
       "similarIds": [
         180,
-        86,
         166,
+        86,
         165,
         164,
         162,
         84,
-        157,
-        184,
         83,
+        184,
+        157,
         62,
         177
       ]
@@ -12416,8 +12418,8 @@
         178,
         163,
         179,
-        181,
         87,
+        181,
         85
       ]
     },
@@ -12496,7 +12498,7 @@
         85,
         177,
         90,
-        92
+        84
       ]
     },
     {
@@ -12566,15 +12568,15 @@
         180,
         162,
         164,
-        87,
         163,
+        87,
         85,
         165,
         182,
         177,
         93,
         181,
-        186
+        83
       ]
     },
     {
@@ -12649,9 +12651,9 @@
         169,
         131,
         8,
+        88,
         121,
         11,
-        88,
         127,
         114,
         125
@@ -12812,11 +12814,11 @@
         99,
         166,
         175,
-        116,
         184,
-        126,
+        116,
         160,
-        114
+        126,
+        121
       ]
     },
     {
@@ -12895,8 +12897,8 @@
         135,
         114,
         125,
-        122,
-        97
+        97,
+        122
       ]
     },
     {
@@ -12974,8 +12976,8 @@
         165,
         80,
         134,
-        110,
         188,
+        162,
         130
       ]
     },
@@ -13049,11 +13051,11 @@
         194,
         174,
         189,
-        83,
         182,
         192,
+        184,
         178,
-        184
+        83
       ]
     },
     {
@@ -13123,14 +13125,14 @@
         174,
         176,
         172,
+        1035,
         177,
         184,
         194,
         94,
+        1036,
         193,
-        186,
-        183,
-        192
+        183
       ]
     },
     {
@@ -13201,12 +13203,12 @@
         192,
         193,
         94,
-        178,
         182,
         175,
-        172,
+        178,
         187,
         190,
+        172,
         97
       ]
     },
@@ -13276,15 +13278,15 @@
         173,
         47,
         65,
-        92,
-        93,
-        49,
-        135,
-        161,
+        174,
         84,
+        93,
+        92,
+        176,
+        49,
+        83,
         188,
-        116,
-        174
+        172
       ]
     },
     {
@@ -13356,10 +13358,10 @@
         182,
         179,
         192,
-        193,
         177,
-        85,
+        193,
         83,
+        85,
         155,
         162
       ]
@@ -13430,16 +13432,16 @@
       "similarIds": [
         7,
         94,
-        179,
         83,
-        182,
+        179,
         165,
+        182,
         181,
         84,
-        186,
         173,
-        176,
-        194
+        186,
+        194,
+        176
       ]
     },
     {
@@ -13511,12 +13513,12 @@
         181,
         164,
         165,
-        174,
         193,
-        93,
+        174,
         180,
-        189,
         172,
+        189,
+        93,
         182,
         177
       ]
@@ -13588,13 +13590,13 @@
       "similarIds": [
         178,
         165,
-        154,
         181,
         177,
-        176,
+        154,
         164,
-        188,
+        176,
         85,
+        188,
         87,
         83,
         193
@@ -13749,11 +13751,11 @@
         177,
         91,
         164,
-        49,
-        4,
-        88,
+        165,
         180,
-        165
+        49,
+        83,
+        88
       ]
     },
     {
@@ -13824,13 +13826,13 @@
         186,
         162,
         177,
+        166,
         193,
         176,
-        166,
         187,
         69,
-        156,
-        174
+        174,
+        156
       ]
     },
     {
@@ -13901,10 +13903,10 @@
         189,
         85,
         188,
-        174,
-        187,
-        173,
         75,
+        174,
+        173,
+        187,
         176,
         172,
         61
@@ -13983,8 +13985,8 @@
         193,
         185,
         180,
-        9,
-        173
+        173,
+        9
       ]
     },
     {
@@ -14058,11 +14060,11 @@
         188,
         83,
         92,
-        156,
         49,
+        156,
         189,
-        91,
-        154
+        162,
+        91
       ]
     },
     {
@@ -14129,13 +14131,13 @@
       },
       "salePrice": 77.44,
       "similarIds": [
-        187,
         6,
+        187,
         188,
         182,
-        189,
         11,
         177,
+        189,
         83,
         89,
         92,
@@ -14442,15 +14444,15 @@
       "similarIds": [
         193,
         192,
-        94,
         191,
+        94,
         194,
         98,
         97,
-        93,
-        174,
         96,
+        93,
         95,
+        174,
         108
       ]
     },
@@ -14606,7 +14608,7 @@
         190,
         174,
         176,
-        177
+        93
       ]
     },
     {
@@ -14675,8 +14677,8 @@
         192,
         190,
         194,
-        187,
         93,
+        187,
         191,
         45,
         174,
@@ -14753,14 +14755,2912 @@
         193,
         93,
         190,
-        172,
         191,
-        90,
+        172,
         98,
+        90,
         94,
         97,
         177,
         173
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1000.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1000-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.45,
+      "returnPolicy": "30 days return policy",
+      "description": "White porcelain plate with a hand-painted spray of red poppies, green leaves, and small insects, framed by a cobalt-blue rim.",
+      "weight": 10,
+      "warrantyInformation": "2 year warranty",
+      "title": "Porcelain Plate with Poppies and Insects",
+      "categoryName": "Kitchen Accessories",
+      "tags": [
+        "kitchen accessories",
+        "plate",
+        "porcelain",
+        "floral"
+      ],
+      "discountPercentage": 13.2,
+      "reviews": [
+        {
+          "date": "2025-04-20T10:00:00.000Z",
+          "reviewerName": "Zoe Harper",
+          "reviewerEmail": "zoe.harper@x.dummyjson.com",
+          "rating": 4,
+          "comment": "A practical choice."
+        },
+        {
+          "date": "2025-06-02T10:00:00.000Z",
+          "reviewerName": "Owen Diaz",
+          "reviewerEmail": "owen.diaz@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Would buy again."
+        },
+        {
+          "date": "2025-11-24T10:00:00.000Z",
+          "reviewerName": "Jonah Blake",
+          "reviewerEmail": "jonah.blake@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Looks good in person."
+        }
+      ],
+      "price": 32,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001000",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 3-5 business days",
+      "id": 1000,
+      "availabilityStatus": "In Stock",
+      "category": "kitchen-accessories",
+      "stock": 114,
+      "sku": "KIT-PEB-1000",
+      "brand": "Pebble & Pan",
+      "dimensions": {
+        "depth": 33.74,
+        "width": 19.92,
+        "height": 12.51
+      },
+      "salePrice": 27.78,
+      "similarIds": [
+        1001,
+        1002,
+        1010,
+        1003,
+        1005,
+        1004
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1001.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1001-thumb.webp",
+      "minimumOrderQuantity": 2,
+      "rating": 4.7,
+      "returnPolicy": "60 days return policy",
+      "description": "White porcelain dinner plate encircled by a dense blue floral and scroll border.",
+      "weight": 7,
+      "warrantyInformation": "3 months warranty",
+      "title": "Blue Floral Rimmed Porcelain Plate",
+      "categoryName": "Kitchen Accessories",
+      "tags": [
+        "kitchen accessories",
+        "plate",
+        "porcelain",
+        "blue and white"
+      ],
+      "discountPercentage": 4.85,
+      "reviews": [
+        {
+          "date": "2025-01-13T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Works well so far."
+        },
+        {
+          "date": "2025-01-14T10:00:00.000Z",
+          "reviewerName": "Felix Grant",
+          "reviewerEmail": "felix.grant@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Solid everyday pick."
+        },
+        {
+          "date": "2025-06-13T10:00:00.000Z",
+          "reviewerName": "Ava Brooks",
+          "reviewerEmail": "ava.brooks@x.dummyjson.com",
+          "rating": 3,
+          "comment": "A practical choice."
+        }
+      ],
+      "price": 28.5,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001001",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1 week",
+      "id": 1001,
+      "availabilityStatus": "In Stock",
+      "category": "kitchen-accessories",
+      "stock": 125,
+      "sku": "KIT-PEB-1001",
+      "brand": "Pebble & Pan",
+      "dimensions": {
+        "depth": 35.84,
+        "width": 7.92,
+        "height": 17.45
+      },
+      "salePrice": 27.12,
+      "similarIds": [
+        1002,
+        1000,
+        1010,
+        1003,
+        1004,
+        1005,
+        1029,
+        1006
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1002.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1002-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 3.98,
+      "returnPolicy": "30 days return policy",
+      "description": "Blue-and-white porcelain plate with a leaping stag at the center, surrounded by floral roundels and a geometric rim.",
+      "weight": 10,
+      "warrantyInformation": "Lifetime warranty",
+      "title": "Blue and White Stag Motif Porcelain Plate",
+      "categoryName": "Kitchen Accessories",
+      "tags": [
+        "kitchen accessories",
+        "plate",
+        "porcelain",
+        "blue and white"
+      ],
+      "discountPercentage": 6.9,
+      "reviews": [
+        {
+          "date": "2025-10-25T10:00:00.000Z",
+          "reviewerName": "Liam Chen",
+          "reviewerEmail": "liam.chen@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Works well so far."
+        },
+        {
+          "date": "2025-08-01T10:00:00.000Z",
+          "reviewerName": "Clara Voss",
+          "reviewerEmail": "clara.voss@x.dummyjson.com",
+          "rating": 4,
+          "comment": "A practical choice."
+        },
+        {
+          "date": "2025-10-23T10:00:00.000Z",
+          "reviewerName": "Nina Volkov",
+          "reviewerEmail": "nina.volkov@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Works well so far."
+        }
+      ],
+      "price": 42,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001002",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1 week",
+      "id": 1002,
+      "availabilityStatus": "In Stock",
+      "category": "kitchen-accessories",
+      "stock": 135,
+      "sku": "KIT-CED-1002",
+      "brand": "Cedar & Clove",
+      "dimensions": {
+        "depth": 13.48,
+        "width": 12.83,
+        "height": 24.26
+      },
+      "salePrice": 39.1,
+      "similarIds": [
+        1001,
+        1000,
+        1010,
+        1003,
+        1004,
+        1005,
+        1024,
+        1029,
+        1006
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1003.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1003-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.15,
+      "returnPolicy": "7 days return policy",
+      "description": "Ceramic plate covered in a blue star lattice, with a triangular armorial shield at the center and a densely patterned rim.",
+      "weight": 1,
+      "warrantyInformation": "1 year warranty",
+      "title": "Star-Patterned Armorial Ceramic Plate",
+      "categoryName": "Kitchen Accessories",
+      "tags": [
+        "kitchen accessories",
+        "plate",
+        "ceramic",
+        "patterned"
+      ],
+      "discountPercentage": 12.35,
+      "reviews": [
+        {
+          "date": "2025-11-13T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Great quality for the price."
+        },
+        {
+          "date": "2025-05-01T10:00:00.000Z",
+          "reviewerName": "Liam Chen",
+          "reviewerEmail": "liam.chen@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Great quality for the price."
+        },
+        {
+          "date": "2025-01-11T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Better than expected."
+        }
+      ],
+      "price": 48,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001003",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1 week",
+      "id": 1003,
+      "availabilityStatus": "In Stock",
+      "category": "kitchen-accessories",
+      "stock": 89,
+      "sku": "KIT-PEB-1003",
+      "brand": "Pebble & Pan",
+      "dimensions": {
+        "depth": 35.27,
+        "width": 37.35,
+        "height": 9.45
+      },
+      "salePrice": 42.07,
+      "similarIds": [
+        1005,
+        1004,
+        1002,
+        1000,
+        1001,
+        69
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1004.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1004-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.16,
+      "returnPolicy": "90 days return policy",
+      "description": "Amber-glazed ceramic plate with concentric gold rings and a radiating medallion at the center.",
+      "weight": 8,
+      "warrantyInformation": "3 months warranty",
+      "title": "Amber Glazed Plate with Gold Rings",
+      "categoryName": "Kitchen Accessories",
+      "tags": [
+        "kitchen accessories",
+        "plate",
+        "ceramic",
+        "amber glaze"
+      ],
+      "discountPercentage": 9.33,
+      "reviews": [
+        {
+          "date": "2025-01-09T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Solid everyday pick."
+        },
+        {
+          "date": "2025-05-17T10:00:00.000Z",
+          "reviewerName": "Jonah Blake",
+          "reviewerEmail": "jonah.blake@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Would buy again."
+        },
+        {
+          "date": "2025-02-20T10:00:00.000Z",
+          "reviewerName": "Caleb Frost",
+          "reviewerEmail": "caleb.frost@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Happy with this."
+        }
+      ],
+      "price": 36.5,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001004",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1 week",
+      "id": 1004,
+      "availabilityStatus": "In Stock",
+      "category": "kitchen-accessories",
+      "stock": 138,
+      "sku": "KIT-NES-1004",
+      "brand": "Nestline Kitchen",
+      "dimensions": {
+        "depth": 18.69,
+        "width": 39.72,
+        "height": 29.33
+      },
+      "salePrice": 33.09,
+      "similarIds": [
+        1003,
+        1002,
+        1001,
+        1006,
+        1000,
+        1005,
+        69,
+        193,
+        106,
+        178,
+        58,
+        51
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1005.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1005-thumb.webp",
+      "minimumOrderQuantity": 3,
+      "rating": 4,
+      "returnPolicy": "30 days return policy",
+      "description": "Cylindrical ceramic tankard with orange, blue, and cream marbled decoration and a green patterned rim.",
+      "weight": 4,
+      "warrantyInformation": "6 months warranty",
+      "title": "Orange and Blue Marbled Ceramic Tankard",
+      "categoryName": "Kitchen Accessories",
+      "tags": [
+        "kitchen accessories",
+        "mug",
+        "tankard",
+        "ceramic"
+      ],
+      "discountPercentage": 7.56,
+      "reviews": [
+        {
+          "date": "2025-02-13T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Not fancy, but dependable."
+        },
+        {
+          "date": "2025-09-21T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Not fancy, but dependable."
+        },
+        {
+          "date": "2025-04-20T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Great quality for the price."
+        }
+      ],
+      "price": 27,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001005",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 3-5 business days",
+      "id": 1005,
+      "availabilityStatus": "Out of Stock",
+      "category": "kitchen-accessories",
+      "stock": 0,
+      "sku": "KIT-PEB-1005",
+      "brand": "Pebble & Pan",
+      "dimensions": {
+        "depth": 25.1,
+        "width": 13.19,
+        "height": 31.4
+      },
+      "salePrice": 24.96,
+      "similarIds": [
+        1003,
+        1006,
+        1000,
+        1001,
+        1002,
+        1032,
+        1010,
+        1004,
+        1030,
+        1007,
+        1023,
+        1013
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1006.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1006-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 3.59,
+      "returnPolicy": "90 days return policy",
+      "description": "Stoneware tankard glazed brown above a cream body, fitted with a shaped handle and a pewter lid.",
+      "weight": 6,
+      "warrantyInformation": "6 months warranty",
+      "title": "Two-Tone Stoneware Tankard with Pewter Lid",
+      "categoryName": "Kitchen Accessories",
+      "tags": [
+        "kitchen accessories",
+        "tankard",
+        "stoneware",
+        "pewter"
+      ],
+      "discountPercentage": 4.13,
+      "reviews": [
+        {
+          "date": "2025-04-07T10:00:00.000Z",
+          "reviewerName": "Maya Ortiz",
+          "reviewerEmail": "maya.ortiz@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Not fancy, but dependable."
+        },
+        {
+          "date": "2025-11-05T10:00:00.000Z",
+          "reviewerName": "Nina Volkov",
+          "reviewerEmail": "nina.volkov@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Works well so far."
+        },
+        {
+          "date": "2025-01-04T10:00:00.000Z",
+          "reviewerName": "Noah Patel",
+          "reviewerEmail": "noah.patel@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Not fancy, but dependable."
+        }
+      ],
+      "price": 54,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001006",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1-2 business days",
+      "id": 1006,
+      "availabilityStatus": "In Stock",
+      "category": "kitchen-accessories",
+      "stock": 134,
+      "sku": "KIT-NES-1006",
+      "brand": "Nestline Kitchen",
+      "dimensions": {
+        "depth": 19.12,
+        "width": 11.47,
+        "height": 33.17
+      },
+      "salePrice": 51.77,
+      "similarIds": [
+        1005,
+        1004,
+        1002,
+        1010,
+        1001
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1007.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1007-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.34,
+      "returnPolicy": "30 days return policy",
+      "description": "Armchair with an oval green upholstered back and seat on a carved, gilt wood frame.",
+      "weight": 1,
+      "warrantyInformation": "3 year warranty",
+      "title": "Green Upholstered Armchair with Gilt Frame",
+      "categoryName": "Furniture",
+      "tags": [
+        "furniture",
+        "armchair",
+        "upholstered"
+      ],
+      "discountPercentage": 11.36,
+      "reviews": [
+        {
+          "date": "2025-12-04T10:00:00.000Z",
+          "reviewerName": "Noah Patel",
+          "reviewerEmail": "noah.patel@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Happy with this."
+        },
+        {
+          "date": "2025-10-26T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Not fancy, but dependable."
+        },
+        {
+          "date": "2025-04-21T10:00:00.000Z",
+          "reviewerName": "Ava Brooks",
+          "reviewerEmail": "ava.brooks@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Great quality for the price."
+        }
+      ],
+      "price": 890,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001007",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 3-5 business days",
+      "id": 1007,
+      "availabilityStatus": "In Stock",
+      "category": "furniture",
+      "stock": 19,
+      "sku": "FUR-NOR-1007",
+      "brand": "Northloom",
+      "dimensions": {
+        "depth": 39.03,
+        "width": 38.35,
+        "height": 38.49
+      },
+      "salePrice": 788.9,
+      "similarIds": [
+        1015,
+        1032,
+        1005,
+        183,
+        1023,
+        11,
+        1013,
+        1030,
+        80,
+        100
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1008.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1008-thumb.webp",
+      "minimumOrderQuantity": 2,
+      "rating": 4.57,
+      "returnPolicy": "No return policy",
+      "description": "Mahogany candlestand with a circular tilt top, turned pedestal, and tripod cabriole legs.",
+      "weight": 3,
+      "warrantyInformation": "3 months warranty",
+      "title": "Tilt-Top Mahogany Candlestand",
+      "categoryName": "Furniture",
+      "tags": [
+        "furniture",
+        "candlestand",
+        "mahogany",
+        "side table"
+      ],
+      "discountPercentage": 9.97,
+      "reviews": [
+        {
+          "date": "2025-08-04T10:00:00.000Z",
+          "reviewerName": "Maya Ortiz",
+          "reviewerEmail": "maya.ortiz@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Works well so far."
+        },
+        {
+          "date": "2025-01-18T10:00:00.000Z",
+          "reviewerName": "Liam Chen",
+          "reviewerEmail": "liam.chen@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Solid everyday pick."
+        },
+        {
+          "date": "2025-12-08T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Looks good in person."
+        }
+      ],
+      "price": 420,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001008",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 3-5 business days",
+      "id": 1008,
+      "availabilityStatus": "Low Stock",
+      "category": "furniture",
+      "stock": 4,
+      "sku": "FUR-OAK-1008",
+      "brand": "Oakline Studio",
+      "dimensions": {
+        "depth": 25.34,
+        "width": 7.2,
+        "height": 33.44
+      },
+      "salePrice": 378.13,
+      "similarIds": [
+        1009,
+        1001
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1009.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1009-thumb.webp",
+      "minimumOrderQuantity": 2,
+      "rating": 4.66,
+      "returnPolicy": "30 days return policy",
+      "description": "Dark turned-wood pedestal stand with a round top, a small side hook, and a four-board base.",
+      "weight": 8,
+      "warrantyInformation": "2 year warranty",
+      "title": "Turned Wood Pedestal Stand",
+      "categoryName": "Furniture",
+      "tags": [
+        "furniture",
+        "pedestal",
+        "stand",
+        "wood"
+      ],
+      "discountPercentage": 13.45,
+      "reviews": [
+        {
+          "date": "2025-03-11T10:00:00.000Z",
+          "reviewerName": "Caleb Frost",
+          "reviewerEmail": "caleb.frost@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Exactly as described."
+        },
+        {
+          "date": "2025-05-04T10:00:00.000Z",
+          "reviewerName": "Zoe Harper",
+          "reviewerEmail": "zoe.harper@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Packaging was careful."
+        },
+        {
+          "date": "2025-04-12T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Works well so far."
+        }
+      ],
+      "price": 245,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001009",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 2 weeks",
+      "id": 1009,
+      "availabilityStatus": "Out of Stock",
+      "category": "furniture",
+      "stock": 0,
+      "sku": "FUR-BIR-1009",
+      "brand": "Birch & Beam",
+      "dimensions": {
+        "depth": 7.44,
+        "width": 12.88,
+        "height": 18.32
+      },
+      "salePrice": 212.05,
+      "similarIds": [
+        1008,
+        1018,
+        1036,
+        1029
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1010.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1010-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.75,
+      "returnPolicy": "7 days return policy",
+      "description": "Rounded porcelain jar painted with white plum blossoms on a deep cobalt-blue ground.",
+      "weight": 1,
+      "warrantyInformation": "2 year warranty",
+      "title": "Blue and White Plum Blossom Porcelain Jar",
+      "categoryName": "Home Decoration",
+      "tags": [
+        "home decoration",
+        "vase",
+        "porcelain",
+        "blue and white"
+      ],
+      "discountPercentage": 14.86,
+      "reviews": [
+        {
+          "date": "2025-08-04T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Better than expected."
+        },
+        {
+          "date": "2025-04-07T10:00:00.000Z",
+          "reviewerName": "Ava Brooks",
+          "reviewerEmail": "ava.brooks@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Not fancy, but dependable."
+        },
+        {
+          "date": "2025-10-14T10:00:00.000Z",
+          "reviewerName": "Theo Park",
+          "reviewerEmail": "theo.park@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Works well so far."
+        }
+      ],
+      "price": 78,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001010",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 3-5 business days",
+      "id": 1010,
+      "availabilityStatus": "In Stock",
+      "category": "home-decoration",
+      "stock": 111,
+      "sku": "HOM-SOF-1010",
+      "brand": "Softgauge",
+      "dimensions": {
+        "depth": 35.45,
+        "width": 5.18,
+        "height": 34.01
+      },
+      "salePrice": 66.41,
+      "similarIds": [
+        1002,
+        1001,
+        1000,
+        1011,
+        1013,
+        1021,
+        1016,
+        1030,
+        1029,
+        1005,
+        1031
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1011.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1011-thumb.webp",
+      "minimumOrderQuantity": 3,
+      "rating": 4.92,
+      "returnPolicy": "90 days return policy",
+      "description": "Tall, dark-glazed stoneware jar with a wide mouth and a softly rounded shoulder.",
+      "weight": 1,
+      "warrantyInformation": "3 months warranty",
+      "title": "Black Glazed Stoneware Storage Jar",
+      "categoryName": "Home Decoration",
+      "tags": [
+        "home decoration",
+        "jar",
+        "stoneware",
+        "black glaze"
+      ],
+      "discountPercentage": 3.89,
+      "reviews": [
+        {
+          "date": "2025-01-01T10:00:00.000Z",
+          "reviewerName": "Theo Park",
+          "reviewerEmail": "theo.park@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Great quality for the price."
+        },
+        {
+          "date": "2025-02-08T10:00:00.000Z",
+          "reviewerName": "Owen Diaz",
+          "reviewerEmail": "owen.diaz@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Better than expected."
+        },
+        {
+          "date": "2025-12-18T10:00:00.000Z",
+          "reviewerName": "Owen Diaz",
+          "reviewerEmail": "owen.diaz@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Exactly as described."
+        }
+      ],
+      "price": 64,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001011",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships overnight",
+      "id": 1011,
+      "availabilityStatus": "In Stock",
+      "category": "home-decoration",
+      "stock": 101,
+      "sku": "HOM-CLA-1011",
+      "brand": "Clay & Cord",
+      "dimensions": {
+        "depth": 27.85,
+        "width": 24.85,
+        "height": 15.61
+      },
+      "salePrice": 61.51,
+      "similarIds": [
+        1019,
+        1010,
+        1013,
+        1014,
+        1006,
+        1021,
+        1031
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1012.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1012-thumb.webp",
+      "minimumOrderQuantity": 2,
+      "rating": 4.2,
+      "returnPolicy": "60 days return policy",
+      "description": "Teardrop-shaped ceramic bottle vase banded in brown, tan, and teal stripes.",
+      "weight": 2,
+      "warrantyInformation": "3 months warranty",
+      "title": "Striped Teardrop Ceramic Bottle Vase",
+      "categoryName": "Home Decoration",
+      "tags": [
+        "home decoration",
+        "vase",
+        "ceramic",
+        "striped"
+      ],
+      "discountPercentage": 15.5,
+      "reviews": [
+        {
+          "date": "2025-03-01T10:00:00.000Z",
+          "reviewerName": "Liam Chen",
+          "reviewerEmail": "liam.chen@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Solid everyday pick."
+        },
+        {
+          "date": "2025-08-26T10:00:00.000Z",
+          "reviewerName": "Ava Brooks",
+          "reviewerEmail": "ava.brooks@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Exactly as described."
+        },
+        {
+          "date": "2025-04-07T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Exactly as described."
+        }
+      ],
+      "price": 48,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001012",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1 week",
+      "id": 1012,
+      "availabilityStatus": "In Stock",
+      "category": "home-decoration",
+      "stock": 42,
+      "sku": "HOM-QUI-1012",
+      "brand": "Quiet Object",
+      "dimensions": {
+        "depth": 24.9,
+        "width": 16.81,
+        "height": 14.24
+      },
+      "salePrice": 40.56,
+      "similarIds": [
+        1018,
+        1013,
+        1020,
+        1014,
+        1019,
+        1011
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1013.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1013-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.65,
+      "returnPolicy": "No return policy",
+      "description": "Tall cream pottery vase with an incised zigzag pattern and small lug handles on the shoulder.",
+      "weight": 2,
+      "warrantyInformation": "3 year warranty",
+      "title": "Cream Zigzag Pottery Vase with Lugs",
+      "categoryName": "Home Decoration",
+      "tags": [
+        "home decoration",
+        "vase",
+        "pottery"
+      ],
+      "discountPercentage": 6.1,
+      "reviews": [
+        {
+          "date": "2025-09-21T10:00:00.000Z",
+          "reviewerName": "Sofia Mendes",
+          "reviewerEmail": "sofia.mendes@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Better than expected."
+        },
+        {
+          "date": "2025-11-07T10:00:00.000Z",
+          "reviewerName": "Ava Brooks",
+          "reviewerEmail": "ava.brooks@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Great quality for the price."
+        },
+        {
+          "date": "2025-04-27T10:00:00.000Z",
+          "reviewerName": "Owen Diaz",
+          "reviewerEmail": "owen.diaz@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Would buy again."
+        }
+      ],
+      "price": 56,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001013",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1 week",
+      "id": 1013,
+      "availabilityStatus": "Out of Stock",
+      "category": "home-decoration",
+      "stock": 0,
+      "sku": "HOM-QUI-1013",
+      "brand": "Quiet Object",
+      "dimensions": {
+        "depth": 8.56,
+        "width": 8.92,
+        "height": 23.04
+      },
+      "salePrice": 52.58,
+      "similarIds": [
+        1018,
+        1012,
+        1011,
+        1017,
+        1010,
+        1020,
+        1035,
+        1021,
+        1007
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1014.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1014-thumb.webp",
+      "minimumOrderQuantity": 2,
+      "rating": 4.37,
+      "returnPolicy": "60 days return policy",
+      "description": "Red ceramic Santa Claus figure with a hollow, cut-out coat that holds a lit tealight.",
+      "weight": 4,
+      "warrantyInformation": "3 months warranty",
+      "title": "Red Santa Claus Tealight Holder",
+      "categoryName": "Home Decoration",
+      "tags": [
+        "home decoration",
+        "candle holder",
+        "holiday",
+        "santa"
+      ],
+      "discountPercentage": 12.81,
+      "reviews": [
+        {
+          "date": "2025-04-13T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com",
+          "rating": 3,
+          "comment": "A practical choice."
+        },
+        {
+          "date": "2025-12-08T10:00:00.000Z",
+          "reviewerName": "Caleb Frost",
+          "reviewerEmail": "caleb.frost@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Exactly as described."
+        },
+        {
+          "date": "2025-12-26T10:00:00.000Z",
+          "reviewerName": "Jonah Blake",
+          "reviewerEmail": "jonah.blake@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Works well so far."
+        }
+      ],
+      "price": 18,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001014",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1-2 business days",
+      "id": 1014,
+      "availabilityStatus": "In Stock",
+      "category": "home-decoration",
+      "stock": 150,
+      "sku": "HOM-CLA-1014",
+      "brand": "Clay & Cord",
+      "dimensions": {
+        "depth": 9.66,
+        "width": 22.02,
+        "height": 9.08
+      },
+      "salePrice": 15.69,
+      "similarIds": [
+        1019,
+        1011
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1015.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1015-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.37,
+      "returnPolicy": "60 days return policy",
+      "description": "Empty oval picture frame with an ornate gilt molded border.",
+      "weight": 4,
+      "warrantyInformation": "1 week warranty",
+      "title": "Ornate Gilt Oval Picture Frame",
+      "categoryName": "Home Decoration",
+      "tags": [
+        "home decoration",
+        "picture frame",
+        "gilt",
+        "oval"
+      ],
+      "discountPercentage": 2.33,
+      "reviews": [
+        {
+          "date": "2025-02-02T10:00:00.000Z",
+          "reviewerName": "Eli Turner",
+          "reviewerEmail": "eli.turner@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Nice finish."
+        },
+        {
+          "date": "2025-06-05T10:00:00.000Z",
+          "reviewerName": "Priya Nair",
+          "reviewerEmail": "priya.nair@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Works well so far."
+        },
+        {
+          "date": "2025-11-26T10:00:00.000Z",
+          "reviewerName": "Sofia Mendes",
+          "reviewerEmail": "sofia.mendes@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Packaging was careful."
+        }
+      ],
+      "price": 52,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001015",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1-2 business days",
+      "id": 1015,
+      "availabilityStatus": "In Stock",
+      "category": "home-decoration",
+      "stock": 120,
+      "sku": "HOM-ATE-1015",
+      "brand": "Atelier Hearth",
+      "dimensions": {
+        "depth": 7.36,
+        "width": 32.58,
+        "height": 35.98
+      },
+      "salePrice": 50.79,
+      "similarIds": [
+        1016,
+        1007,
+        1018,
+        1021,
+        1014,
+        1010,
+        1009
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1016.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1016-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.46,
+      "returnPolicy": "60 days return policy",
+      "description": "Rectangular giltwood frame deeply carved with scrolling, wave-like ornament.",
+      "weight": 7,
+      "warrantyInformation": "6 months warranty",
+      "title": "Carved Giltwood Rectangular Frame",
+      "categoryName": "Home Decoration",
+      "tags": [
+        "home decoration",
+        "picture frame",
+        "giltwood",
+        "carved"
+      ],
+      "discountPercentage": 11.4,
+      "reviews": [
+        {
+          "date": "2025-08-16T10:00:00.000Z",
+          "reviewerName": "Ava Brooks",
+          "reviewerEmail": "ava.brooks@x.dummyjson.com",
+          "rating": 3,
+          "comment": "A practical choice."
+        },
+        {
+          "date": "2025-07-04T10:00:00.000Z",
+          "reviewerName": "Eli Turner",
+          "reviewerEmail": "eli.turner@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Packaging was careful."
+        },
+        {
+          "date": "2025-06-02T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Better than expected."
+        }
+      ],
+      "price": 95,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001016",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships overnight",
+      "id": 1016,
+      "availabilityStatus": "In Stock",
+      "category": "home-decoration",
+      "stock": 42,
+      "sku": "HOM-SOF-1016",
+      "brand": "Softgauge",
+      "dimensions": {
+        "depth": 27.49,
+        "width": 34.14,
+        "height": 20.08
+      },
+      "salePrice": 84.17,
+      "similarIds": [
+        1015,
+        1021,
+        1018,
+        1010,
+        1019,
+        1011,
+        1013,
+        1007,
+        44,
+        1014,
+        1022
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1017.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1017-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.52,
+      "returnPolicy": "No return policy",
+      "description": "A folded bolt of cream silk ribbon wrapped with a paper band marked 15 metres.",
+      "weight": 5,
+      "warrantyInformation": "1 month warranty",
+      "title": "Folded Cream Silk Ribbon",
+      "categoryName": "Home Decoration",
+      "tags": [
+        "home decoration",
+        "ribbon",
+        "silk"
+      ],
+      "discountPercentage": 10.5,
+      "reviews": [
+        {
+          "date": "2025-12-11T10:00:00.000Z",
+          "reviewerName": "Caleb Frost",
+          "reviewerEmail": "caleb.frost@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Great quality for the price."
+        },
+        {
+          "date": "2025-08-08T10:00:00.000Z",
+          "reviewerName": "Sofia Mendes",
+          "reviewerEmail": "sofia.mendes@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Happy with this."
+        },
+        {
+          "date": "2025-08-17T10:00:00.000Z",
+          "reviewerName": "Caleb Frost",
+          "reviewerEmail": "caleb.frost@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Nice finish."
+        }
+      ],
+      "price": 9.5,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001017",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 2 weeks",
+      "id": 1017,
+      "availabilityStatus": "In Stock",
+      "category": "home-decoration",
+      "stock": 143,
+      "sku": "HOM-QUI-1017",
+      "brand": "Quiet Object",
+      "dimensions": {
+        "depth": 14.47,
+        "width": 29.66,
+        "height": 13.36
+      },
+      "salePrice": 8.5,
+      "similarIds": [
+        1013,
+        1020,
+        1018,
+        1021,
+        1011,
+        1005,
+        43,
+        1025,
+        45,
+        44,
+        1030,
+        1007
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1018.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1018-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.01,
+      "returnPolicy": "90 days return policy",
+      "description": "Small bronze bottle vase with a bulbous base, long neck, and weathered patina.",
+      "weight": 6,
+      "warrantyInformation": "1 month warranty",
+      "title": "Bronze Long-Neck Bottle Vase",
+      "categoryName": "Home Decoration",
+      "tags": [
+        "home decoration",
+        "vase",
+        "bronze"
+      ],
+      "discountPercentage": 9.21,
+      "reviews": [
+        {
+          "date": "2025-01-16T10:00:00.000Z",
+          "reviewerName": "Jonah Blake",
+          "reviewerEmail": "jonah.blake@x.dummyjson.com",
+          "rating": 3,
+          "comment": "A practical choice."
+        },
+        {
+          "date": "2025-07-28T10:00:00.000Z",
+          "reviewerName": "Caleb Frost",
+          "reviewerEmail": "caleb.frost@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Packaging was careful."
+        },
+        {
+          "date": "2025-02-11T10:00:00.000Z",
+          "reviewerName": "Felix Grant",
+          "reviewerEmail": "felix.grant@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Looks good in person."
+        }
+      ],
+      "price": 72,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001018",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 2 weeks",
+      "id": 1018,
+      "availabilityStatus": "In Stock",
+      "category": "home-decoration",
+      "stock": 46,
+      "sku": "HOM-QUI-1018",
+      "brand": "Quiet Object",
+      "dimensions": {
+        "depth": 13.06,
+        "width": 35.61,
+        "height": 29.41
+      },
+      "salePrice": 65.37,
+      "similarIds": [
+        1012,
+        1013,
+        1020,
+        1016,
+        1009,
+        1017,
+        1015,
+        1000,
+        1010,
+        1030,
+        1019,
+        1014
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1019.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1019-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.32,
+      "returnPolicy": "30 days return policy",
+      "description": "Round earthenware jar with a lid, covered in raised spike-like bosses.",
+      "weight": 7,
+      "warrantyInformation": "3 months warranty",
+      "title": "Spiked Earthenware Lidded Jar",
+      "categoryName": "Home Decoration",
+      "tags": [
+        "home decoration",
+        "jar",
+        "earthenware",
+        "pottery"
+      ],
+      "discountPercentage": 9.42,
+      "reviews": [
+        {
+          "date": "2025-02-28T10:00:00.000Z",
+          "reviewerName": "Priya Nair",
+          "reviewerEmail": "priya.nair@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Exactly as described."
+        },
+        {
+          "date": "2025-05-15T10:00:00.000Z",
+          "reviewerName": "Liam Chen",
+          "reviewerEmail": "liam.chen@x.dummyjson.com",
+          "rating": 5,
+          "comment": "A practical choice."
+        },
+        {
+          "date": "2025-01-25T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Would buy again."
+        }
+      ],
+      "price": 68,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001019",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships overnight",
+      "id": 1019,
+      "availabilityStatus": "In Stock",
+      "category": "home-decoration",
+      "stock": 126,
+      "sku": "HOM-CLA-1019",
+      "brand": "Clay & Cord",
+      "dimensions": {
+        "depth": 28.93,
+        "width": 20.51,
+        "height": 37.59
+      },
+      "salePrice": 61.59,
+      "similarIds": [
+        1011,
+        1014,
+        1016,
+        1013,
+        1010,
+        1012,
+        1018,
+        106
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1020.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1020-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 3.98,
+      "returnPolicy": "60 days return policy",
+      "description": "Thick antique book bound in heavily worn dark leather, standing upright.",
+      "weight": 1,
+      "warrantyInformation": "1 month warranty",
+      "title": "Worn Leather-Bound Antique Book",
+      "categoryName": "Home Decoration",
+      "tags": [
+        "home decoration",
+        "book",
+        "leather",
+        "antique"
+      ],
+      "discountPercentage": 5.29,
+      "reviews": [
+        {
+          "date": "2025-05-27T10:00:00.000Z",
+          "reviewerName": "Jonah Blake",
+          "reviewerEmail": "jonah.blake@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Great quality for the price."
+        },
+        {
+          "date": "2025-01-04T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Solid everyday pick."
+        },
+        {
+          "date": "2025-12-03T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Looks good in person."
+        }
+      ],
+      "price": 40,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001020",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1 week",
+      "id": 1020,
+      "availabilityStatus": "In Stock",
+      "category": "home-decoration",
+      "stock": 82,
+      "sku": "HOM-QUI-1020",
+      "brand": "Quiet Object",
+      "dimensions": {
+        "depth": 20.46,
+        "width": 28.34,
+        "height": 11.67
+      },
+      "salePrice": 37.88,
+      "similarIds": [
+        1012,
+        1018,
+        1025,
+        1017,
+        1013,
+        1011
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1021.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1021-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.63,
+      "returnPolicy": "30 days return policy",
+      "description": "Rectangular storage box with tooled leather borders, a hide panel, and a metal latch.",
+      "weight": 6,
+      "warrantyInformation": "3 months warranty",
+      "title": "Tooled Leather and Hide Document Box",
+      "categoryName": "Home Decoration",
+      "tags": [
+        "home decoration",
+        "box",
+        "leather"
+      ],
+      "discountPercentage": 15.93,
+      "reviews": [
+        {
+          "date": "2025-07-05T10:00:00.000Z",
+          "reviewerName": "Theo Park",
+          "reviewerEmail": "theo.park@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Works well so far."
+        },
+        {
+          "date": "2025-10-16T10:00:00.000Z",
+          "reviewerName": "Priya Nair",
+          "reviewerEmail": "priya.nair@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Better than expected."
+        },
+        {
+          "date": "2025-12-24T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Happy with this."
+        }
+      ],
+      "price": 85,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001021",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1-2 business days",
+      "id": 1021,
+      "availabilityStatus": "In Stock",
+      "category": "home-decoration",
+      "stock": 104,
+      "sku": "HOM-LUM-1021",
+      "brand": "Lumen Nest",
+      "dimensions": {
+        "depth": 29.49,
+        "width": 8.27,
+        "height": 21.41
+      },
+      "salePrice": 71.46,
+      "similarIds": [
+        1016,
+        1010,
+        1036,
+        1011,
+        1015,
+        1031,
+        1014,
+        1013
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1022.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1022-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.7,
+      "returnPolicy": "7 days return policy",
+      "description": "Space gray tablet with a black screen and circular home button, lying beside a white stylus.",
+      "weight": 10,
+      "warrantyInformation": "Lifetime warranty",
+      "title": "Space Gray Tablet with White Stylus",
+      "categoryName": "Tablets",
+      "tags": [
+        "tablets",
+        "tablet",
+        "stylus"
+      ],
+      "discountPercentage": 3.42,
+      "reviews": [
+        {
+          "date": "2025-11-20T10:00:00.000Z",
+          "reviewerName": "Sofia Mendes",
+          "reviewerEmail": "sofia.mendes@x.dummyjson.com",
+          "rating": 5,
+          "comment": "A practical choice."
+        },
+        {
+          "date": "2025-12-22T10:00:00.000Z",
+          "reviewerName": "Maya Ortiz",
+          "reviewerEmail": "maya.ortiz@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Better than expected."
+        },
+        {
+          "date": "2025-01-14T10:00:00.000Z",
+          "reviewerName": "Maya Ortiz",
+          "reviewerEmail": "maya.ortiz@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Would buy again."
+        }
+      ],
+      "price": 399,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001022",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1 week",
+      "id": 1022,
+      "availabilityStatus": "In Stock",
+      "category": "tablets",
+      "stock": 53,
+      "sku": "TAB-PAP-1022",
+      "brand": "Paperlight",
+      "dimensions": {
+        "depth": 33.35,
+        "width": 33.14,
+        "height": 30.68
+      },
+      "salePrice": 385.35,
+      "similarIds": [
+        161,
+        159,
+        1010,
+        1031,
+        160,
+        175,
+        1013,
+        1000,
+        1011,
+        91,
+        1035,
+        1002
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1023.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1023-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.18,
+      "returnPolicy": "60 days return policy",
+      "description": "Mint-green wired on-ear headphones photographed on a split mint-and-pink background.",
+      "weight": 7,
+      "warrantyInformation": "1 week warranty",
+      "title": "Mint Wired On-Ear Headphones",
+      "categoryName": "Mobile Accessories",
+      "tags": [
+        "mobile accessories",
+        "headphones",
+        "on-ear",
+        "mint"
+      ],
+      "discountPercentage": 13.73,
+      "reviews": [
+        {
+          "date": "2025-01-27T10:00:00.000Z",
+          "reviewerName": "Liam Chen",
+          "reviewerEmail": "liam.chen@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Would buy again."
+        },
+        {
+          "date": "2025-01-23T10:00:00.000Z",
+          "reviewerName": "Eli Turner",
+          "reviewerEmail": "eli.turner@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Better than expected."
+        },
+        {
+          "date": "2025-10-27T10:00:00.000Z",
+          "reviewerName": "Zoe Harper",
+          "reviewerEmail": "zoe.harper@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Not fancy, but dependable."
+        }
+      ],
+      "price": 29,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001023",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 3-5 business days",
+      "id": 1023,
+      "availabilityStatus": "Low Stock",
+      "category": "mobile-accessories",
+      "stock": 8,
+      "sku": "MOB-AMP-1023",
+      "brand": "Amperset",
+      "dimensions": {
+        "depth": 5.3,
+        "width": 24.89,
+        "height": 36.43
+      },
+      "salePrice": 25.02,
+      "similarIds": [
+        101,
+        1037,
+        1033,
+        1010,
+        1007,
+        1005,
+        1031,
+        1013,
+        1006,
+        183,
+        100,
+        102
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1024.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1024-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 3.73,
+      "returnPolicy": "30 days return policy",
+      "description": "Close-up of a knurled metal handle passing through a cast-iron weight plate.",
+      "weight": 6,
+      "warrantyInformation": "3 months warranty",
+      "title": "Knurled Dumbbell Handle and Weight Plate",
+      "categoryName": "Sports Accessories",
+      "tags": [
+        "sports accessories",
+        "dumbbell",
+        "weights"
+      ],
+      "discountPercentage": 15.09,
+      "reviews": [
+        {
+          "date": "2025-03-06T10:00:00.000Z",
+          "reviewerName": "Owen Diaz",
+          "reviewerEmail": "owen.diaz@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Works well so far."
+        },
+        {
+          "date": "2025-08-22T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Great quality for the price."
+        },
+        {
+          "date": "2025-12-14T10:00:00.000Z",
+          "reviewerName": "Maya Ortiz",
+          "reviewerEmail": "maya.ortiz@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Would buy again."
+        }
+      ],
+      "price": 34,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001024",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1 week",
+      "id": 1024,
+      "availabilityStatus": "In Stock",
+      "category": "sports-accessories",
+      "stock": 133,
+      "sku": "SPO-COU-1024",
+      "brand": "Courtline",
+      "dimensions": {
+        "depth": 21.23,
+        "width": 18.78,
+        "height": 23.3
+      },
+      "salePrice": 28.87,
+      "similarIds": [
+        1002,
+        149,
+        1025,
+        1001,
+        1021,
+        150,
+        1006,
+        1000,
+        140,
+        153,
+        151
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1025.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1025-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.7,
+      "returnPolicy": "No return policy",
+      "description": "Cream leather baseball with red stitching, photographed against a dark cloth.",
+      "weight": 7,
+      "warrantyInformation": "1 month warranty",
+      "title": "Red-Stitched Leather Baseball",
+      "categoryName": "Sports Accessories",
+      "tags": [
+        "sports accessories",
+        "baseball"
+      ],
+      "discountPercentage": 8.56,
+      "reviews": [
+        {
+          "date": "2025-10-17T10:00:00.000Z",
+          "reviewerName": "Marcus Cole",
+          "reviewerEmail": "marcus.cole@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Solid everyday pick."
+        },
+        {
+          "date": "2025-07-26T10:00:00.000Z",
+          "reviewerName": "Noah Patel",
+          "reviewerEmail": "noah.patel@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Exactly as described."
+        },
+        {
+          "date": "2025-08-27T10:00:00.000Z",
+          "reviewerName": "Clara Voss",
+          "reviewerEmail": "clara.voss@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Great quality for the price."
+        }
+      ],
+      "price": 14,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001025",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1 week",
+      "id": 1025,
+      "availabilityStatus": "In Stock",
+      "category": "sports-accessories",
+      "stock": 11,
+      "sku": "SPO-COU-1025",
+      "brand": "Courtline",
+      "dimensions": {
+        "depth": 21.96,
+        "width": 13.76,
+        "height": 24.43
+      },
+      "salePrice": 12.8,
+      "similarIds": [
+        138,
+        1020,
+        139,
+        150,
+        1024,
+        1011,
+        1036,
+        144,
+        1014,
+        92,
+        1009,
+        175
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1026.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1026-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 3.45,
+      "returnPolicy": "60 days return policy",
+      "description": "A single fluffy, angled makeup brush standing in a cup on a windowsill.",
+      "weight": 7,
+      "warrantyInformation": "3 year warranty",
+      "title": "Fluffy Angled Makeup Brush",
+      "categoryName": "Beauty",
+      "tags": [
+        "beauty",
+        "makeup brush"
+      ],
+      "discountPercentage": 5.15,
+      "reviews": [
+        {
+          "date": "2025-05-05T10:00:00.000Z",
+          "reviewerName": "Theo Park",
+          "reviewerEmail": "theo.park@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Happy with this."
+        },
+        {
+          "date": "2025-11-07T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Better than expected."
+        },
+        {
+          "date": "2025-12-26T10:00:00.000Z",
+          "reviewerName": "Priya Nair",
+          "reviewerEmail": "priya.nair@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Solid everyday pick."
+        }
+      ],
+      "price": 12,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001026",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships overnight",
+      "id": 1026,
+      "availabilityStatus": "In Stock",
+      "category": "beauty",
+      "stock": 27,
+      "sku": "BEA-SHA-1026",
+      "brand": "Shadeform",
+      "dimensions": {
+        "depth": 7.62,
+        "width": 29.68,
+        "height": 24.85
+      },
+      "salePrice": 11.38,
+      "similarIds": [
+        1027,
+        2,
+        3,
+        1038,
+        1021,
+        1004,
+        1031,
+        1010,
+        1003
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1027.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1027-thumb.webp",
+      "minimumOrderQuantity": 3,
+      "rating": 3.41,
+      "returnPolicy": "90 days return policy",
+      "description": "Open zip pouch in pastel geometric panels, with two makeup brushes beside it.",
+      "weight": 3,
+      "warrantyInformation": "3 year warranty",
+      "title": "Color-Block Makeup Pouch with Brushes",
+      "categoryName": "Beauty",
+      "tags": [
+        "beauty",
+        "makeup bag",
+        "brushes"
+      ],
+      "discountPercentage": 10.64,
+      "reviews": [
+        {
+          "date": "2025-02-11T10:00:00.000Z",
+          "reviewerName": "Owen Diaz",
+          "reviewerEmail": "owen.diaz@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Exactly as described."
+        },
+        {
+          "date": "2025-01-14T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Works well so far."
+        },
+        {
+          "date": "2025-05-16T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Happy with this."
+        }
+      ],
+      "price": 18,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001027",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 2 weeks",
+      "id": 1027,
+      "availabilityStatus": "In Stock",
+      "category": "beauty",
+      "stock": 139,
+      "sku": "BEA-SHA-1027",
+      "brand": "Shadeform",
+      "dimensions": {
+        "depth": 6.33,
+        "width": 39.37,
+        "height": 31.51
+      },
+      "salePrice": 16.08,
+      "similarIds": [
+        1026,
+        2,
+        1036,
+        1009,
+        1014
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1028.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1028-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.26,
+      "returnPolicy": "90 days return policy",
+      "description": "Two stacked honey-colored soap bars with a coarsely salted top, set near a glass bottle.",
+      "weight": 10,
+      "warrantyInformation": "1 month warranty",
+      "title": "Stacked Honey Glycerin Soap Bars",
+      "categoryName": "Skin Care",
+      "tags": [
+        "skin care",
+        "soap",
+        "glycerin"
+      ],
+      "discountPercentage": 8,
+      "reviews": [
+        {
+          "date": "2025-07-21T10:00:00.000Z",
+          "reviewerName": "Nina Volkov",
+          "reviewerEmail": "nina.volkov@x.dummyjson.com",
+          "rating": 4,
+          "comment": "A practical choice."
+        },
+        {
+          "date": "2025-03-08T10:00:00.000Z",
+          "reviewerName": "Caleb Frost",
+          "reviewerEmail": "caleb.frost@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Works well so far."
+        },
+        {
+          "date": "2025-10-18T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Would buy again."
+        }
+      ],
+      "price": 9.5,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001028",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1-2 business days",
+      "id": 1028,
+      "availabilityStatus": "In Stock",
+      "category": "skin-care",
+      "stock": 126,
+      "sku": "SKI-SOA-1028",
+      "brand": "Soapstone Lab",
+      "dimensions": {
+        "depth": 38.09,
+        "width": 23.7,
+        "height": 38.92
+      },
+      "salePrice": 8.74,
+      "similarIds": [
+        1029
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1029.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1029-thumb.webp",
+      "minimumOrderQuantity": 2,
+      "rating": 4.9,
+      "returnPolicy": "No return policy",
+      "description": "Small guest soaps wrapped in paper and blue-and-white baker\u2019s twine, piled in a shallow basket.",
+      "weight": 8,
+      "warrantyInformation": "1 week warranty",
+      "title": "Ribbon-Wrapped Guest Soap Favors",
+      "categoryName": "Skin Care",
+      "tags": [
+        "skin care",
+        "soap",
+        "guest soap"
+      ],
+      "discountPercentage": 15.83,
+      "reviews": [
+        {
+          "date": "2025-06-17T10:00:00.000Z",
+          "reviewerName": "Theo Park",
+          "reviewerEmail": "theo.park@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Exactly as described."
+        },
+        {
+          "date": "2025-07-28T10:00:00.000Z",
+          "reviewerName": "Noah Patel",
+          "reviewerEmail": "noah.patel@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Better than expected."
+        },
+        {
+          "date": "2025-10-01T10:00:00.000Z",
+          "reviewerName": "Felix Grant",
+          "reviewerEmail": "felix.grant@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Works well so far."
+        }
+      ],
+      "price": 14,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001029",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 2 weeks",
+      "id": 1029,
+      "availabilityStatus": "Low Stock",
+      "category": "skin-care",
+      "stock": 6,
+      "sku": "SKI-DEW-1029",
+      "brand": "Dewline",
+      "dimensions": {
+        "depth": 12.89,
+        "width": 35.55,
+        "height": 18.09
+      },
+      "salePrice": 11.78,
+      "similarIds": [
+        1028,
+        1010
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1030.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1030-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 3.91,
+      "returnPolicy": "7 days return policy",
+      "description": "Small cobalt-blue glass bottle with a faceted, wave-like body and a silver screw cap.",
+      "weight": 8,
+      "warrantyInformation": "6 months warranty",
+      "title": "Cobalt Blue Faceted Glass Bottle",
+      "categoryName": "Fragrances",
+      "tags": [
+        "fragrances",
+        "perfume",
+        "glass bottle",
+        "cobalt"
+      ],
+      "discountPercentage": 14.09,
+      "reviews": [
+        {
+          "date": "2025-03-27T10:00:00.000Z",
+          "reviewerName": "Sofia Mendes",
+          "reviewerEmail": "sofia.mendes@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Not fancy, but dependable."
+        },
+        {
+          "date": "2025-05-21T10:00:00.000Z",
+          "reviewerName": "Clara Voss",
+          "reviewerEmail": "clara.voss@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Great quality for the price."
+        },
+        {
+          "date": "2025-07-28T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Nice finish."
+        }
+      ],
+      "price": 26,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001030",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships overnight",
+      "id": 1030,
+      "availabilityStatus": "Low Stock",
+      "category": "fragrances",
+      "stock": 3,
+      "sku": "FRA-NOR-1030",
+      "brand": "North Scent",
+      "dimensions": {
+        "depth": 34.63,
+        "width": 30.59,
+        "height": 32.16
+      },
+      "salePrice": 22.34,
+      "similarIds": [
+        71,
+        1010,
+        1005,
+        1000,
+        1037,
+        1007
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1031.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1031-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.72,
+      "returnPolicy": "90 days return policy",
+      "description": "Black leather lace-up shoe with a soft, unlined upper and a rounded toe, shown on a white background.",
+      "weight": 5,
+      "warrantyInformation": "1 month warranty",
+      "title": "Black Leather Lace-Up Soft Shoe",
+      "categoryName": "Womens Shoes",
+      "tags": [
+        "womens shoes",
+        "leather",
+        "lace-up"
+      ],
+      "discountPercentage": 15.14,
+      "reviews": [
+        {
+          "date": "2025-09-09T10:00:00.000Z",
+          "reviewerName": "Jonah Blake",
+          "reviewerEmail": "jonah.blake@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Better than expected."
+        },
+        {
+          "date": "2025-11-24T10:00:00.000Z",
+          "reviewerName": "Zoe Harper",
+          "reviewerEmail": "zoe.harper@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Nice finish."
+        },
+        {
+          "date": "2025-06-20T10:00:00.000Z",
+          "reviewerName": "Zoe Harper",
+          "reviewerEmail": "zoe.harper@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Nice finish."
+        }
+      ],
+      "price": 64,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001031",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1 week",
+      "id": 1031,
+      "availabilityStatus": "In Stock",
+      "category": "womens-shoes",
+      "stock": 37,
+      "sku": "WSH-HEE-1031",
+      "brand": "Heeltheory",
+      "dimensions": {
+        "depth": 22.06,
+        "width": 23.94,
+        "height": 15.84
+      },
+      "salePrice": 54.31,
+      "similarIds": [
+        1033,
+        1010,
+        1035,
+        1021,
+        1023,
+        1032,
+        1011,
+        1022,
+        175,
+        1037,
+        1036,
+        185
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1032.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1032-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 3.6,
+      "returnPolicy": "30 days return policy",
+      "description": "Pair of vintage heeled shoes covered in green patterned brocade, with straps and covered buttons.",
+      "weight": 6,
+      "warrantyInformation": "3 year warranty",
+      "title": "Green Brocade Vintage Heeled Shoes",
+      "categoryName": "Womens Shoes",
+      "tags": [
+        "womens shoes",
+        "heels",
+        "brocade",
+        "vintage"
+      ],
+      "discountPercentage": 11.9,
+      "reviews": [
+        {
+          "date": "2025-09-08T10:00:00.000Z",
+          "reviewerName": "Priya Nair",
+          "reviewerEmail": "priya.nair@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Looks good in person."
+        },
+        {
+          "date": "2025-04-01T10:00:00.000Z",
+          "reviewerName": "Zoe Harper",
+          "reviewerEmail": "zoe.harper@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Happy with this."
+        },
+        {
+          "date": "2025-01-16T10:00:00.000Z",
+          "reviewerName": "Maya Ortiz",
+          "reviewerEmail": "maya.ortiz@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Not fancy, but dependable."
+        }
+      ],
+      "price": 110,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001032",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 2 weeks",
+      "id": 1032,
+      "availabilityStatus": "In Stock",
+      "category": "womens-shoes",
+      "stock": 143,
+      "sku": "WSH-HEE-1032",
+      "brand": "Heeltheory",
+      "dimensions": {
+        "depth": 39.94,
+        "width": 33.72,
+        "height": 15.31
+      },
+      "salePrice": 96.91,
+      "similarIds": [
+        1033,
+        1034,
+        1005,
+        1007,
+        189,
+        188,
+        1000
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1033.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1033-thumb.webp",
+      "minimumOrderQuantity": 2,
+      "rating": 3.72,
+      "returnPolicy": "30 days return policy",
+      "description": "Black pointed-toe stiletto pumps with a textured surface, photographed on a brick walkway.",
+      "weight": 1,
+      "warrantyInformation": "3 year warranty",
+      "title": "Black Textured Stiletto Pumps",
+      "categoryName": "Womens Shoes",
+      "tags": [
+        "womens shoes",
+        "pumps",
+        "stiletto"
+      ],
+      "discountPercentage": 10.9,
+      "reviews": [
+        {
+          "date": "2025-06-27T10:00:00.000Z",
+          "reviewerName": "Theo Park",
+          "reviewerEmail": "theo.park@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Nice finish."
+        },
+        {
+          "date": "2025-04-14T10:00:00.000Z",
+          "reviewerName": "Noah Patel",
+          "reviewerEmail": "noah.patel@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Not fancy, but dependable."
+        },
+        {
+          "date": "2025-07-14T10:00:00.000Z",
+          "reviewerName": "Liam Chen",
+          "reviewerEmail": "liam.chen@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Looks good in person."
+        }
+      ],
+      "price": 89,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001033",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 1 week",
+      "id": 1033,
+      "availabilityStatus": "In Stock",
+      "category": "womens-shoes",
+      "stock": 159,
+      "sku": "WSH-HEE-1033",
+      "brand": "Heeltheory",
+      "dimensions": {
+        "depth": 20.31,
+        "width": 24.74,
+        "height": 32.36
+      },
+      "salePrice": 79.3,
+      "similarIds": [
+        1031,
+        1032,
+        1034,
+        1023,
+        1038,
+        1037,
+        185,
+        1030,
+        1007,
+        1010
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1034.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1034-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 3.65,
+      "returnPolicy": "30 days return policy",
+      "description": "Pair of yellow suede peep-toe wedge sandals seen from behind.",
+      "weight": 6,
+      "warrantyInformation": "2 year warranty",
+      "title": "Yellow Suede Wedge Sandals",
+      "categoryName": "Womens Shoes",
+      "tags": [
+        "womens shoes",
+        "wedges",
+        "suede",
+        "yellow"
+      ],
+      "discountPercentage": 3.92,
+      "reviews": [
+        {
+          "date": "2025-11-05T10:00:00.000Z",
+          "reviewerName": "Liam Chen",
+          "reviewerEmail": "liam.chen@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Happy with this."
+        },
+        {
+          "date": "2025-07-27T10:00:00.000Z",
+          "reviewerName": "Ava Brooks",
+          "reviewerEmail": "ava.brooks@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Not fancy, but dependable."
+        },
+        {
+          "date": "2025-07-11T10:00:00.000Z",
+          "reviewerName": "Ava Brooks",
+          "reviewerEmail": "ava.brooks@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Solid everyday pick."
+        }
+      ],
+      "price": 72,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001034",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 2 weeks",
+      "id": 1034,
+      "availabilityStatus": "In Stock",
+      "category": "womens-shoes",
+      "stock": 70,
+      "sku": "WSH-LAS-1034",
+      "brand": "Lastline",
+      "dimensions": {
+        "depth": 35.28,
+        "width": 36.64,
+        "height": 8.18
+      },
+      "salePrice": 69.18,
+      "similarIds": [
+        1032,
+        1033
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1035.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1035-thumb.webp",
+      "minimumOrderQuantity": 3,
+      "rating": 4.17,
+      "returnPolicy": "90 days return policy",
+      "description": "Bright blue canvas weekender bag with tan leather handles, strap, and corner patches.",
+      "weight": 9,
+      "warrantyInformation": "1 month warranty",
+      "title": "Blue Canvas Weekender with Leather Trim",
+      "categoryName": "Womens Bags",
+      "tags": [
+        "womens bags",
+        "weekender",
+        "canvas"
+      ],
+      "discountPercentage": 14.2,
+      "reviews": [
+        {
+          "date": "2025-02-25T10:00:00.000Z",
+          "reviewerName": "Owen Diaz",
+          "reviewerEmail": "owen.diaz@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Would buy again."
+        },
+        {
+          "date": "2025-03-14T10:00:00.000Z",
+          "reviewerName": "Noah Patel",
+          "reviewerEmail": "noah.patel@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Nice finish."
+        },
+        {
+          "date": "2025-10-07T10:00:00.000Z",
+          "reviewerName": "Owen Diaz",
+          "reviewerEmail": "owen.diaz@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Better than expected."
+        }
+      ],
+      "price": 98,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001035",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 2 weeks",
+      "id": 1035,
+      "availabilityStatus": "In Stock",
+      "category": "womens-bags",
+      "stock": 15,
+      "sku": "WBG-CAR-1035",
+      "brand": "Carryform",
+      "dimensions": {
+        "depth": 16.51,
+        "width": 19.41,
+        "height": 24.55
+      },
+      "salePrice": 84.08,
+      "similarIds": [
+        1036,
+        173,
+        1031,
+        174,
+        1013,
+        93,
+        172,
+        1021,
+        1010,
+        175,
+        1030,
+        162
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1036.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1036-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.21,
+      "returnPolicy": "30 days return policy",
+      "description": "Slouchy brown leather duffel with a shoulder strap, buckle details, and side pockets.",
+      "weight": 6,
+      "warrantyInformation": "2 year warranty",
+      "title": "Brown Leather Weekend Duffel",
+      "categoryName": "Womens Bags",
+      "tags": [
+        "womens bags",
+        "duffel",
+        "leather"
+      ],
+      "discountPercentage": 6.12,
+      "reviews": [
+        {
+          "date": "2025-07-08T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Works well so far."
+        },
+        {
+          "date": "2025-10-26T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com",
+          "rating": 5,
+          "comment": "A practical choice."
+        },
+        {
+          "date": "2025-10-19T10:00:00.000Z",
+          "reviewerName": "Nina Volkov",
+          "reviewerEmail": "nina.volkov@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Exactly as described."
+        }
+      ],
+      "price": 156,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001036",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships overnight",
+      "id": 1036,
+      "availabilityStatus": "In Stock",
+      "category": "womens-bags",
+      "stock": 55,
+      "sku": "WBG-BAG-1036",
+      "brand": "Bagpost",
+      "dimensions": {
+        "depth": 34.46,
+        "width": 5.84,
+        "height": 13.57
+      },
+      "salePrice": 146.45,
+      "similarIds": [
+        1035,
+        93,
+        1021,
+        1009,
+        1039,
+        1014,
+        175,
+        173,
+        1002,
+        1027,
+        1025,
+        1006
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1037.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1037-thumb.webp",
+      "minimumOrderQuantity": 2,
+      "rating": 4.81,
+      "returnPolicy": "No return policy",
+      "description": "Yellow wayfarer-style sunglasses centered on a split blue-and-peach background.",
+      "weight": 7,
+      "warrantyInformation": "1 month warranty",
+      "title": "Yellow Wayfarer Sunglasses",
+      "categoryName": "Sunglasses",
+      "tags": [
+        "sunglasses",
+        "wayfarer",
+        "yellow"
+      ],
+      "discountPercentage": 6.47,
+      "reviews": [
+        {
+          "date": "2025-09-12T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Nice finish."
+        },
+        {
+          "date": "2025-10-03T10:00:00.000Z",
+          "reviewerName": "Zoe Harper",
+          "reviewerEmail": "zoe.harper@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Great quality for the price."
+        },
+        {
+          "date": "2025-01-19T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Looks good in person."
+        }
+      ],
+      "price": 28,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001037",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships overnight",
+      "id": 1037,
+      "availabilityStatus": "In Stock",
+      "category": "sunglasses",
+      "stock": 112,
+      "sku": "SUN-SHA-1037",
+      "brand": "Shadeorbit",
+      "dimensions": {
+        "depth": 27.84,
+        "width": 31.87,
+        "height": 33.53
+      },
+      "salePrice": 26.19,
+      "similarIds": [
+        1038,
+        158,
+        1023,
+        1033,
+        1031,
+        1030,
+        155,
+        77,
+        1020,
+        54,
+        1000,
+        1003
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1038.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1038-thumb.webp",
+      "minimumOrderQuantity": 2,
+      "rating": 4.34,
+      "returnPolicy": "60 days return policy",
+      "description": "Pair of translucent cream square eyeglasses resting on a wooden surface.",
+      "weight": 3,
+      "warrantyInformation": "1 month warranty",
+      "title": "Translucent Square Eyeglasses",
+      "categoryName": "Sunglasses",
+      "tags": [
+        "sunglasses",
+        "eyeglasses",
+        "clear frames"
+      ],
+      "discountPercentage": 4.34,
+      "reviews": [
+        {
+          "date": "2025-09-04T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Solid everyday pick."
+        },
+        {
+          "date": "2025-05-15T10:00:00.000Z",
+          "reviewerName": "Jonah Blake",
+          "reviewerEmail": "jonah.blake@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Solid everyday pick."
+        },
+        {
+          "date": "2025-07-03T10:00:00.000Z",
+          "reviewerName": "Caleb Frost",
+          "reviewerEmail": "caleb.frost@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Looks good in person."
+        }
+      ],
+      "price": 45,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001038",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships in 3-5 business days",
+      "id": 1038,
+      "availabilityStatus": "In Stock",
+      "category": "sunglasses",
+      "stock": 14,
+      "sku": "SUN-SHA-1038",
+      "brand": "Shadeorbit",
+      "dimensions": {
+        "depth": 28.74,
+        "width": 35.57,
+        "height": 38.05
+      },
+      "salePrice": 43.05,
+      "similarIds": [
+        1037,
+        1033,
+        1032,
+        1008,
+        1026,
+        148,
+        1000,
+        2
+      ]
+    },
+    {
+      "images": [
+        "/images/catalog-extra/1039.webp"
+      ],
+      "thumbnail": "/images/catalog-extra/1039-thumb.webp",
+      "minimumOrderQuantity": 1,
+      "rating": 4.6,
+      "returnPolicy": "90 days return policy",
+      "description": "Statement necklace of graduated iridescent teardrop stones set in silver-tone links, displayed on a bust.",
+      "weight": 9,
+      "warrantyInformation": "1 year warranty",
+      "title": "Iridescent Teardrop Statement Necklace",
+      "categoryName": "Womens Jewellery",
+      "tags": [
+        "womens jewellery",
+        "necklace",
+        "statement"
+      ],
+      "discountPercentage": 12.62,
+      "reviews": [
+        {
+          "date": "2025-09-11T10:00:00.000Z",
+          "reviewerName": "Ivy Lawson",
+          "reviewerEmail": "ivy.lawson@x.dummyjson.com",
+          "rating": 5,
+          "comment": "Works well so far."
+        },
+        {
+          "date": "2025-06-21T10:00:00.000Z",
+          "reviewerName": "Zoe Harper",
+          "reviewerEmail": "zoe.harper@x.dummyjson.com",
+          "rating": 3,
+          "comment": "Exactly as described."
+        },
+        {
+          "date": "2025-08-13T10:00:00.000Z",
+          "reviewerName": "Hannah Reed",
+          "reviewerEmail": "hannah.reed@x.dummyjson.com",
+          "rating": 4,
+          "comment": "Works well so far."
+        }
+      ],
+      "price": 62,
+      "meta": {
+        "createdAt": "2026-11-09T20:00:00.000Z",
+        "barcode": "1000000001039",
+        "updatedAt": "2026-11-09T22:00:00.000Z"
+      },
+      "shippingInformation": "Ships overnight",
+      "id": 1039,
+      "availabilityStatus": "Low Stock",
+      "category": "womens-jewellery",
+      "stock": 4,
+      "sku": "WJW-PEA-1039",
+      "brand": "Pearlpost",
+      "dimensions": {
+        "depth": 38.02,
+        "width": 13.17,
+        "height": 18.45
+      },
+      "salePrice": 54.18,
+      "similarIds": [
+        1029
       ]
     }
   ]

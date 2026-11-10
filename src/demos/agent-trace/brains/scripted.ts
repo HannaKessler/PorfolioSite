@@ -117,7 +117,7 @@ export function decide(messages: Msg[]): ScriptedReply {
 export class ScriptedBrain implements ChatModel {
   readonly id = SCRIPTED_MODEL_ID;
   readonly provider = "simulated";
-  readonly label = "Simulated brain";
+  readonly label = "Simulated Brain";
 
   async complete(request: CompletionRequest): Promise<Completion> {
     if (request.signal.aborted) throw request.signal.reason;

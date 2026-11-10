@@ -1,0 +1,23 @@
+<div class="os-hood" id="os-hood">
+  <div class="os-hood-panel" id="os-hood-panel" hidden>
+    <p class="os-hood-lead">Live data from the in-browser GraphQL profile service. Fault switches are injected for this demo.</p>
+    <p class="os-hood-meta">Transport: <span data-hood-transport></span></p>
+    <div class="os-hood-controls">
+      <label><input type="checkbox" data-fault="killSwitch" /> Kill Switch</label>
+      <label><input type="checkbox" data-fault="outage" /> Simulate Outage <span class="os-hood-tag">Injected Fault</span></label>
+      <label><input type="checkbox" data-fault="slow" /> Slow Profile Service <span class="os-hood-tag">Injected Fault</span></label>
+    </div>
+    <dl class="os-hood-stats">
+      <div><dt>Latency</dt><dd data-hood-latency>Not requested yet</dd></div>
+      <div><dt>Fallback</dt><dd data-hood-fallback>—</dd></div>
+    </dl>
+    <h3>Profile</h3>
+    <pre data-hood-profile>Waiting for a request.</pre>
+    <h3>GraphQL Request</h3>
+    <pre data-hood-request></pre>
+    <h3>GraphQL Response</h3>
+    <pre data-hood-response></pre>
+    <h3>Exposures</h3>
+    <pre data-hood-exposures>None yet.</pre>
+  </div>
+</div>

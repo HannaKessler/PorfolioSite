@@ -46,7 +46,7 @@ def main():
     found = request(
         "POST",
         f"{ES}/products/_search",
-        {"size": 250, "query": {"match_all": {}}},
+        {"size": 500, "query": {"match_all": {}}},
     )
     hits = found["hits"]["hits"]
     if len(hits) < 100:
@@ -141,7 +141,7 @@ def main():
     exported.sort(key=lambda product: product["id"])
     catalog = {
         "generatedAt": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "source": "https://dummyjson.com/products",
+        "source": "https://dummyjson.com/products + catalog/extra-products.json (public-domain photo mock catalog)",
         "elasticsearchVersion": info["version"]["number"],
         "popularThemes": popular,
         "products": exported,
