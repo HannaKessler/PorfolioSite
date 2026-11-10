@@ -64,32 +64,3 @@ body:has(.os-wide) .footer-inner,
     padding-top: 1.5rem;
   }
 }
-
-/* Write-ups without an in-page demo (Dev Log and similar project pages)
-   use the same wide centered column as the shop. Body copy keeps a
-   comfortable measure; headings and media can use the full column. */
-.project-article .lede,
-.project-article .prose,
-.project-article .devlog {
-  max-width: none;
-}
-
-.project-article .prose > :is(p, ul, ol, blockquote),
-.project-article .devlog .prose > :is(p, ul, ol, blockquote) {
-  max-width: 78ch;
-}
-
-.project-article .prose > p:has(img),
-.project-article .devlog .prose > p:has(img),
-.project-article .prose > figure,
-.project-article .devlog .prose > figure {
-  max-width: none;
-}
-
-@media (min-width: 1200px) {
-  .project-article .devlog .gif-player {
-    width: max(15rem, calc(100% - 78ch - 2rem));
-    max-width: calc(100% - 78ch - 2rem);
-  }
-}
-

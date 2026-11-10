@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import "../../styles/demo-layout.css";
 import SecretNotesDemo from "../../components/SecretNotesDemo.astro";
 import CatalogShop from "../../components/CatalogShop.astro";
 import CatalogHoodToggle from "../../components/CatalogHoodToggle.astro";
@@ -31,11 +30,10 @@ const isDevLog = project.id === "unannounced-game";
 const showAllWork = project.id !== "blender-asset-transformer" && project.id !== "unannounced-game";
 // Full-width demos: intro header, the demo in a frame, then the write-up.
 const isWideDemo = isCatalog || isFilmGraph || isModelViewer || isAgentTrace;
-const isArticle = !isSecretNotes && !isWideDemo;
 ---
 
 <BaseLayout title={title} description={description}>
-  <div class:list={["container", (isSecretNotes || isWideDemo) && "demo-project", (isWideDemo || isArticle) && "os-wide", isArticle && "project-article"]}>
+  <div class:list={["container", (isSecretNotes || isWideDemo) && "demo-project", isWideDemo && "os-wide"]}>
     {isWideDemo && (
       <>
         <header class="os-intro">
