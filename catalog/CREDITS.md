@@ -1,4 +1,4 @@
-# Image credits
+# Image Credits
 
 All photos below are licensed CC0 or Public Domain Mark. Product titles, brands, prices, and reviews are fictional mock catalog data for Hanna Kessler's Searchable Shop portfolio demo.
 

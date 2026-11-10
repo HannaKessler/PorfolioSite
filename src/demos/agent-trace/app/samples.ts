@@ -4,9 +4,9 @@ import type { Collector } from "../collector/collector";
 const modules = import.meta.glob<{ default: unknown }>("../samples/*.otlp.json");
 
 export const SAMPLE_LABELS: Record<string, string> = {
-  "scripted-clean": "Sample · Simulated brain · clean run",
-  "scripted-flaky": "Sample · Simulated brain · flaky test",
-  "scripted-malformed": "Sample · Simulated brain · malformed output",
+  "scripted-clean": "Sample · Simulated Brain · Clean Run",
+  "scripted-flaky": "Sample · Simulated Brain · Flaky Test",
+  "scripted-malformed": "Sample · Simulated Brain · Malformed Output",
   "webllm-qwen2.5-1.5b": "Sample · Qwen2.5 1.5B (WebLLM)",
 };
 

@@ -8,16 +8,16 @@ test.describe("Agent Trace Viewer", () => {
     page.on("pageerror", (e) => errors.push(e.message));
     await page.goto("/projects/agent-trace-viewer/");
 
-    const run = page.getByRole("button", { name: "Run the agent" });
+    const run = page.getByRole("button", { name: "Run the Agent" });
     await expect(run).toBeEnabled();
     await run.click();
 
     const tree = page.getByRole("tree", { name: "Spans" });
     await expect(tree.locator('[data-span-name="execute_tool finish"]')).toBeVisible();
-    await expect(page.getByRole("region", { name: "Run summary" })).toContainText("Finished");
-    await expect(page.getByRole("region", { name: "Run summary" })).toContainText("6 passed, 0 failed");
+    await expect(page.getByRole("region", { name: "Run Summary" })).toContainText("Finished");
+    await expect(page.getByRole("region", { name: "Run Summary" })).toContainText("6 passed, 0 failed");
     // The simulated brain reports no tokens, so none are shown.
-    await expect(page.getByRole("region", { name: "Run summary" })).toContainText("Not reported by this brain");
+    await expect(page.getByRole("region", { name: "Run Summary" })).toContainText("Not reported by this brain");
     await expect(page.getByText("What would this run cost on a hosted model?")).toHaveCount(0);
 
     // Inspect a model call: no usage, but the recorded prompt and response.
@@ -39,17 +39,17 @@ test.describe("Agent Trace Viewer", () => {
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(e.message));
     await page.goto("/projects/agent-trace-viewer/");
-    await page.getByRole("button", { name: "Run the agent" }).click();
-    const summary = page.getByRole("region", { name: "Run summary" });
+    await page.getByRole("button", { name: "Run the Agent" }).click();
+    const summary = page.getByRole("region", { name: "Run Summary" });
     await expect(summary).toContainText("Finished");
 
     // Activity: the scripted policy's rule, labelled as such, and the test output.
     const panel = page.getByRole("tabpanel");
     await expect(page.getByRole("tab", { name: "Activity" })).toHaveAttribute("aria-selected", "true");
-    await expect(panel).toContainText("Scripted policy decision");
+    await expect(panel).toContainText("Scripted Policy Decision");
     await expect(panel).toContainText("no tool result yet → run_tests");
     await expect(panel).toContainText("5 passed, 1 failed");
-    await expect(panel).not.toContainText("Model's reasoning");
+    await expect(panel).not.toContainText("Model's Reasoning");
 
     // Feed → timeline and inspector.
     await panel.getByText("known buggy line found → edit_file with its known fix").click();
@@ -72,7 +72,7 @@ test.describe("Agent Trace Viewer", () => {
     const open = panel.locator("details.atv-call[open]");
     await expect(open).toHaveCount(1);
     await expect(open).toContainText("Messages sent (10)");
-    await expect(open).toContainText("Raw reply, before parsing");
+    await expect(open).toContainText("Raw Reply, Before Parsing");
     await expect(open.getByRole("button", { name: "Copy all" })).toBeVisible();
     await expect(open).toContainText("No model was involved");
     expect(errors).toEqual([]);
@@ -89,8 +89,8 @@ test.describe("Agent Trace Viewer", () => {
     await expect(panel).toContainText("Find (as sent by the brain)");
     await expect(panel.locator(".atv-code")).toContainText("export function formatDuration");
     await page.getByRole("tab", { name: "Activity" }).click();
-    await expect(panel).toContainText("Model's reasoning");
-    await expect(panel).not.toContainText("Scripted policy decision");
+    await expect(panel).toContainText("Model's Reasoning");
+    await expect(panel).not.toContainText("Scripted Policy Decision");
     await page.getByRole("tab", { name: "Prompts" }).click();
     await panel.locator("details.atv-call > summary").first().click();
     await expect(panel).toContainText("Exact request body sent to WebLLM");

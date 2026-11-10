@@ -36,7 +36,7 @@ function Call({ call, open, onToggle, onSelect, selected }: { call: ModelCall; o
           {call.finishReason ? ` · finish: ${call.finishReason}` : ""}
         </span>
         {verdict(call)}
-        {call.fault && <span className="atv-badge-fault">Injected fault: {call.fault}</span>}
+        {call.fault && <span className="atv-badge-fault">Injected Fault: {call.fault}</span>}
       </summary>
       {open && (
         <div className="atv-call-body">
@@ -88,7 +88,7 @@ function Call({ call, open, onToggle, onSelect, selected }: { call: ModelCall; o
 
           <section className="atv-call-section">
             <div className="atv-call-section-head">
-              <h4>Raw reply, before parsing</h4>
+              <h4>Raw Reply, Before Parsing</h4>
               {call.output !== undefined && <CopyButton text={call.output} />}
             </div>
             {call.output !== undefined ? (

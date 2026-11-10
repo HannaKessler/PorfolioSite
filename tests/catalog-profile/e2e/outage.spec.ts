@@ -22,5 +22,5 @@ test("injected outage keeps the default recommended row", async ({ page }) => {
   await expect(heading).toHaveText(defaultTitle!);
   const latency = await page.locator("[data-hood-latency]").textContent();
   expect(latency).toMatch(/ms/);
-  await expect(page.locator(".os-hood-tag").filter({ hasText: "Injected fault" })).toHaveCount(2);
+  await expect(page.locator(".os-hood-tag").filter({ hasText: "Injected Fault" })).toHaveCount(2);
 });

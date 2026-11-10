@@ -273,7 +273,7 @@ export function Answer({ state, stale, question, runCount }: Props) {
   } else if (state.kind === "custom") {
     body = (
       <p className="fg-ans-placeholder">
-        You edited the query by hand, so there is no formatted answer. The raw response is in the GraphQL result tab below.
+        You edited the query by hand, so there is no formatted answer. The raw response is in the GraphQL Result tab below.
       </p>
     );
   } else {

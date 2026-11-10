@@ -28,7 +28,7 @@ What it demonstrates:
 - **Performance measurement:** load time, first frame, CPU and GPU frame time (GPU timer queries), draw calls and code size, measured the same way in every pane.
 - **Testing:** 74 unit tests covering the parsers, file matching and camera maths.
 
-## What you can do with it
+## What You Can Do with It
 
 - Open glTF/GLB, OBJ + MTL, STL, FBX or PLY files, including multi-file models (a `.gltf` with its `.bin` and textures, an OBJ with its `.mtl` and images), or pick one of four samples.
 - Orbit, pan and zoom each pane; every model is centred and framed automatically, from millimetre parts to large scenes.
@@ -43,7 +43,7 @@ What it demonstrates:
 - **Custom panes:** one Web Worker parses the files into a plain scene description (meshes, materials, textures as `ImageBitmap`s). The WebGPU and WebGL2 backends each upload and draw that same scene.
 - **Measurement:** a shared module collects timings and counters from every pane for the readouts and table.
 
-## Engineering decisions and trade-offs
+## Engineering Decisions and Trade-Offs
 
 - **Parsing in a Web Worker.** The custom panes parse off the main thread, so a large file never freezes the page, and parsing happens once for both backends. The cost is a message boundary and plain data instead of shared objects.
 - **Redrawing on demand.** The three.js and custom panes draw only when the camera moves or a model changes, so an idle viewer uses no GPU time. Babylon.js renders continuously; Benchmark mode equalises them.

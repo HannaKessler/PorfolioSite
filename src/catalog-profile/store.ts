@@ -88,7 +88,7 @@ export class ProfileStore {
     }
     const viewedIds = this.events.filter((event) => event.type === "PRODUCT_VIEW").map((event) => event.productId);
     return {
-      title: "Recommended for you",
+      title: "Recommended for You",
       source: "PROFILE",
       reason: recommendationReason(traits),
       productIds: recommendIds(traits, viewedIds, limit),

@@ -24,10 +24,10 @@ describe("isOutOfStock", () => {
 
 describe("addToCartLabel", () => {
   it("labels out-of-stock items for the disabled button", () => {
-    expect(addToCartLabel(fixture(0, "Out of Stock"))).toBe("Out of stock");
+    expect(addToCartLabel(fixture(0, "Out of Stock"))).toBe("Out of Stock");
   });
 
   it("keeps the add-to-cart label when the item is available", () => {
-    expect(addToCartLabel(fixture(8, "In Stock"))).toBe("Add to cart");
+    expect(addToCartLabel(fixture(8, "In Stock"))).toBe("Add to Cart");
   });
 });

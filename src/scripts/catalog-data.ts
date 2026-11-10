@@ -99,7 +99,7 @@ export function isOutOfStock(product: { stock?: number; availabilityStatus?: str
 }
 
 export function addToCartLabel(product: { stock?: number; availabilityStatus?: string }) {
-  return isOutOfStock(product) ? "Out of stock" : "Add to cart";
+  return isOutOfStock(product) ? "Out of Stock" : "Add to Cart";
 }
 
 export interface ShopRow {

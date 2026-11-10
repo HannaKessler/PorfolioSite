@@ -30,18 +30,18 @@ export function getStaticPaths() {
 const product = productById(Astro.props.productId) as Product;
 const images = product.images?.length ? product.images : product.thumbnail ? [product.thumbnail] : [];
 const similar = similarProducts(product);
-const similarHtml = similar.length ? carouselHtml({ title: "Similar products", items: similar }, "") : "";
+const similarHtml = similar.length ? carouselHtml({ title: "Similar Products", items: similar }, "") : "";
 const description = product.description.slice(0, 160);
 const outOfStock = isOutOfStock(product);
 ---
 
 <BaseLayout title={product.title} description={description}>
   <div class="container demo-project os-wide">
-    <section class="os os-item-page" id="open-stock-item" aria-label="Searchable Shop product" data-product-id={product.id}>
+    <section class="os os-item-page" id="open-stock-item" aria-label="Searchable Shop Product" data-product-id={product.id}>
       <CatalogHoodToggle />
       <CatalogHood />
       <CatalogBar />
-      <a class="os-back" href="/projects/catalog" data-back>Back to the shop</a>
+      <a class="os-back" href="/projects/catalog" data-back>Back to the Shop</a>
       <article class="os-item">
         <div class="os-gallery">
           <div class="os-hero">
@@ -57,7 +57,7 @@ const outOfStock = isOutOfStock(product);
             images.length > 1 && (
               <div class="os-thumbs">
                 {images.map((image, index) => (
-                  <button type="button" class:list={[{ "is-on": index === 0 }]} data-image={image} aria-label={`Show image ${index + 1}`}>
+                  <button type="button" class:list={[{ "is-on": index === 0 }]} data-image={image} aria-label={`Show Image ${index + 1}`}>
                     <img src={image} alt="" />
                   </button>
                 ))}
@@ -107,7 +107,7 @@ const outOfStock = isOutOfStock(product);
             <dd>{product.shippingInformation}</dd>
             <dt>Returns</dt>
             <dd>{product.returnPolicy}</dd>
-            <dt>Minimum order</dt>
+            <dt>Minimum Order</dt>
             <dd>{product.minimumOrderQuantity}</dd>
             <dt>Barcode</dt>
             <dd>{product.meta?.barcode}</dd>

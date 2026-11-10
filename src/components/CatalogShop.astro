@@ -6,12 +6,12 @@ import CatalogConsent from "./CatalogConsent.astro";
 import { initialBrowseHtml, recommendedSlotHtml } from "../scripts/catalog-html";
 ---
 
-<section class="os" id="open-stock" aria-label="Searchable Shop catalog">
+<section class="os" id="open-stock" aria-label="Searchable Shop Catalog">
   <CatalogHood />
   <CatalogBar />
   <div id="os-recommended-slot" set:html={recommendedSlotHtml()} />
   <div id="os-stage" set:html={initialBrowseHtml()} />
-  <p class="os-note os-credits"><a href="/projects/catalog/credits">Image credits</a></p>
+  <p class="os-note os-credits"><a href="/projects/catalog/credits">Image Credits</a></p>
   <CatalogConsent />
 </section>
 

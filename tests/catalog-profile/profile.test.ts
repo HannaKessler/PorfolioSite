@@ -94,7 +94,7 @@ describe("recommendations", () => {
     store.track("PRODUCT_VIEW", product.id);
     const row = store.recommended();
     expect(row.source).toBe("PROFILE");
-    expect(row.title).toBe("Recommended for you");
+    expect(row.title).toBe("Recommended for You");
     const top = catalog.products.find((item) => String(item.id) === row.productIds[0]);
     expect(top?.category).toBe(product.category);
     const other = otherCategoryProduct(product.category);

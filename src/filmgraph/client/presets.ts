@@ -29,7 +29,7 @@ export interface Blank {
   /** The GraphQL variable this blank fills. */
   variable: string;
   kind: BlankKind;
-  /** Accessible name for the blank, e.g. "Director" or "Second actor". */
+  /** Accessible name for the blank, e.g. "Director" or "Second Actor". */
   label: string;
   default: Choice;
 }
@@ -154,9 +154,9 @@ export const PRESETS: Preset[] = [
     summary: "Films with both actors in the cast, their characters, and who directed them.",
     sentence: [
       "Films ",
-      blank("a", "actor", "First actor", "36949", "Robert De Niro"),
+      blank("a", "actor", "First Actor", "36949", "Robert De Niro"),
       " and ",
-      blank("b", "actor", "Second actor", "41163", "Al Pacino"),
+      blank("b", "actor", "Second Actor", "41163", "Al Pacino"),
       " both appear in",
     ],
     query: SHARED_FILMS,
@@ -251,9 +251,9 @@ export const PRESETS: Preset[] = [
     summary: "The shortest co-star chain between two actors, up to 3 films.",
     sentence: [
       "Shortest link between ",
-      blank("from", "actor", "First actor", "3454165", "Kevin Bacon"),
+      blank("from", "actor", "First Actor", "3454165", "Kevin Bacon"),
       " and ",
-      blank("to", "actor", "Second actor", "4616", "Marilyn Monroe"),
+      blank("to", "actor", "Second Actor", "4616", "Marilyn Monroe"),
     ],
     query: ACTOR_PATH,
     variables: { from: "3454165", to: "4616" },
@@ -287,7 +287,7 @@ export const PRESETS: Preset[] = [
 /** The N+1 demo, kept separate from the preset list. */
 export const SIX_DEGREES_PRESET: Preset = {
   id: "six-degrees",
-  label: "Six degrees (N+1 demo)",
+  label: "Six Degrees (N+1 Demo)",
   summary: "Pulp Fiction's cast, then every cast member's other films.",
   sentence: ["Pulp Fiction’s cast, then every cast member’s other films"],
   query: SIX_DEGREES,

@@ -11,7 +11,7 @@ export function mountItem(root: HTMLElement) {
   if (query && input) input.value = query;
   if (query && back) {
     back.href = `/projects/catalog?q=${encodeURIComponent(query)}`;
-    back.textContent = "Back to results";
+    back.textContent = "Back to Results";
   }
   if (query) {
     root.querySelectorAll<HTMLAnchorElement>(".os-similar a").forEach((link) => {

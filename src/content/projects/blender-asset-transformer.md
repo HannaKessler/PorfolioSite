@@ -42,7 +42,7 @@ What it demonstrates:
 - **Careful data handling:** re-exports keep hand edits and stable GUIDs, licences are never guessed, and anything unexpected stops the export with a clear error.
 - **Release tooling:** linting and formatting with ruff, type hints from fake-bpy-module, and GitHub Actions for lint and release.
 
-## What it does
+## What It Does
 
 The tool lives in an **Asset Transformer** panel in the 3D Viewport sidebar. The workflow:
 
@@ -52,7 +52,7 @@ The tool lives in an **Asset Transformer** panel in the 3D Viewport sidebar. The
 4. **Rework:** edit the asset in Blender. **Join (Keep Licenses)** merges meshes and keeps their licence records.
 5. **Export:** add a target Unity project, stage collections from the sidebar or the Outliner's right-click menu, then run **Export Staged**. Each staged collection becomes its own folder in the target project.
 
-## Technical architecture
+## Technical Architecture
 
 - **Platform:** Blender 5.1+ extension (manifest schema 1.0.0), written in Python with bpy, bpy_extras, mathutils and the standard library only. There are no third-party runtime dependencies and no external services: it works with local files and launches the local Unity editor.
 - **Modules** (about 3,000 lines across seven):
@@ -72,7 +72,7 @@ The tool lives in an **Asset Transformer** panel in the 3D Viewport sidebar. The
 - **Formats written to Unity:** FBX files (with PSD leaf masks converted to PNG), an `ATTRIBUTION.md` licence file for each exported asset, and a `materials.json` with the source material values. Work in progress adds the FBX `.meta` (clip settings and material remaps), texture `.meta` files and URP Lit `.mat` files.
 - **Tooling:** ruff, fake-bpy-module and GitHub Actions for lint and release. Licensed GPL-3.0-or-later; version 0.1.0, not yet released.
 
-## Key technical decisions and trade-offs
+## Key Technical Decisions and Trade-Offs
 
 - **No Unity-side scripts.** Everything happens in Blender. Writing Unity `.meta` and `.mat` files is a narrow, deliberate exception, because FBX cannot carry Unity's loop settings or material bindings. The trade-off is owning the exact text format of files Unity normally manages.
 - **Re-export preserves hand edits.** Only the fields the tool owns are updated and GUIDs are kept, so prefab and scene references survive a re-export. An unrecognised file layout stops the export with an error rather than risking a bad rewrite.
@@ -82,7 +82,7 @@ The tool lives in an **Asset Transformer** panel in the 3D Viewport sidebar. The
 - **Pipeline before features.** Stage 1 makes the round-trip from Unity to Blender and back reliable before any feature that changes assets is built. Retargeting, material matching and re-unwrapping all depend on assets arriving intact, with their clips, materials and references preserved, so any loss in the round-trip would undermine them.
 - **Blender conventions:** ImportHelper with a FileHandler for import, a single classes tuple for registration, and warnings reported to the user through Blender's own reporting.
 
-## Challenges so far
+## Challenges So Far
 
 Items marked *in progress* are implemented and checked by hand but not yet on GitHub.
 
@@ -135,7 +135,7 @@ Items marked *in progress* are implemented and checked by hand but not yet on Gi
 **Matching the Unity editor version**
 - **Open in Unity** opens each library project in the editor version that project needs, found in the configured Unity editors folder.
 
-## Status and roadmap
+## Status and Roadmap
 
 - **On GitHub now:** library browser and search, Open in Unity, single and batch import with Principled BSDF wiring, foliage material preview, collection-based export staging, and FBX export with textures and attribution.
 - **In progress (Stage 1, implemented but not yet published):** Unity animation loop and frame-range settings carried both ways, one action per clip, unit-scale correction, URP Lit material generation and remapping with stable GUIDs, shipping URP-compatible pack shaders with the export, rig import fixes, and per-asset export isolation.

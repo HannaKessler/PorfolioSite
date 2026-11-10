@@ -20,20 +20,20 @@ export function NPlusOne({ result, onRun, disabled, running }: Props) {
   const max = result ? Math.max(result.off.dbQueries, result.on.dbQueries, 1) : 1;
   const bars = result
     ? [
-        { key: "off", label: "GraphQL, batching off", metrics: result.off },
-        { key: "on", label: "GraphQL, DataLoader batching on", metrics: result.on },
+        { key: "off", label: "GraphQL, Batching Off", metrics: result.off },
+        { key: "on", label: "GraphQL, DataLoader Batching On", metrics: result.on },
       ]
     : [];
   return (
     <section className="fg-card" aria-labelledby="fg-n1-title" aria-busy={running}>
-      <h2 id="fg-n1-title">The N+1 problem</h2>
+      <h2 id="fg-n1-title">The N+1 Problem</h2>
       <p>
         One query asks for Pulp Fiction's cast and every cast member's films. Without batching, each actor and each film
         is fetched with its own SQL query. DataLoader collects the IDs requested in the same tick into one{" "}
         <code>WHERE id = ANY($1)</code> query per type.
       </p>
       <button type="button" className="button button-primary button-small" onClick={onRun} disabled={disabled}>
-        {running ? "Running…" : "Run with batching off, then on"}
+        {running ? "Running…" : "Run with Batching Off, Then On"}
       </button>
       <div aria-live="polite">
         {result && (

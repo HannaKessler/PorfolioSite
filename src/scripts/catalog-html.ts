@@ -56,9 +56,9 @@ export function carouselHtml(row: ShopRow, query: string) {
       ${forget}
     </div>
     <div class="os-scroller">
-      <button type="button" class="os-scroll" data-scroll="-1" aria-label="Previous products" hidden>‹</button>
+      <button type="button" class="os-scroll" data-scroll="-1" aria-label="Previous Products" hidden>‹</button>
       <div class="os-track" tabindex="0">${cards}</div>
-      <button type="button" class="os-scroll" data-scroll="1" aria-label="Next products">›</button>
+      <button type="button" class="os-scroll" data-scroll="1" aria-label="Next Products">›</button>
     </div>
   </section>`;
 }

@@ -11,7 +11,7 @@ export function defaultRecommendedIds(limit = 12) {
 }
 
 export function defaultRecommendedTitle() {
-  return popularRows()[0]?.title ?? "Popular picks";
+  return popularRows()[0]?.title ?? "Popular Picks";
 }
 
 export function scoreProduct(product: Product, traits: ProfileTraits) {
