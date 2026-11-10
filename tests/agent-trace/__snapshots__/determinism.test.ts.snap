@@ -4,7 +4,7 @@ exports[`determinism > golden trace: the scripted run matches the canonical OTLP
 [
   {
     "attrs": {
-      "app.brain.label": "Simulated brain",
+      "app.brain.label": "Simulated Brain",
       "app.run.faults": [],
       "app.run.max_steps": 12,
       "app.run.outcome": "finished",
