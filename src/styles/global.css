@@ -938,12 +938,22 @@ h2 {
   display: flow-root;
 }
 
-.devlog .gif-player {
+.devlog .gif-player,
+.devlog .devlog-side {
   position: relative;
   float: right;
   width: 15rem;
   max-width: 46%;
   margin: 0.15rem 0 0.55rem 1.35rem;
+}
+
+.devlog .devlog-side a {
+  display: block;
+}
+
+.devlog .devlog-side img {
+  display: block;
+  height: auto;
 }
 
 .devlog .gif-player [hidden] {
@@ -1003,7 +1013,8 @@ h2 {
 }
 
 @media (max-width: 640px) {
-  .devlog .gif-player {
+  .devlog .gif-player,
+  .devlog .devlog-side {
     float: none;
     width: min(15rem, 100%);
     max-width: 100%;
